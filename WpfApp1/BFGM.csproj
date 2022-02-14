@@ -1,0 +1,306 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{57DEE291-30CB-411C-9387-34A99A1057E5}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>WpfApp1</RootNamespace>
+    <AssemblyName>WpfApp1</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FluentWPF, Version=0.9.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentWPF.0.9.0\lib\net45\FluentWPF.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Classes\ClassMain.cs" />
+    <Compile Include="Classes\ClassPathFile.cs" />
+    <Compile Include="Classes\ClassReadingFile.cs" />
+    <Compile Include="Constants\PathFiles.cs" />
+    <Compile Include="Models\Films\ModelFilmsCartoon.cs" />
+    <Compile Include="Models\Films\ModelFilmsSerial.cs" />
+    <Compile Include="Models\Games\ModelGamesHorror.cs" />
+    <Compile Include="Models\Games\ModelGamesPlatformer.cs" />
+    <Compile Include="Models\Music\ModelMusicListen.cs" />
+    <Compile Include="Models\Music\ModelMusicWaiting.cs" />
+    <Compile Include="Windows\Books\WindowBooksAdd.xaml.cs">
+      <DependentUpon>WindowBooksAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\ClassWritingFile.cs" />
+    <Compile Include="Windows\Films\WindowFilmsCartoonAdd.xaml.cs">
+      <DependentUpon>WindowFilmsCartoonAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Films\WindowFilmsFilmAdd.xaml.cs">
+      <DependentUpon>WindowFilmsFilmAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Films\WindowFilmsSerialAdd.xaml.cs">
+      <DependentUpon>WindowFilmsSerialAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Games\WindowsGamesHorrorAdd.xaml.cs">
+      <DependentUpon>WindowsGamesHorrorAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Games\WindowsGamesPlatformerAdd.xaml.cs">
+      <DependentUpon>WindowsGamesPlatformerAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Games\WindowsGamesPlayStationAdd.xaml.cs">
+      <DependentUpon>WindowsGamesPlayStationAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Music\WindowsMusicListenAdd.xaml.cs">
+      <DependentUpon>WindowsMusicListenAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Music\WindowsMusicReleasesAdd.xaml.cs">
+      <DependentUpon>WindowsMusicReleasesAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Music\WindowsMusicWaitingAdd.xaml.cs">
+      <DependentUpon>WindowsMusicWaitingAdd.xaml</DependentUpon>
+    </Compile>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Pages\Books\PageBooks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Films\PageFilms.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Films\PageFilmsCartoons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Films\PageFilmsFilms.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Films\PageFilmsSerials.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Games\PageGames.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Games\PageGamesHorrors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Games\PageGamesPlatformers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Games\PageGamesPlayStation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Music\PageMusicListen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Music\PageMusicReleases.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Music\PageMusicWaiting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\PageHome.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Music\PageMusic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Books\WindowBooksAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Films\WindowFilmsCartoonAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Films\WindowFilmsFilmAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Films\WindowFilmsSerialAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Games\WindowsGamesHorrorAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Games\WindowsGamesPlatformerAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Games\WindowsGamesPlayStationAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Music\WindowsMusicListenAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Music\WindowsMusicReleasesAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Music\WindowsMusicWaitingAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Books\ModelBook.cs" />
+    <Compile Include="Models\Films\ModelFilmsFilm.cs" />
+    <Compile Include="Models\Games\ModelGamesPlayStation.cs" />
+    <Compile Include="Models\Music\ModelMusicReleases.cs" />
+    <Compile Include="Pages\Books\PageBooks.xaml.cs">
+      <DependentUpon>PageBooks.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Films\PageFilms.xaml.cs">
+      <DependentUpon>PageFilms.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Films\PageFilmsCartoons.xaml.cs">
+      <DependentUpon>PageFilmsCartoons.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Films\PageFilmsFilms.xaml.cs">
+      <DependentUpon>PageFilmsFilms.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Films\PageFilmsSerials.xaml.cs">
+      <DependentUpon>PageFilmsSerials.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Games\PageGames.xaml.cs">
+      <DependentUpon>PageGames.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Games\PageGamesHorrors.xaml.cs">
+      <DependentUpon>PageGamesHorrors.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Games\PageGamesPlatformers.xaml.cs">
+      <DependentUpon>PageGamesPlatformers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Games\PageGamesPlayStation.xaml.cs">
+      <DependentUpon>PageGamesPlayStation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Music\PageMusicListen.xaml.cs">
+      <DependentUpon>PageMusicListen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Music\PageMusicReleases.xaml.cs">
+      <DependentUpon>PageMusicReleases.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Music\PageMusicWaiting.xaml.cs">
+      <DependentUpon>PageMusicWaiting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PageHome.xaml.cs">
+      <DependentUpon>PageHome.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Music\PageMusic.xaml.cs">
+      <DependentUpon>PageMusic.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icon.ico" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Data\Books_Books.txt" />
+    <None Include="Data\Films_Cartoons.txt" />
+    <None Include="Data\Films_Films.txt" />
+    <None Include="Data\Films_Serials.txt" />
+    <None Include="Data\Games_Horrors.txt" />
+    <None Include="Data\Games_Platformers.txt" />
+    <None Include="Data\Games_PlayStation.txt" />
+    <None Include="Data\Music_Listen.txt" />
+    <None Include="Data\Music_Releases.txt" />
+    <None Include="Data\Music_Waiting.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

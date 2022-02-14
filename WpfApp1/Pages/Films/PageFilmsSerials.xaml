@@ -1,0 +1,20 @@
+﻿<Page x:Class="BFGM.Pages.Films.PageFilmsSerials"
+      xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:BFGM.Pages.Films"
+      mc:Ignorable="d" 
+      d:DesignHeight="460" d:DesignWidth="778"
+      Title="PageFilmsSerials" fw:PointerTracker.Enabled="True">
+
+    <Grid fw:PointerTracker.Enabled="True" Background="#01FFFFFF">
+        <StackPanel>
+            <ListBox x:Name="ListBoxFilmsSerials" HorizontalAlignment="Left" Height="432" Margin="10,10,0,0" VerticalAlignment="Top" Width="758" BorderThickness="0" Loaded="ListBoxFilmsSerials_Loaded"
+                     Background="Transparent" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" ScrollViewer.VerticalScrollBarVisibility="Hidden" KeyDown="ListBoxFilmsSerials_KeyDown_Clipboard"/>
+            <Button x:Name="ButtonAscendingSeroals" Content="↑↓" Background="Transparent" Style="{StaticResource ButtonRoundRevealStyle}" BorderThickness="1" 
+                    FontFamily="Book Antiqua" FontSize="12" Foreground="WhiteSmoke" Height="17" Width="50" HorizontalAlignment="Right" Click="ButtonAscendingSeroals_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>
