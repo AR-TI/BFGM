@@ -37,16 +37,12 @@ namespace BFGM.Pages.Music
 
         public void FillListBoxMusicReleases()
         {
-            ListBoxMusicReleasesAlbum.Items.Clear();
-            ListBoxMusicReleasesGroup.Items.Clear();
-            ListBoxMusicReleasesDate.Items.Clear();
+            ListBoxClear();
             List<ModelMusicReleases> listMusicReleasesSorted = classReadingFile.ClassMainInfo.ListMusicReleases.OrderBy(x => x.NameMusicReleasesDate).ToList();
 
             for (int i = 0; i < listMusicReleasesSorted.Count; i++)
             {
-                ListBoxMusicReleasesGroup.Items.Add(listMusicReleasesSorted[i].NameMusicReleasesGroup);
-                ListBoxMusicReleasesAlbum.Items.Add(listMusicReleasesSorted[i].NameMusicReleasesAlbum);
-                ListBoxMusicReleasesDate.Items.Add(listMusicReleasesSorted[i].NameMusicReleasesDate.ToString("d MMMM yyyy"));
+                ListBoxAdd(listMusicReleasesSorted, i);
             }
         }
 
@@ -56,17 +52,12 @@ namespace BFGM.Pages.Music
             List<ModelMusicReleases> listMusicReleasesSorted = classReadingFile.ClassMainInfo.ListMusicReleases.OrderBy(x => x.NameMusicReleasesDate).ToList();
             if (SinglesAlbumsShow == 0)
             {
-                ListBoxMusicReleasesAlbum.Items.Clear();
-                ListBoxMusicReleasesGroup.Items.Clear();
-                ListBoxMusicReleasesDate.Items.Clear();
-
+                ListBoxClear();
                 for (int i = 0; i < listMusicReleasesSorted.Count; i++)
                 {
                     if (listMusicReleasesSorted[i].NameMusicReleasesAlbum.Contains("[Single]"))
                     {
-                        ListBoxMusicReleasesGroup.Items.Add(listMusicReleasesSorted[i].NameMusicReleasesGroup);
-                        ListBoxMusicReleasesAlbum.Items.Add(listMusicReleasesSorted[i].NameMusicReleasesAlbum);
-                        ListBoxMusicReleasesDate.Items.Add(listMusicReleasesSorted[i].NameMusicReleasesDate.ToString("d MMMM yyyy"));
+                        ListBoxAdd(listMusicReleasesSorted, i);
                     }
                 }
                 SinglesAlbumsShow = 1;
@@ -74,17 +65,12 @@ namespace BFGM.Pages.Music
             }
             else if (SinglesAlbumsShow == 1)
             {
-                ListBoxMusicReleasesAlbum.Items.Clear();
-                ListBoxMusicReleasesGroup.Items.Clear();
-                ListBoxMusicReleasesDate.Items.Clear();
-
+                ListBoxClear();
                 for (int i = 0; i < listMusicReleasesSorted.Count; i++)
                 {
                     if (!listMusicReleasesSorted[i].NameMusicReleasesAlbum.Contains("[Single]"))
                     {
-                        ListBoxMusicReleasesGroup.Items.Add(listMusicReleasesSorted[i].NameMusicReleasesGroup);
-                        ListBoxMusicReleasesAlbum.Items.Add(listMusicReleasesSorted[i].NameMusicReleasesAlbum);
-                        ListBoxMusicReleasesDate.Items.Add(listMusicReleasesSorted[i].NameMusicReleasesDate.ToString("d MMMM yyyy"));
+                        ListBoxAdd(listMusicReleasesSorted, i);
                     }
                 }
                 SinglesAlbumsShow = 2;
@@ -96,6 +82,20 @@ namespace BFGM.Pages.Music
                 SinglesAlbumsShow = 0;
                 ButtonSingles.Content = "Single";
             }
+        }
+
+        void ListBoxClear()
+        {
+            ListBoxMusicReleasesAlbum.Items.Clear();
+            ListBoxMusicReleasesGroup.Items.Clear();
+            ListBoxMusicReleasesDate.Items.Clear();
+        }
+
+        void ListBoxAdd(List<ModelMusicReleases> list, int i)
+        {
+            ListBoxMusicReleasesGroup.Items.Add(list[i].NameMusicReleasesGroup);
+            ListBoxMusicReleasesAlbum.Items.Add(list[i].NameMusicReleasesAlbum);
+            ListBoxMusicReleasesDate.Items.Add(list[i].NameMusicReleasesDate.ToString("d MMMM yyyy"));
         }
 
         private void ListBoxMusicReleasesGroup_KeyDown_Clipboard(object sender, KeyEventArgs e)
@@ -129,6 +129,7 @@ namespace BFGM.Pages.Music
             /*Добавление*/
             WindowsMusicReleasesAdd windowsMusicReleasesAdd = new WindowsMusicReleasesAdd(classWritingFile, this);
             int selectedIndex = ListBoxMusicReleasesAlbum.SelectedIndex;
+            string selectedName = ListBoxMusicReleasesAlbum.Items[selectedIndex].ToString();
             windowsMusicReleasesAdd.TextBoxMusicReleasesGroup.Text = ListBoxMusicReleasesGroup.Items[selectedIndex].ToString();
             windowsMusicReleasesAdd.TextBoxMusicReleasesAlbum.Text = ListBoxMusicReleasesAlbum.Items[selectedIndex].ToString();
             windowsMusicReleasesAdd.TextBoxMusicReleasesDate.Text = ListBoxMusicReleasesDate.Items[selectedIndex].ToString();
@@ -136,7 +137,6 @@ namespace BFGM.Pages.Music
             /*Удаление*/
             if (selectedIndex != -1)
             {
-                string selectedName = ListBoxMusicReleasesAlbum.Items[selectedIndex].ToString();
                 classReadingFile.ClassMainInfo.DeleteMusicReleases(selectedName);
                 classWritingFile.RewritingFileAfterDeleteMusicReleases();
                 ListBoxMusicReleasesGroup.Items.RemoveAt(selectedIndex);

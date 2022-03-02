@@ -32,9 +32,9 @@ namespace BFGM.Windows.Music
             {
                 Parsing(nameMusicReleasesGroup);
             }
-            else if (nameMusicReleasesGroup.Length != 0 && nameMusicReleasesAlbum.Length != 0 && nameMusicReleasesDate.ToString().Length != 0)
+            else if (nameMusicReleasesGroup.Length != 0 && nameMusicReleasesAlbum.Length != 0 && nameMusicReleasesDate.Length != 0)
             {
-                if (!DateTime.TryParse(nameMusicReleasesDate, out DateTime dateTimeMusicReleases))
+                if (!DateTime.TryParse(nameMusicReleasesDate, out DateTime dateTimeMusicReleases) || dateTimeMusicReleases.Year < DateTime.Now.Year)
                     MessageBox.Show("Wrong date!");
                 else
                 {
@@ -50,7 +50,7 @@ namespace BFGM.Windows.Music
             int indexFirst = strAll.IndexOf(" - ");
             strAll = strAll.Remove(indexFirst, 3).Insert(indexFirst, "^");
             string[] strArray = strAll.Split('^', ':');
-            string group = strArray[0].Trim();
+            string group = strArray[0];
             string album = strArray[1].Replace("Стиль", "").Trim();
             if (group.Contains("#single"))
             {
@@ -63,9 +63,11 @@ namespace BFGM.Windows.Music
                 album = string.Concat(album, " [EP]");
             }
             string date = strArray[3].Replace(".", "").Trim();
-            if (group.Length != 0 && album.Length != 0 && date.Length != 0 && (date.Contains(" января ") || date.Contains(" февраля ") || date.Contains(" марта ") || date.Contains(" апреля ") || date.Contains(" мая ") || date.Contains(" июня ") || date.Contains(" июля ") || date.Contains(" августа ") || date.Contains(" сентября ") || date.Contains(" октября ") || date.Contains(" ноября ") || date.Contains(" декабря ")))
+            if (!DateTime.TryParse(date, out DateTime dateTimeMusicReleases) || dateTimeMusicReleases.Year < DateTime.Now.Year)
+                MessageBox.Show("Wrong date!");
+            else if (group.Length != 0 && album.Length != 0)
             {
-                classWritingFile.WritingFileMusicReleases(ToTitleFirstLetter(group), ToTitleFirstLetter(album), Convert.ToDateTime(date));
+                classWritingFile.WritingFileMusicReleases(ToTitleFirstLetter(group), ToTitleFirstLetter(album), dateTimeMusicReleases);
                 pageMusicReleases.FillListBoxMusicReleases();
                 Close();
             }
