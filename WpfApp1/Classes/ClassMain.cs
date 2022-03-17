@@ -183,5 +183,20 @@ namespace BFGM.Classes
             }
         }
         #endregion
+
+        #region Edit()
+        public void EditMusicReleases(string oldGroup, string oldAlbum, DateTime oldDate, string newGroup, string newAlbum, DateTime newDate)
+        {
+            for (int i = 0; i < ListMusicReleases.Count; i++)
+            {
+                if (ListMusicReleases[i].NameMusicReleasesGroup == oldGroup && ListMusicReleases[i].NameMusicReleasesAlbum == oldAlbum && ListMusicReleases[i].NameMusicReleasesDate == oldDate)
+                {
+                    ListMusicReleases.RemoveAt(i);
+                    ListMusicReleases.Insert(i, new ModelMusicReleases(newGroup, newAlbum, newDate));
+                    break;
+                }
+            }
+        }
+        #endregion
     }
 }

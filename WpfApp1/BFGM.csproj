@@ -100,6 +100,9 @@
     <Compile Include="Windows\Music\WindowsMusicReleasesAdd.xaml.cs">
       <DependentUpon>WindowsMusicReleasesAdd.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Music\WindowsMusicReleasesEdit.xaml.cs">
+      <DependentUpon>WindowsMusicReleasesEdit.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Music\WindowsMusicWaitingAdd.xaml.cs">
       <DependentUpon>WindowsMusicWaitingAdd.xaml</DependentUpon>
     </Compile>
@@ -204,6 +207,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\Music\WindowsMusicReleasesAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Music\WindowsMusicReleasesEdit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using BFGM.Models;
 using BFGM.Windows.Music;
+using WpfApp1.Windows.Music;
 
 namespace BFGM.Pages.Music
 {
@@ -126,22 +127,20 @@ namespace BFGM.Pages.Music
 
         private void MenuItem_ClickEdit(object sender, RoutedEventArgs e)
         {
-            /*Добавление*/
-            WindowsMusicReleasesAdd windowsMusicReleasesAdd = new WindowsMusicReleasesAdd(classWritingFile, this);
-            int selectedIndex = ListBoxMusicReleasesAlbum.SelectedIndex;
-            string selectedName = ListBoxMusicReleasesAlbum.Items[selectedIndex].ToString();
-            windowsMusicReleasesAdd.TextBoxMusicReleasesGroup.Text = ListBoxMusicReleasesGroup.Items[selectedIndex].ToString();
-            windowsMusicReleasesAdd.TextBoxMusicReleasesAlbum.Text = ListBoxMusicReleasesAlbum.Items[selectedIndex].ToString();
-            windowsMusicReleasesAdd.TextBoxMusicReleasesDate.Text = ListBoxMusicReleasesDate.Items[selectedIndex].ToString();
-            windowsMusicReleasesAdd.ShowDialog();
-            /*Удаление*/
-            if (selectedIndex != -1)
+            int selectedIndexGroup = ListBoxMusicReleasesGroup.SelectedIndex;
+            int selectedIndexAlbum = ListBoxMusicReleasesAlbum.SelectedIndex;
+            int selectedIndexDate = ListBoxMusicReleasesDate.SelectedIndex;
+            if (selectedIndexGroup != -1 || selectedIndexAlbum != -1 || selectedIndexDate != -1)
             {
-                //classReadingFile.ClassMainInfo.DeleteMusicReleases(selectedName);
-                classWritingFile.RewritingFileAfterDeleteMusicReleases();
-                ListBoxMusicReleasesGroup.Items.RemoveAt(selectedIndex);
-                ListBoxMusicReleasesAlbum.Items.RemoveAt(selectedIndex);
-                ListBoxMusicReleasesDate.Items.RemoveAt(selectedIndex);
+                int index = PageMusic.CheckIndex(selectedIndexGroup, selectedIndexAlbum, selectedIndexDate);
+                string oldGroup = ListBoxMusicReleasesGroup.Items[index].ToString();
+                string oldAlbum = ListBoxMusicReleasesAlbum.Items[index].ToString();
+                string oldDate = ListBoxMusicReleasesDate.Items[index].ToString();
+                WindowsMusicReleasesEdit windowsMusicReleasesEdit = new WindowsMusicReleasesEdit(classWritingFile, this, oldGroup, oldAlbum, oldDate);
+                windowsMusicReleasesEdit.TextBoxMusicReleasesGroup.Text = oldGroup;
+                windowsMusicReleasesEdit.TextBoxMusicReleasesAlbum.Text = oldAlbum;
+                windowsMusicReleasesEdit.TextBoxMusicReleasesDate.Text = oldDate;
+                windowsMusicReleasesEdit.ShowDialog();
             }
         }
     }

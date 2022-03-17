@@ -69,7 +69,7 @@ namespace BFGM.Pages
             }
         }
 
-        private int CheckIndex(int indexGroup, int indexAlbum, int indexDate)
+        public static int CheckIndex(int indexGroup, int indexAlbum, int indexDate)
         {
             if (indexGroup != -1)
                 return indexGroup;
@@ -85,14 +85,18 @@ namespace BFGM.Pages
                 int selectedIndexGroup = pageMusicReleases.ListBoxMusicReleasesGroup.SelectedIndex;
                 int selectedIndexAlbum = pageMusicReleases.ListBoxMusicReleasesAlbum.SelectedIndex;
                 int selectedIndexDate = pageMusicReleases.ListBoxMusicReleasesDate.SelectedIndex;
+
                 if (selectedIndexGroup != -1 || selectedIndexAlbum != -1 || selectedIndexDate != -1)
                 {
                     int index = CheckIndex(selectedIndexGroup, selectedIndexAlbum, selectedIndexDate);
+
                     string selectedGroup = pageMusicReleases.ListBoxMusicReleasesGroup.Items[index].ToString();
                     string selectedAlbum = pageMusicReleases.ListBoxMusicReleasesAlbum.Items[index].ToString();
                     DateTime selectedDate = DateTime.Parse(pageMusicReleases.ListBoxMusicReleasesDate.Items[index].ToString());
+
                     classReadingFile.ClassMainInfo.DeleteMusicReleases(selectedGroup, selectedAlbum, selectedDate);
                     classWritingFile.RewritingFileAfterDeleteMusicReleases();
+
                     pageMusicReleases.ListBoxMusicReleasesGroup.Items.RemoveAt(index);
                     pageMusicReleases.ListBoxMusicReleasesAlbum.Items.RemoveAt(index);
                     pageMusicReleases.ListBoxMusicReleasesDate.Items.RemoveAt(index);
