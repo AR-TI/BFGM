@@ -69,9 +69,16 @@ namespace BFGM.Classes
         #endregion
 
         #region Delete()
-        public void DeleteBooks(int selectedIndex)
+        public void DeleteBooks(string selectedBook, string selectedAuthor)
         {
-            ListBooks.RemoveAt(selectedIndex);
+            for (int i = 0; i < ListBooks.Count; i++)
+            {
+                if (ListBooks[i].NameBooksBook == selectedBook && ListBooks[i].NameBooksAuthor == selectedAuthor)
+                {
+                    ListBooks.RemoveAt(i);
+                    break;
+                }
+            }
         }
 
         public void DeleteFilmsFilms(string selectedName)
@@ -84,7 +91,6 @@ namespace BFGM.Classes
                     break;
                 }
             }
-            //listFilmsFilms.RemoveAt(selectedIndex);
         }
         public void DeleteFilmsSerials(string selectedName)
         {
@@ -93,9 +99,9 @@ namespace BFGM.Classes
                 if (ListFilmsSerials[i].NameFilmsSerial == selectedName)
                 {
                     ListFilmsSerials.RemoveAt(i);
+                    break;
                 }
             }
-            //listFilmsSerials.RemoveAt(selectedIndex);
         }
         public void DeleteFilmsCartoons(string selectedName)
         {
@@ -104,9 +110,9 @@ namespace BFGM.Classes
                 if (ListFilmsCartoons[i].NameFilmsCartoon == selectedName)
                 {
                     ListFilmsCartoons.RemoveAt(i);
+                    break;
                 }
             }
-            //listFilmsCartoons.RemoveAt(selectedIndex);
         }
 
         public void DeleteGamesPlayStation(string selectedName)
@@ -116,9 +122,9 @@ namespace BFGM.Classes
                 if (ListGamesPlayStation[i].NameGamesPlayStation == selectedName)
                 {
                     ListGamesPlayStation.RemoveAt(i);
+                    break;
                 }
             }
-            //listGamesPlayStation.RemoveAt(selectedIndex);
         }
         public void DeleteGamesHorrors(string selectedName)
         {
@@ -127,9 +133,9 @@ namespace BFGM.Classes
                 if (ListGamesHorrors[i].NameGamesHorror == selectedName)
                 {
                     ListGamesHorrors.RemoveAt(i);
+                    break;
                 }
             }
-            //listGamesHorrors.RemoveAt(selectedIndex);
         }
         public void DeleteGamesPlatformers(string selectedName)
         {
@@ -138,22 +144,21 @@ namespace BFGM.Classes
                 if (ListGamesPlatformers[i].NameGamesPlatformer == selectedName)
                 {
                     ListGamesPlatformers.RemoveAt(i);
+                    break;
                 }
             }
-            //listGamesPlatformers.RemoveAt(selectedIndex);
         }
 
-        public void DeleteMusicReleases(string selectedName)
+        public void DeleteMusicReleases(string selectedGroup, string selectedAlbum, DateTime selectedDate)
         {
             for (int i = 0; i < ListMusicReleases.Count; i++)
             {
-                if (ListMusicReleases[i].NameMusicReleasesGroup == selectedName || ListMusicReleases[i].NameMusicReleasesAlbum == selectedName)
+                if (ListMusicReleases[i].NameMusicReleasesGroup == selectedGroup && ListMusicReleases[i].NameMusicReleasesAlbum == selectedAlbum && ListMusicReleases[i].NameMusicReleasesDate == selectedDate)
                 {
                     ListMusicReleases.RemoveAt(i);
                     break;
                 }
             }
-            //listMusicReleases.RemoveAt(selectedIndex);
         }
         public void DeleteMusicWaiting(string selectedName)
         {
@@ -162,9 +167,9 @@ namespace BFGM.Classes
                 if (ListMusicWaiting[i].NameMusicWaiting == selectedName)
                 {
                     ListMusicWaiting.RemoveAt(i);
+                    break;
                 }
             }
-            //listMusicWaiting.RemoveAt(selectedIndex);
         }
         public void DeleteMusicListen(string selectedName)
         {
@@ -173,9 +178,9 @@ namespace BFGM.Classes
                 if (ListMusicListen[i].NameMusicListen == selectedName)
                 {
                     ListMusicListen.RemoveAt(i);
+                    break;
                 }
             }
-            //listMusicListen.RemoveAt(selectedIndex);
         }
         #endregion
     }

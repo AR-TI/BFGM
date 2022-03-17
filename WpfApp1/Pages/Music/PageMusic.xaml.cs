@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using BFGM.Pages.Music;
 using BFGM.Windows.Music;
@@ -68,45 +69,38 @@ namespace BFGM.Pages
             }
         }
 
+        private int CheckIndex(int indexGroup, int indexAlbum, int indexDate)
+        {
+            if (indexGroup != -1)
+                return indexGroup;
+            else if (indexAlbum != -1)
+                return indexAlbum;
+            return indexDate;
+        }
+
         private void ButtonMusicDelete_Click(object sender, RoutedEventArgs e)
         {
             if (pageActivity == 1)
             {
                 int selectedIndexGroup = pageMusicReleases.ListBoxMusicReleasesGroup.SelectedIndex;
                 int selectedIndexAlbum = pageMusicReleases.ListBoxMusicReleasesAlbum.SelectedIndex;
-                //int selectedIndexDate = pageMusicReleases.ListBoxMusicReleasesDate.SelectedIndex;
-                if (selectedIndexGroup != -1)
+                int selectedIndexDate = pageMusicReleases.ListBoxMusicReleasesDate.SelectedIndex;
+                if (selectedIndexGroup != -1 || selectedIndexAlbum != -1 || selectedIndexDate != -1)
                 {
-                    string selectedName = pageMusicReleases.ListBoxMusicReleasesGroup.Items[selectedIndexGroup].ToString();
-                    classReadingFile.ClassMainInfo.DeleteMusicReleases(selectedName);
+                    int index = CheckIndex(selectedIndexGroup, selectedIndexAlbum, selectedIndexDate);
+                    string selectedGroup = pageMusicReleases.ListBoxMusicReleasesGroup.Items[index].ToString();
+                    string selectedAlbum = pageMusicReleases.ListBoxMusicReleasesAlbum.Items[index].ToString();
+                    DateTime selectedDate = DateTime.Parse(pageMusicReleases.ListBoxMusicReleasesDate.Items[index].ToString());
+                    classReadingFile.ClassMainInfo.DeleteMusicReleases(selectedGroup, selectedAlbum, selectedDate);
                     classWritingFile.RewritingFileAfterDeleteMusicReleases();
-                    pageMusicReleases.ListBoxMusicReleasesGroup.Items.RemoveAt(selectedIndexGroup);
-                    pageMusicReleases.ListBoxMusicReleasesAlbum.Items.RemoveAt(selectedIndexGroup);
-                    pageMusicReleases.ListBoxMusicReleasesDate.Items.RemoveAt(selectedIndexGroup);
+                    pageMusicReleases.ListBoxMusicReleasesGroup.Items.RemoveAt(index);
+                    pageMusicReleases.ListBoxMusicReleasesAlbum.Items.RemoveAt(index);
+                    pageMusicReleases.ListBoxMusicReleasesDate.Items.RemoveAt(index);
                 }
-                if (selectedIndexAlbum != -1)
-                {
-                    string selectedName = pageMusicReleases.ListBoxMusicReleasesAlbum.Items[selectedIndexAlbum].ToString();
-                    classReadingFile.ClassMainInfo.DeleteMusicReleases(selectedName);
-                    classWritingFile.RewritingFileAfterDeleteMusicReleases();
-                    pageMusicReleases.ListBoxMusicReleasesGroup.Items.RemoveAt(selectedIndexAlbum);
-                    pageMusicReleases.ListBoxMusicReleasesAlbum.Items.RemoveAt(selectedIndexAlbum);
-                    pageMusicReleases.ListBoxMusicReleasesDate.Items.RemoveAt(selectedIndexAlbum);
-                }
-                //if (selectedIndexDate != -1)
-                //{
-                //    string selectedName = pageMusicReleases.ListBoxMusicReleasesDate.Items[selectedIndexDate].ToString();
-                //    classReadingFile.ClassMainInfo.DeleteMusicReleases(selectedName);
-                //    classWritingFile.RewritingFileAfterDeleteMusicReleases();
-                //    pageMusicReleases.ListBoxMusicReleasesGroup.Items.RemoveAt(selectedIndexDate);
-                //    pageMusicReleases.ListBoxMusicReleasesAlbum.Items.RemoveAt(selectedIndexDate);
-                //    pageMusicReleases.ListBoxMusicReleasesDate.Items.RemoveAt(selectedIndexDate);
-                //}
             }
             if (pageActivity == 2)
             {
                 int selectedIndex = pageMusicWaiting.ListBoxMusicWaiting.SelectedIndex;
-
                 if (selectedIndex != -1)
                 {
                     string selectedName = pageMusicWaiting.ListBoxMusicWaiting.Items[selectedIndex].ToString();
@@ -118,7 +112,6 @@ namespace BFGM.Pages
             if (pageActivity == 3)
             {
                 int selectedIndex = pageMusicListen.ListBoxMusicListen.SelectedIndex;
-
                 if (selectedIndex != -1)
                 {
                     string selectedName = pageMusicListen.ListBoxMusicListen.Items[selectedIndex].ToString();

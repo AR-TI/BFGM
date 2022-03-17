@@ -137,7 +137,7 @@ namespace BFGM.Pages.Music
             /*Удаление*/
             if (selectedIndex != -1)
             {
-                classReadingFile.ClassMainInfo.DeleteMusicReleases(selectedName);
+                //classReadingFile.ClassMainInfo.DeleteMusicReleases(selectedName);
                 classWritingFile.RewritingFileAfterDeleteMusicReleases();
                 ListBoxMusicReleasesGroup.Items.RemoveAt(selectedIndex);
                 ListBoxMusicReleasesAlbum.Items.RemoveAt(selectedIndex);

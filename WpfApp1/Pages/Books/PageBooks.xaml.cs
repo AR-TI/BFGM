@@ -40,24 +40,25 @@ namespace BFGM.Pages
             FillListBooks();
         }
 
+        private int CheckIndex(int indexBook, int indexAuthor)
+        {
+            if (indexBook != -1)
+                return indexBook;
+            return indexAuthor;
+        }
         private void ButtonBooksDelete_Click(object sender, RoutedEventArgs e)
         {
             int selectedIndexBook = ListBoxBooksBook.SelectedIndex;
             int selectedIndexAuthor = ListBoxBooksAuthor.SelectedIndex;
-
-            if (selectedIndexBook != -1)
+            if (selectedIndexBook != -1 || selectedIndexAuthor != -1)
             {
-                classReadingFile.ClassMainInfo.DeleteBooks(selectedIndexBook);
+                int index = CheckIndex(selectedIndexBook, selectedIndexAuthor);
+                string selectedBook = ListBoxBooksBook.Items[index].ToString();
+                string selectedAuthor = ListBoxBooksAuthor.Items[index].ToString();
+                classReadingFile.ClassMainInfo.DeleteBooks(selectedBook, selectedAuthor);
                 classWritingFile.RewritingFileAfterDeleteBooks();
-                ListBoxBooksBook.Items.RemoveAt(selectedIndexBook);
-                ListBoxBooksAuthor.Items.RemoveAt(selectedIndexBook);
-            }
-            if (selectedIndexAuthor != -1)
-            {
-                classReadingFile.ClassMainInfo.DeleteBooks(selectedIndexAuthor);
-                classWritingFile.RewritingFileAfterDeleteBooks();
-                ListBoxBooksBook.Items.RemoveAt(selectedIndexAuthor);
-                ListBoxBooksAuthor.Items.RemoveAt(selectedIndexAuthor);
+                ListBoxBooksBook.Items.RemoveAt(index);
+                ListBoxBooksAuthor.Items.RemoveAt(index);
             }
         }
 
