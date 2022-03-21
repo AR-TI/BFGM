@@ -1,4 +1,5 @@
 ﻿using BFGM;
+using BFGM.Models;
 using BFGM.Pages.Music;
 using System;
 using System.Windows;
@@ -14,14 +15,23 @@ namespace WpfApp1.Windows.Music
         ClassWritingFile classWritingFile;
         PageMusicReleases pageMusicReleases;
         readonly string oldGroup, oldAlbum, oldDate;
-        public WindowsMusicReleasesEdit(ClassWritingFile classWritingFile, PageMusicReleases pageMusicReleases, string oldGroup, string oldAlbum, string oldDate)
+        public WindowsMusicReleasesEdit(ClassWritingFile classWritingFile, PageMusicReleases pageMusicReleases, int selectedIndex)
         {
             InitializeComponent();
             this.classWritingFile = classWritingFile;
             this.pageMusicReleases = pageMusicReleases;
-            this.oldGroup = oldGroup;
-            this.oldAlbum = oldAlbum;
-            this.oldDate = oldDate;
+
+            object data = pageMusicReleases.ListBoxMusicReleases.Items[selectedIndex];
+            ModelMusicReleases release = data as ModelMusicReleases;
+
+            oldGroup = release.NameMusicReleasesGroup;
+            oldAlbum = release.NameMusicReleasesAlbum;
+            oldDate = release.NameMusicReleasesDate.ToString("d MMMM yyyy");
+
+            TextBoxMusicReleasesGroup.Text = oldGroup;
+            TextBoxMusicReleasesAlbum.Text = oldAlbum;
+            TextBoxMusicReleasesDate.Text = oldDate;
+
             TextBoxMusicReleasesGroup.Focus();
         }
 
@@ -36,7 +46,7 @@ namespace WpfApp1.Windows.Music
                     MessageBox.Show("Wrong date!");
                 else
                 {
-                    classWritingFile.ClassMainInfo.EditMusicReleases(oldGroup, oldAlbum, newDateTime, newGroup, newAlbum, newDateTime);
+                    classWritingFile.ClassMainInfo.EditMusicReleases(oldGroup, oldAlbum, DateTime.Parse(oldDate), newGroup, newAlbum, newDateTime);
                     classWritingFile.RewritingFileAfterDeleteMusicReleases();
                     pageMusicReleases.FillListBoxMusicReleases();
                     Close();

@@ -1,6 +1,7 @@
 ﻿using BFGM.Classes;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using WpfApp1.Constants;
 
 namespace BFGM
@@ -135,26 +136,19 @@ namespace BFGM
             fs.Close();
         }
 
-        public void ReadingFileMusicReleases()
+        public async Task ReadingFileMusicReleases()
         {
-            FileStream fs = new FileStream(PathFiles.MusicReleasesPath, FileMode.Open, FileAccess.Read);
-            StreamReader sr = new StreamReader(fs);
-            while (sr.Peek() > -1)
+            using (StreamReader sr = new StreamReader(PathFiles.MusicReleasesPath))
             {
-                string nameMusicReleasesGroup = sr.ReadLine();
-                string nameMusicReleasesAlbum = sr.ReadLine();
-                DateTime nameMusicReleasesDate = DateTime.Parse(sr.ReadLine());
-                classMain.GiveToListMusicReleases(nameMusicReleasesGroup, nameMusicReleasesAlbum, nameMusicReleasesDate);
-
-                //listMusicReleases.Add(new Models.ModelMusicReleases()
-                //{
-                //    NameMusicReleasesGroup = sr.ReadLine(),
-                //    NameMusicReleasesAlbum = sr.ReadLine(),
-                //    NameMusicReleasesDate = sr.ReadLine()
-                //});
+                string group, album, date;
+                while (sr.Peek() > -1)
+                {
+                    group = await sr.ReadLineAsync();
+                    album = await sr.ReadLineAsync();
+                    date = await sr.ReadLineAsync();
+                    classMain.GiveToListMusicReleases(group, album, DateTime.Parse(date));
+                }
             }
-            sr.Close();
-            fs.Close();
         }
         public void ReadingFileMusicWaiting()
         {

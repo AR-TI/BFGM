@@ -10,18 +10,24 @@
       Title="PageMusicReleases">
 
     <Grid x:Name="GridMusicReleases" Loaded="GridMusicReleases_Loaded" fw:PointerTracker.Enabled="True" Background="#01FFFFFF">
-        <ListBox x:Name="ListBoxMusicReleasesGroup" HorizontalAlignment="Left" Width="250" Height="432" Margin="10,10,0,0" VerticalAlignment="Top" BorderThickness="0" 
-                 Background="Transparent" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" KeyDown="ListBoxMusicReleasesGroup_KeyDown_Clipboard"/>
-        <ListBox x:Name="ListBoxMusicReleasesAlbum" HorizontalAlignment="Left" Width="250" Height="432" Margin="265,10,0,0" VerticalAlignment="Top" BorderThickness="0" 
-                 Background="Transparent" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" KeyDown="ListBoxMusicReleasesAlbum_KeyDown_Clipboard">
+        <ListBox x:Name="ListBoxMusicReleases" HorizontalAlignment="Center" Width="758" Height="432" Margin="0,10,0,0" VerticalAlignment="Top" BorderThickness="0" 
+                 Background="Transparent" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" KeyDown="ListBoxMusicReleases_KeyDown_Clipboard">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Width="260" Text="{Binding NameMusicReleasesGroup}"/>
+                        <TextBlock Width="260" Text="{Binding NameMusicReleasesAlbum}" />
+                        <TextBlock Width="200" Text="{Binding NameMusicReleasesDate, StringFormat='d MMMM yyyy'}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+
             <ListBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Edit" Click="MenuItem_ClickEdit"></MenuItem>
                 </ContextMenu>
             </ListBox.ContextMenu>
         </ListBox>
-        <ListBox x:Name="ListBoxMusicReleasesDate" HorizontalAlignment="Left" Width="248" Height="432" Margin="520,10,0,0" VerticalAlignment="Top" BorderThickness="0" 
-                 Background="Transparent" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden"/>
         <Button x:Name="ButtonSingles" Content="Singles" Background="Transparent" Style="{StaticResource ButtonRoundRevealStyle}" BorderThickness="1" 
                     FontFamily="Book Antiqua" FontSize="12" Foreground="WhiteSmoke" Height="17" Width="70" HorizontalAlignment="Right" Margin="0,442,0,1" Click="ButtonSingles_Click"/>
     </Grid>

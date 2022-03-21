@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using BFGM.Classes;
 using BFGM.Models;
 using WpfApp1.Constants;
@@ -192,30 +193,25 @@ namespace BFGM
         #region Music
         public void WritingFileMusicReleases(string nameMusicReleaseGroup, string nameMusicReleaseAlbum, DateTime nameMusicReleaseDate)
         {
-            FileStream fs = new FileStream(PathFiles.MusicReleasesPath, FileMode.Append, FileAccess.Write);
-            StreamWriter sw = new StreamWriter(fs);
-
-            sw.WriteLine(nameMusicReleaseGroup);
-            sw.WriteLine(nameMusicReleaseAlbum);
-            sw.WriteLine(nameMusicReleaseDate.ToString("d MMMM yyyy"));
-            classMain.ListMusicReleases.Add(new ModelMusicReleases(nameMusicReleaseGroup, nameMusicReleaseAlbum, nameMusicReleaseDate));
-
-            sw.Close();
-            fs.Close();
-        }
-        public void RewritingFileAfterDeleteMusicReleases()
-        {
-            FileStream fs = new FileStream(PathFiles.MusicReleasesPath, FileMode.Create, FileAccess.Write);
-            StreamWriter sw = new StreamWriter(fs);
-
-            for (int i = 0; i < classMain.ListMusicReleases.Count; i++)
+            using (StreamWriter sw = new StreamWriter(PathFiles.MusicReleasesPath, true))
             {
-                sw.WriteLine(classMain.ListMusicReleases[i].NameMusicReleasesGroup);
-                sw.WriteLine(classMain.ListMusicReleases[i].NameMusicReleasesAlbum);
-                sw.WriteLine(classMain.ListMusicReleases[i].NameMusicReleasesDate.ToString("d MMMM yyyy"));
+                sw.WriteLine(nameMusicReleaseGroup);
+                sw.WriteLine(nameMusicReleaseAlbum);
+                sw.WriteLine(nameMusicReleaseDate.ToString("d MMMM yyyy"));
+                classMain.ListMusicReleases.Add(new ModelMusicReleases(nameMusicReleaseGroup, nameMusicReleaseAlbum, nameMusicReleaseDate));
             }
-            sw.Close();
-            fs.Close();
+        }
+        public async void RewritingFileAfterDeleteMusicReleases()
+        {
+            using (StreamWriter sw = new StreamWriter(PathFiles.MusicReleasesPath, false))
+            {
+                for (int i = 0; i < classMain.ListMusicReleases.Count; i++)
+                {
+                    await sw.WriteLineAsync(classMain.ListMusicReleases[i].NameMusicReleasesGroup);
+                    await sw.WriteLineAsync(classMain.ListMusicReleases[i].NameMusicReleasesAlbum);
+                    await sw.WriteLineAsync(classMain.ListMusicReleases[i].NameMusicReleasesDate.ToString("d MMMM yyyy"));
+                }
+            }
         }
 
         public void WritingFileMusicWaiting(string nameMusicWaiting)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using BFGM.Models;
 using BFGM.Pages.Music;
 using BFGM.Windows.Music;
 
@@ -69,37 +70,24 @@ namespace BFGM.Pages
             }
         }
 
-        public static int CheckIndex(int indexGroup, int indexAlbum, int indexDate)
-        {
-            if (indexGroup != -1)
-                return indexGroup;
-            else if (indexAlbum != -1)
-                return indexAlbum;
-            return indexDate;
-        }
-
         private void ButtonMusicDelete_Click(object sender, RoutedEventArgs e)
         {
             if (pageActivity == 1)
             {
-                int selectedIndexGroup = pageMusicReleases.ListBoxMusicReleasesGroup.SelectedIndex;
-                int selectedIndexAlbum = pageMusicReleases.ListBoxMusicReleasesAlbum.SelectedIndex;
-                int selectedIndexDate = pageMusicReleases.ListBoxMusicReleasesDate.SelectedIndex;
-
-                if (selectedIndexGroup != -1 || selectedIndexAlbum != -1 || selectedIndexDate != -1)
+                int selectedIndex = pageMusicReleases.ListBoxMusicReleases.SelectedIndex;
+                if (selectedIndex != -1)
                 {
-                    int index = CheckIndex(selectedIndexGroup, selectedIndexAlbum, selectedIndexDate);
+                    object data = pageMusicReleases.ListBoxMusicReleases.Items[selectedIndex];
+                    ModelMusicReleases release = data as ModelMusicReleases;
 
-                    string selectedGroup = pageMusicReleases.ListBoxMusicReleasesGroup.Items[index].ToString();
-                    string selectedAlbum = pageMusicReleases.ListBoxMusicReleasesAlbum.Items[index].ToString();
-                    DateTime selectedDate = DateTime.Parse(pageMusicReleases.ListBoxMusicReleasesDate.Items[index].ToString());
+                    string selectedGroup = release.NameMusicReleasesGroup;
+                    string selectedAlbum = release.NameMusicReleasesAlbum;
+                    DateTime selectedDate = release.NameMusicReleasesDate;
 
                     classReadingFile.ClassMainInfo.DeleteMusicReleases(selectedGroup, selectedAlbum, selectedDate);
                     classWritingFile.RewritingFileAfterDeleteMusicReleases();
 
-                    pageMusicReleases.ListBoxMusicReleasesGroup.Items.RemoveAt(index);
-                    pageMusicReleases.ListBoxMusicReleasesAlbum.Items.RemoveAt(index);
-                    pageMusicReleases.ListBoxMusicReleasesDate.Items.RemoveAt(index);
+                    pageMusicReleases.FillListBoxMusicReleases();
                 }
             }
             if (pageActivity == 2)
