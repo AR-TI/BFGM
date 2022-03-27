@@ -6,15 +6,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BFGM.Windows.Films"
         mc:Ignorable="d"
-        Title="Add of Film" Height="190" Width="450" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize"
+        Title="Add Film" Height="190" Width="450" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize"
         fw:AcrylicWindow.Enabled="True" KeyDown="WindowsFilmAdd_KeyDown">
     <Grid fw:PointerTracker.Enabled="True" Background="#01FFFFFF">
-        <TextBox x:Name="TextBoxFilmsFilm" HorizontalAlignment="Right" Margin="0,45,50,0" VerticalAlignment="Top" Width="270" Height="26"
+        <TextBox x:Name="TextBoxFilm" HorizontalAlignment="Right" Margin="0,45,50,0" VerticalAlignment="Top" Width="270" Height="26"
                  Background="Transparent" Style="{StaticResource TextBoxRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Padding="5,2,5,5"/>
 
         <Label Content="Name" HorizontalAlignment="Left" Margin="55,45,0,0" VerticalAlignment="Top" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"/>
 
         <Button x:Name="ButtonFilmsFilmAddOK" Content="OK" Margin="10,115,0,10" Width="424" HorizontalAlignment="Left"
-            Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Height="36" Click="ButtonFilmsFilmAddOK_Click"/>
+            Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Height="36" Click="ButtonFilmAddOK_Click"/>
     </Grid>
 </Window>

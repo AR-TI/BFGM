@@ -13,11 +13,12 @@ namespace BFGM.Pages.Music
     /// </summary>
     public partial class PageMusicReleases : Page
     {
-        ClassWritingFile classWritingFile; //mew
-        ClassReadingFile classReadingFile;
-        List<ModelMusicReleases> listMusicReleases;
+        ClassWriteFile classWritingFile; //mew
+        ClassReadFile classReadingFile;
+        List<Release> listReleases;
+        byte SinglesAlbumsShow = 0;
 
-        public PageMusicReleases(ClassReadingFile classReadingFile, ClassWritingFile classWritingFile/*new*/)
+        public PageMusicReleases(ClassReadFile classReadingFile, ClassWriteFile classWritingFile/*new*/)
         {
             InitializeComponent();
             this.classWritingFile = classWritingFile;  //new
@@ -29,7 +30,7 @@ namespace BFGM.Pages.Music
         {
             if (!isFirstTime)
             {
-                await classReadingFile.ReadingFileMusicReleases();
+                await classReadingFile.ReadFileReleases();
                 isFirstTime = true;
             }
             FillListBoxMusicReleases();
@@ -37,67 +38,79 @@ namespace BFGM.Pages.Music
 
         public void FillListBoxMusicReleases()
         {
-            listMusicReleases = classReadingFile.ClassMainInfo.ListMusicReleases.OrderBy(x => x.NameMusicReleasesDate).ToList();
-            ListBoxMusicReleases.ItemsSource = listMusicReleases;
-            ButtonSingles.Content = "Singles";
+            listReleases = classReadingFile.ClassMainInfo.ListReleases.OrderBy(x => x.Date).ToList();
+            ListBoxReleases.ItemsSource = listReleases;
         }
 
-        byte SinglesAlbumsShow = 0;
-        private void ButtonSingles_Click(object sender, RoutedEventArgs e)
+        public void SortBySinglesAlbums()
         {
-            List<ModelMusicReleases> listSinglesOrAlbums = new List<ModelMusicReleases>();
+            List<Release> listSinglesOrAlbums = new List<Release>();
             if (SinglesAlbumsShow == 0)
             {
-                for (int i = 0; i < listMusicReleases.Count; i++)
+                for (int i = 0; i < listReleases.Count; i++)
                 {
-                    if (listMusicReleases[i].NameMusicReleasesAlbum.Contains("[Single]"))
+                    if (listReleases[i].Album.Contains("[Single]"))
                     {
-                        listSinglesOrAlbums.Add(listMusicReleases[i]);
+                        listSinglesOrAlbums.Add(listReleases[i]);
                     }
                 }
-                ListBoxMusicReleases.ItemsSource = listSinglesOrAlbums;
+                ListBoxReleases.ItemsSource = listSinglesOrAlbums;
                 SinglesAlbumsShow = 1;
-                ButtonSingles.Content = "Albums";
+                ButtonSinglesAlbums.Content = "Albums";
             }
             else if (SinglesAlbumsShow == 1)
             {
-                for (int i = 0; i < listMusicReleases.Count; i++)
+                for (int i = 0; i < listReleases.Count; i++)
                 {
-                    if (!listMusicReleases[i].NameMusicReleasesAlbum.Contains("[Single]"))
+                    if (!listReleases[i].Album.Contains("[Single]"))
                     {
-                        listSinglesOrAlbums.Add(listMusicReleases[i]);
+                        listSinglesOrAlbums.Add(listReleases[i]);
                     }
                 }
-                ListBoxMusicReleases.ItemsSource = listSinglesOrAlbums;
+                ListBoxReleases.ItemsSource = listSinglesOrAlbums;
                 SinglesAlbumsShow = 2;
-                ButtonSingles.Content = "All";
+                ButtonSinglesAlbums.Content = "All";
             }
             else
             {
                 FillListBoxMusicReleases();
                 SinglesAlbumsShow = 0;
+                ButtonSinglesAlbums.Content = "Singels";
             }
         }
+        public void CurrentSort()
+        {
+            FillListBoxMusicReleases();
+            SinglesAlbumsShow--;
+            SortBySinglesAlbums();
+        }
+        private void ButtonSinglesAlbums_Click(object sender, RoutedEventArgs e)
+        {
+            SortBySinglesAlbums();
+        }
+
         private void MenuItem_ClickEdit(object sender, RoutedEventArgs e)
         {
-            int selectedIndex = ListBoxMusicReleases.SelectedIndex;
+            int selectedIndex = ListBoxReleases.SelectedIndex;
             if (selectedIndex != -1)
             {
-                WindowsMusicReleasesEdit windowsMusicReleasesEdit = new WindowsMusicReleasesEdit(classWritingFile, this, selectedIndex);
+                Release releaseOld = ListBoxReleases.Items[selectedIndex] as Release;
+                WindowsMusicReleasesEdit windowsMusicReleasesEdit = new WindowsMusicReleasesEdit(classWritingFile, this, releaseOld);
                 windowsMusicReleasesEdit.ShowDialog();
             }
         }
+
         private void ListBoxMusicReleases_KeyDown_Clipboard(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
             {
-                int selectedIndex = ListBoxMusicReleases.SelectedIndex;
+                int selectedIndex = ListBoxReleases.SelectedIndex;
 
                 if (selectedIndex != -1)
                 {
-                    object data = ListBoxMusicReleases.Items[selectedIndex];
-                    ModelMusicReleases release = data as ModelMusicReleases;
-                    string fullName = $"{release.NameMusicReleasesGroup} - {release.NameMusicReleasesAlbum}";
+                    object data = ListBoxReleases.Items[selectedIndex];
+                    Release release = data as Release;
+                    string fullName = $"{release.Band} - {release.Album}";
                     if (fullName.Contains(" [Single]"))
                         fullName = fullName.Replace(" [Single]", "");
                     else if (fullName.Contains(" [EP]"))

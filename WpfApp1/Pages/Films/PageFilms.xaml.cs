@@ -14,10 +14,10 @@ namespace BFGM.Pages
         PageFilmsSerials pageFilmsSerials;
         PageFilmsCartoons pageFilmsCartoons;
 
-        ClassWritingFile classWritingFile;
-        ClassReadingFile classReadingFile;
+        ClassWriteFile classWritingFile;
+        ClassReadFile classReadingFile;
 
-        public PageFilms(ClassReadingFile classReadingFile, ClassWritingFile classWritingFile)
+        public PageFilms(ClassReadFile classReadingFile, ClassWriteFile classWritingFile)
         {
             InitializeComponent();
             this.classReadingFile = classReadingFile;
@@ -26,21 +26,23 @@ namespace BFGM.Pages
 
         #region Pages Films
         byte pageActivity;
-        private void Button_Click_FilmsFilms(object sender, RoutedEventArgs e)
+        private void ButtonFilms_Click(object sender, RoutedEventArgs e)
         {
             pageActivity = 1;
             //frameFilms.Content = new PageFilmsFilms();
             pageFilmsFilms = new PageFilmsFilms(classReadingFile);
             frameFilms.Content = pageFilmsFilms;
         }
-        private void Button_Click_FilmsSerials(object sender, RoutedEventArgs e)
+
+        private void ButtonSerials_Click(object sender, RoutedEventArgs e)
         {
             pageActivity = 2;
             //frameFilms.Content = new PageFilmsSerials();
             pageFilmsSerials = new PageFilmsSerials(classReadingFile);
             frameFilms.Content = pageFilmsSerials;
         }
-        private void Button_Click_FilmsCartoons(object sender, RoutedEventArgs e)
+
+        private void ButtonCartoons_Click(object sender, RoutedEventArgs e)
         {
             pageActivity = 3;
             //frameFilms.Content = new PageFilmsCartoons();
@@ -53,18 +55,18 @@ namespace BFGM.Pages
         {
             if (pageActivity == 1)
             {
-                WindowFilmsFilmAdd windowsFilmsFilmAdd = new WindowFilmsFilmAdd(classWritingFile, pageFilmsFilms);
-                windowsFilmsFilmAdd.ShowDialog();
+                WindowFilmsFilmAdd windowsFilmAdd = new WindowFilmsFilmAdd(classWritingFile, pageFilmsFilms);
+                windowsFilmAdd.ShowDialog();
             }
             else if (pageActivity == 2)
             {
-                WindowFilmsSerialAdd windowsFilmsSeriaAdd = new WindowFilmsSerialAdd(classWritingFile, pageFilmsSerials);
-                windowsFilmsSeriaAdd.ShowDialog();
+                WindowFilmsSerialAdd windowsSeriaAdd = new WindowFilmsSerialAdd(classWritingFile, pageFilmsSerials);
+                windowsSeriaAdd.ShowDialog();
             }
             else if (pageActivity == 3)
             {
-                WindowFilmsCartoonAdd windowFilmsCartoonAdd = new WindowFilmsCartoonAdd(classWritingFile, pageFilmsCartoons);
-                windowFilmsCartoonAdd.ShowDialog();
+                WindowFilmsCartoonAdd windowCartoonAdd = new WindowFilmsCartoonAdd(classWritingFile, pageFilmsCartoons);
+                windowCartoonAdd.ShowDialog();
             }
         }
 
@@ -72,38 +74,38 @@ namespace BFGM.Pages
         {
             if (pageActivity == 1)
             {
-                int selectedIndex = pageFilmsFilms.ListBoxFilmsFilms.SelectedIndex;
+                int selectedIndex = pageFilmsFilms.ListBoxFilms.SelectedIndex;
 
                 if (selectedIndex != -1)
                 {
-                    string selectedName = pageFilmsFilms.ListBoxFilmsFilms.Items[selectedIndex].ToString();
-                    classReadingFile.ClassMainInfo.DeleteFilmsFilms(selectedName);
-                    classWritingFile.RewritingFileAfterDeleteFilmsFilms();
-                    pageFilmsFilms.ListBoxFilmsFilms.Items.RemoveAt(selectedIndex);
+                    string selectedName = pageFilmsFilms.ListBoxFilms.Items[selectedIndex].ToString();
+                    classReadingFile.ClassMainInfo.DeleteFilm(selectedName);
+                    classWritingFile.RewriteFileAfterDeleteFilms();
+                    pageFilmsFilms.ListBoxFilms.Items.RemoveAt(selectedIndex);
                 }
             }
             if (pageActivity == 2)
             {
-                int selectedIndex = pageFilmsSerials.ListBoxFilmsSerials.SelectedIndex;
+                int selectedIndex = pageFilmsSerials.ListBoxSerials.SelectedIndex;
 
                 if (selectedIndex != -1)
                 {
-                    string selectedName = pageFilmsSerials.ListBoxFilmsSerials.Items[selectedIndex].ToString();
-                    classReadingFile.ClassMainInfo.DeleteFilmsSerials(selectedName);
-                    classWritingFile.RewritingFileAfterDeleteFilmsSerials();
-                    pageFilmsSerials.ListBoxFilmsSerials.Items.RemoveAt(selectedIndex);
+                    string selectedName = pageFilmsSerials.ListBoxSerials.Items[selectedIndex].ToString();
+                    classReadingFile.ClassMainInfo.DeleteSerial(selectedName);
+                    classWritingFile.RewriteFileAfterDeleteSerials();
+                    pageFilmsSerials.ListBoxSerials.Items.RemoveAt(selectedIndex);
                 }
             }
             if (pageActivity == 3)
             {
-                int selectedIndex = pageFilmsCartoons.ListBoxFilmsCartoons.SelectedIndex;
+                int selectedIndex = pageFilmsCartoons.ListBoxCartoons.SelectedIndex;
 
                 if (selectedIndex != -1)
                 {
-                    string selectedName = pageFilmsCartoons.ListBoxFilmsCartoons.Items[selectedIndex].ToString();
-                    classReadingFile.ClassMainInfo.DeleteFilmsCartoons(selectedName);
-                    classWritingFile.RewritingFileAfterDeleteFilmsCartoons();
-                    pageFilmsCartoons.ListBoxFilmsCartoons.Items.RemoveAt(selectedIndex);
+                    string selectedName = pageFilmsCartoons.ListBoxCartoons.Items[selectedIndex].ToString();
+                    classReadingFile.ClassMainInfo.DeleteCartoon(selectedName);
+                    classWritingFile.RewriteFileAfterDeleteCartoons();
+                    pageFilmsCartoons.ListBoxCartoons.Items.RemoveAt(selectedIndex);
                 }
             }
         }

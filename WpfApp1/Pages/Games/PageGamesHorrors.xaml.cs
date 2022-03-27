@@ -12,70 +12,70 @@ namespace BFGM.Pages.Games
     /// </summary>
     public partial class PageGamesHorrors : Page
     {
-        ClassReadingFile classReadingFile;
+        ClassReadFile classReadingFile;
 
-        public PageGamesHorrors(ClassReadingFile classReadingFile)
+        public PageGamesHorrors(ClassReadFile classReadingFile)
         {
             InitializeComponent();
             this.classReadingFile = classReadingFile;
         }
 
         static private bool isFirstTime = false;
-        private void ListBoxGamesHorrors_Loaded(object sender, RoutedEventArgs e)
+        private void ListBoxHorrors_Loaded(object sender, RoutedEventArgs e)
         {
             if (!isFirstTime)
             {
-                classReadingFile.ReadingFileGamesHorrors();
+                classReadingFile.ReadFileHorrors();
                 isFirstTime = true;
             }
-            FillListGamesHorrors();
+            FillListHorrors();
         }
 
-        bool isAscending = false;
-        private void ButtonAscendingHorrors_Click(object sender, RoutedEventArgs e)
+        bool isDescending = false;
+        private void ButtonSortHorrors_Click(object sender, RoutedEventArgs e)
         {
-            List<ModelGamesHorror> listGamesHorrors = classReadingFile.ClassMainInfo.ListGamesHorrors;
-            if (!isAscending)
+            List<Horror> listHorrors = classReadingFile.ClassMainInfo.ListHorrors;
+            if (!isDescending)
             {
-                ListBoxGamesHorrors.Items.Clear();
-                var sorted = listGamesHorrors.OrderBy(r => r.NameGamesHorror).ToList();
+                ListBoxHorrors.Items.Clear();
+                var sorted = listHorrors.OrderByDescending(r => r.Title).ToList();
                 for (int i = 0; i < sorted.Count; i++)
                 {
-                    ListBoxGamesHorrors.Items.Add(sorted[i].NameGamesHorror);
+                    ListBoxHorrors.Items.Add(sorted[i].Title);
                 }
-                isAscending = true;
+                isDescending = true;
             }
             else
             {
-                ListBoxGamesHorrors.Items.Clear();
-                var sorted = listGamesHorrors.OrderByDescending(r => r.NameGamesHorror).ToList();
+                ListBoxHorrors.Items.Clear();
+                var sorted = listHorrors.OrderBy(r => r.Title).ToList();
                 for (int i = 0; i < sorted.Count; i++)
                 {
-                    ListBoxGamesHorrors.Items.Add(sorted[i].NameGamesHorror);
+                    ListBoxHorrors.Items.Add(sorted[i].Title);
                 }
-                isAscending = false;
+                isDescending = false;
             }
         }
 
-        public void FillListGamesHorrors()
+        public void FillListHorrors()
         {
-            ListBoxGamesHorrors.Items.Clear();
-            List<ModelGamesHorror> listGamesHorrors = classReadingFile.ClassMainInfo.ListGamesHorrors.OrderByDescending(x => x.NameGamesHorror.Length).ToList();
-            for (int i = 0; i < listGamesHorrors.Count; i++)
+            ListBoxHorrors.Items.Clear();
+            List<Horror> listHorrors = classReadingFile.ClassMainInfo.ListHorrors.OrderBy(x => x.Title).ToList();
+            for (int i = 0; i < listHorrors.Count; i++)
             {
-                ListBoxGamesHorrors.Items.Add(listGamesHorrors[i].NameGamesHorror);
+                ListBoxHorrors.Items.Add(listHorrors[i].Title);
             }
         }
 
-        private void ListBoxGamesHorrors_KeyDown_Clipboard(object sender, KeyEventArgs e)
+        private void ListBoxHorrors_KeyDown_Clipboard(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
             {
-                int selectedIndex = ListBoxGamesHorrors.SelectedIndex;
+                int selectedIndex = ListBoxHorrors.SelectedIndex;
 
                 if (selectedIndex != -1)
                 {
-                    Clipboard.SetText(ListBoxGamesHorrors.Items[selectedIndex].ToString());
+                    Clipboard.SetText(ListBoxHorrors.Items[selectedIndex].ToString());
                 }
             }
         }

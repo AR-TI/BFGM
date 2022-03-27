@@ -12,49 +12,43 @@ namespace WpfApp1.Windows.Music
     /// </summary>
     public partial class WindowsMusicReleasesEdit : Window
     {
-        ClassWritingFile classWritingFile;
+        ClassWriteFile classWritingFile;
         PageMusicReleases pageMusicReleases;
-        readonly string oldGroup, oldAlbum, oldDate;
-        public WindowsMusicReleasesEdit(ClassWritingFile classWritingFile, PageMusicReleases pageMusicReleases, int selectedIndex)
+        readonly Release releaseOld;
+        public WindowsMusicReleasesEdit(ClassWriteFile classWritingFile, PageMusicReleases pageMusicReleases, Release releaseOld)
         {
             InitializeComponent();
             this.classWritingFile = classWritingFile;
             this.pageMusicReleases = pageMusicReleases;
+            this.releaseOld = releaseOld;
 
-            object data = pageMusicReleases.ListBoxMusicReleases.Items[selectedIndex];
-            ModelMusicReleases release = data as ModelMusicReleases;
+            TextBoxBand.Text = releaseOld.Band;
+            TextBoxAlbum.Text = releaseOld.Album;
+            TextBoxDate.Text = releaseOld.Date.ToString("d MMMM yyyy");
 
-            oldGroup = release.NameMusicReleasesGroup;
-            oldAlbum = release.NameMusicReleasesAlbum;
-            oldDate = release.NameMusicReleasesDate.ToString("d MMMM yyyy");
-
-            TextBoxMusicReleasesGroup.Text = oldGroup;
-            TextBoxMusicReleasesAlbum.Text = oldAlbum;
-            TextBoxMusicReleasesDate.Text = oldDate;
-
-            TextBoxMusicReleasesGroup.Focus();
+            TextBoxBand.Focus();
         }
 
-        private void EditRelease()
+        private async void EditRelease()
         {
-            string newGroup = TextBoxMusicReleasesGroup.Text;
-            string newAlbum = TextBoxMusicReleasesAlbum.Text;
-            string newDate = TextBoxMusicReleasesDate.Text;
-            if (newGroup.Length != 0 && newGroup.Length != 0 && newDate.Length != 0)
+            string newBand = TextBoxBand.Text;
+            string newAlbum = TextBoxAlbum.Text;
+            string newDate = TextBoxDate.Text;
+            if (newBand.Length != 0 && newAlbum.Length != 0 && newDate.Length != 0)
             {
                 if (!DateTime.TryParse(newDate, out DateTime newDateTime) || newDateTime.Year < DateTime.Now.Year)
                     MessageBox.Show("Wrong date!");
                 else
                 {
-                    classWritingFile.ClassMainInfo.EditMusicReleases(oldGroup, oldAlbum, DateTime.Parse(oldDate), newGroup, newAlbum, newDateTime);
-                    classWritingFile.RewritingFileAfterDeleteMusicReleases();
-                    pageMusicReleases.FillListBoxMusicReleases();
+                    classWritingFile.ClassMainInfo.EditRelease(releaseOld, new Release(newBand, newAlbum, newDateTime));
+                    await classWritingFile.RewriteFileAfterDeleteReleases();
+                    pageMusicReleases.CurrentSort();
                     Close();
                 }
             }
         }
 
-        private void ButtonMusicReleaseEditOK_Click(object sender, RoutedEventArgs e)
+        private void ButtonReleaseEditOK_Click(object sender, RoutedEventArgs e)
         {
             EditRelease();
         }

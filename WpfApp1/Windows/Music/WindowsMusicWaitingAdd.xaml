@@ -6,15 +6,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BFGM.Windows.Music"
         mc:Ignorable="d"
-        Title="Add of Waiting" Height="190" Width="450" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize"
-        fw:AcrylicWindow.Enabled="True" KeyDown="WindowWaitingAdd_KeyDown">
+        Title="Add Waiting" Height="190" Width="450" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize"
+        fw:AcrylicWindow.Enabled="True" KeyDown="WindowWaitAdd_KeyDown">
     <Grid fw:PointerTracker.Enabled="True" Background="#01FFFFFF">
-        <TextBox x:Name="TextBoxMusicWaiting" HorizontalAlignment="Right" Margin="0,45,50,0" VerticalAlignment="Top" Width="270" Height="26"
+        <TextBox x:Name="TextBoxWait" HorizontalAlignment="Right" Margin="0,45,50,0" VerticalAlignment="Top" Width="270" Height="26"
                  Background="Transparent" Style="{StaticResource TextBoxRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Padding="5,2,5,5"/>
 
         <Label Content="Name" HorizontalAlignment="Left" Margin="55,45,0,0" VerticalAlignment="Top" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"/>
 
         <Button x:Name="ButtonMusicWaitingAddOK" Content="OK" Margin="10,115,0,10" Width="424" HorizontalAlignment="Left"
-            Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Height="36" Click="ButtonMusicWaitingAddOK_Click"/>
+            Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Height="36" Click="ButtonWaitAddOK_Click"/>
     </Grid>
 </Window>

@@ -9,37 +9,37 @@ namespace BFGM.Windows.Music
     /// </summary>
     public partial class WindowsMusicWaitingAdd : Window
     {
-        ClassWritingFile classWritingFile;
-        PageMusicWaiting pageMusicWaiting;
+        ClassWriteFile classWritingFile;
+        PageMusicWait pageMusicWaiting;
 
-        public WindowsMusicWaitingAdd(ClassWritingFile classWritingFile, PageMusicWaiting pageMusicWaiting)
+        public WindowsMusicWaitingAdd(ClassWriteFile classWritingFile, PageMusicWait pageMusicWaiting)
         {
             InitializeComponent();
             this.classWritingFile = classWritingFile;
             this.pageMusicWaiting = pageMusicWaiting;
-            TextBoxMusicWaiting.Focus();
+            TextBoxWait.Focus();
         }
 
-        private void ButtonMusicWaitingAddOK_Click(object sender, RoutedEventArgs e)
+        private void ButtonWaitAddOK_Click(object sender, RoutedEventArgs e)
         {
-            AddWaiting();
+            AddWait();
         }
 
-        private void WindowWaitingAdd_KeyDown(object sender, KeyEventArgs e)
+        private void WindowWaitAdd_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                AddWaiting();
+                AddWait();
             }
         }
 
-        private void AddWaiting()
+        private void AddWait()
         {
-            string nameMusicWaiting = TextBoxMusicWaiting.Text;
-            if (nameMusicWaiting.Length != 0)
+            string band = TextBoxWait.Text;
+            if (band.Length != 0)
             {
-                classWritingFile.WritingFileMusicWaiting(nameMusicWaiting);
-                pageMusicWaiting.FillListMusicWaiting();
+                classWritingFile.WriteFileWait(band);
+                pageMusicWaiting.FillListWait();
                 Close();
             }
         }

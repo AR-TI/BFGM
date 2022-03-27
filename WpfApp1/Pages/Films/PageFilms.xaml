@@ -5,35 +5,37 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:BFGM.Pages"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="PageFilms" Width="778" Height="515"
+      mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+      Title="PageFilms"
       fw:AcrylicWindow.Enabled="True">
 
     <Grid fw:PointerTracker.Enabled="True" Background="#01FFFFFF">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="460"/>
+            <RowDefinition Height="10*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="0" Grid.Row="0">
-            <Frame x:Name="frameFilms"/>
-        </StackPanel>
+        <Grid Grid.Row="1" Margin="0,0,10,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
-            <Button Content="Films" Margin="0,3,0,0" Width="156" Height="40" HorizontalAlignment="Left" Click="Button_Click_FilmsFilms"
-                    Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"/>
-            <Button Content="Serials" Margin="0,3,0,0" Width="156" Height="40" HorizontalAlignment="Left" Click="Button_Click_FilmsSerials"
-                    Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"/>
-            <Button Content="Cartoons" Margin="0,3,0,0" Width="156" Height="40" HorizontalAlignment="Left" Click="Button_Click_FilmsCartoons"
-                    Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"/>
-            <Button x:Name="ButtonFilmsAdd" Content="Add" Margin="0,3,0,0" Width="155" Height="40" HorizontalAlignment="Left"
+            <Button x:Name="ButtonFilmsFilms" Grid.Column="0" Content="Films" MaxHeight="45"
+                    Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Click="ButtonFilms_Click"/>
+            <Button x:Name="ButtonFilmsSerials" Grid.Column="1" Content="Serials" MaxHeight="45"
+                    Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Click="ButtonSerials_Click"/>
+            <Button x:Name="ButtonFilmsCartoons" Grid.Column="2" Content="Cartoons" MaxHeight="45"
+                    Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Click="ButtonCartoons_Click"/>
+            <Button Grid.Column="3" x:Name="ButtonFilmsAdd" Content="Add" MaxHeight="45"
                     Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Click="ButtonFilmsAdd_Click"/>
-            <Button x:Name="ButtonFilmsDelete" Content="Delete" Margin="0,3,0,0" Width="155" Height="40" HorizontalAlignment="Left"
+            <Button Grid.Column="4" x:Name="ButtonFilmsDelete" Content="Delete" MaxHeight="45"
                     Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Click="ButtonFilmsDelete_Click"/>
-        </StackPanel>
+        </Grid>
+
+        <Frame Grid.Row="0" x:Name="frameFilms"/>
     </Grid>
 </Page>

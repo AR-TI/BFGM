@@ -7,20 +7,20 @@ namespace BFGM.Windows.Games
     /// <summary>
     /// Логика взаимодействия для WindowsGamesPlatformerAdd.xaml
     /// </summary>
-    public partial class WindowsGamesPlatformerAdd : Window
+    public partial class WindowsPlatformerAdd : Window
     {
-        ClassWritingFile classWritingFile;
+        ClassWriteFile classWritingFile;
         PageGamesPlatformers pageGamesPlatformers;
 
-        public WindowsGamesPlatformerAdd(ClassWritingFile classWritingFile, PageGamesPlatformers pageGamesPlatformers)
+        public WindowsPlatformerAdd(ClassWriteFile classWritingFile, PageGamesPlatformers pageGamesPlatformers)
         {
             InitializeComponent();
             this.classWritingFile = classWritingFile;
             this.pageGamesPlatformers = pageGamesPlatformers;
-            TextBoxGamesPlatformer.Focus();
+            TextBoxPlatformer.Focus();
         }
 
-        private void ButtonGamesPlatformerAddOK_Click(object sender, RoutedEventArgs e)
+        private void ButtonPlatformerAddOK_Click(object sender, RoutedEventArgs e)
         {
             AddPlatformer();
         }
@@ -35,11 +35,11 @@ namespace BFGM.Windows.Games
 
         private void AddPlatformer()
         {
-            string nameGamesPlatformer = TextBoxGamesPlatformer.Text;
-            if (nameGamesPlatformer.Length != 0)
+            string title = TextBoxPlatformer.Text;
+            if (title.Length != 0)
             {
-                classWritingFile.WritingFileGamesPlatformers(nameGamesPlatformer);
-                pageGamesPlatformers.FillListGamesPlatformers();
+                classWritingFile.WriteFilePlatformers(title);
+                pageGamesPlatformers.FillListPlatformers();
                 Close();
             }
         }

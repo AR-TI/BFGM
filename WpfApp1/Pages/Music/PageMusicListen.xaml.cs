@@ -12,70 +12,70 @@ namespace BFGM.Pages.Music
     /// </summary>
     public partial class PageMusicListen : Page
     {
-        ClassReadingFile classReadingFile;
+        ClassReadFile classReadingFile;
 
-        public PageMusicListen(ClassReadingFile classReadingFile)
+        public PageMusicListen(ClassReadFile classReadingFile)
         {
             InitializeComponent();
             this.classReadingFile = classReadingFile;
         }
 
         static private bool isFirstTime = false;
-        private void ListBoxMusicListen_Loaded(object sender, RoutedEventArgs e)
+        private void ListBoxListen_Loaded(object sender, RoutedEventArgs e)
         {
             if (!isFirstTime)
             {
-                classReadingFile.ReadingFileMusicListen();
+                classReadingFile.ReadFileListen();
                 isFirstTime = true;
             }
-            FillListMusicListen();
+            FillListListen();
         }
 
-        bool isAscending = false;
-        private void ButtonAscendingListen_Click(object sender, RoutedEventArgs e)
+        bool isDescending = false;
+        private void ButtonSortListen_Click(object sender, RoutedEventArgs e)
         {
-            List<ModelMusicListen> listMusicListen = classReadingFile.ClassMainInfo.ListMusicListen;
-            if (!isAscending)
+            List<Listen> listListen = classReadingFile.ClassMainInfo.ListListen;
+            if (!isDescending)
             {
-                ListBoxMusicListen.Items.Clear();
-                var sorted = listMusicListen.OrderBy(r => r.NameMusicListen).ToList();
+                ListBoxListen.Items.Clear();
+                List<Listen> sorted = listListen.OrderByDescending(r => r.Band).ToList();
                 for (int i = 0; i < sorted.Count; i++)
                 {
-                    ListBoxMusicListen.Items.Add(sorted[i].NameMusicListen);
+                    ListBoxListen.Items.Add(sorted[i].Band);
                 }
-                isAscending = true;
+                isDescending = true;
             }
             else
             {
-                ListBoxMusicListen.Items.Clear();
-                var sorted = listMusicListen.OrderByDescending(r => r.NameMusicListen).ToList();
+                ListBoxListen.Items.Clear();
+                List<Listen> sorted = listListen.OrderBy(r => r.Band).ToList();
                 for (int i = 0; i < sorted.Count; i++)
                 {
-                    ListBoxMusicListen.Items.Add(sorted[i].NameMusicListen);
+                    ListBoxListen.Items.Add(sorted[i].Band);
                 }
-                isAscending = false;
+                isDescending = false;
             }
         }
 
-        public void FillListMusicListen()
+        public void FillListListen()
         {
-            ListBoxMusicListen.Items.Clear();
-            List<ModelMusicListen> listMusicListen = classReadingFile.ClassMainInfo.ListMusicListen.OrderByDescending(x => x.NameMusicListen.Length).ToList();
+            ListBoxListen.Items.Clear();
+            List<Listen> listMusicListen = classReadingFile.ClassMainInfo.ListListen.OrderBy(x => x.Band).ToList();
             for (int i = 0; i < listMusicListen.Count; i++)
             {
-                ListBoxMusicListen.Items.Add(listMusicListen[i].NameMusicListen);
+                ListBoxListen.Items.Add(listMusicListen[i].Band);
             }
         }
 
-        private void ListBoxMusicListen_KeyDown_Clipboard(object sender, KeyEventArgs e)
+        private void ListBoxListen_KeyDown_Clipboard(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
             {
-                int selectedIndex = ListBoxMusicListen.SelectedIndex;
+                int selectedIndex = ListBoxListen.SelectedIndex;
 
                 if (selectedIndex != -1)
                 {
-                    Clipboard.SetText(ListBoxMusicListen.Items[selectedIndex].ToString());
+                    Clipboard.SetText(ListBoxListen.Items[selectedIndex].ToString());
                 }
             }
         }

@@ -9,23 +9,23 @@ namespace BFGM.Windows.Music
     /// </summary>
     public partial class WindowsMusicListenAdd : Window
     {
-        ClassWritingFile classWritingFile;
+        ClassWriteFile classWritingFile;
         PageMusicListen pageMusicListen;
 
-        public WindowsMusicListenAdd(ClassWritingFile classWritingFile, PageMusicListen pageMusicListen)
+        public WindowsMusicListenAdd(ClassWriteFile classWritingFile, PageMusicListen pageMusicListen)
         {
             InitializeComponent();
             this.classWritingFile = classWritingFile;
             this.pageMusicListen = pageMusicListen;
-            TextBoxMusicListen.Focus();
+            TextBoxListen.Focus();
         }
 
-        private void ButtonMusicListenAddOK_Click(object sender, RoutedEventArgs e)
+        private void ButtonListenAddOK_Click(object sender, RoutedEventArgs e)
         {
             AddListen();
         }
 
-        private void WindowMusicAdd_KeyDown(object sender, KeyEventArgs e)
+        private void WindowListenAdd_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
@@ -35,11 +35,11 @@ namespace BFGM.Windows.Music
 
         private void AddListen()
         {
-            string nameMusicListen = TextBoxMusicListen.Text;
-            if (nameMusicListen.Length != 0)
+            string band = TextBoxListen.Text;
+            if (band.Length != 0)
             {
-                classWritingFile.WritingFileMusicListen(nameMusicListen);
-                pageMusicListen.FillListMusicListen();
+                classWritingFile.WriteFileListen(band);
+                pageMusicListen.FillListListen();
                 Close();
             }
         }

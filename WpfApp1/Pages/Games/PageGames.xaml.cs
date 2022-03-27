@@ -16,10 +16,10 @@ namespace BFGM.Pages
         PageGamesHorrors pageGamesHorrors;
         PageGamesPlatformers pageGamesPlatformers;
 
-        ClassWritingFile classWritingFile;
-        ClassReadingFile classReadingFile;
+        ClassWriteFile classWritingFile;
+        ClassReadFile classReadingFile;
 
-        public PageGames(ClassReadingFile classReadingFile, ClassWritingFile classWritingFile)
+        public PageGames(ClassReadFile classReadingFile, ClassWriteFile classWritingFile)
         {
             InitializeComponent();
             this.classReadingFile = classReadingFile;
@@ -27,21 +27,21 @@ namespace BFGM.Pages
         }
 
         #region Pages Games
-        private void Button_Click_GamesPlayStation(object sender, RoutedEventArgs e)
+        private void ButtonPlayStation_Click(object sender, RoutedEventArgs e)
         {
             pageActivity = 1;
             //frameGames.Content = new PageGamesPlayStation();
             pageGamesPlayStation = new PageGamesPlayStation(classReadingFile);
             frameGames.Content = pageGamesPlayStation;
         }
-        private void Button_Click_GamesHorrors(object sender, RoutedEventArgs e)
+        private void ButtonHorrors_Click(object sender, RoutedEventArgs e)
         {
             pageActivity = 2;
             //frameGames.Content = new PageGamesHorrors();
             pageGamesHorrors = new PageGamesHorrors(classReadingFile);
             frameGames.Content = pageGamesHorrors;
         }
-        private void Button_Click_GamesPlatformers(object sender, RoutedEventArgs e)
+        private void ButtonPlatformers_Click(object sender, RoutedEventArgs e)
         {
             pageActivity = 3;
             //frameGames.Content = new PageGamesPlatformers();
@@ -54,18 +54,18 @@ namespace BFGM.Pages
         {
             if (pageActivity == 1)
             {
-                WindowsGamesPlayStationAdd windowsGamesPlayStationAdd = new WindowsGamesPlayStationAdd(classWritingFile, pageGamesPlayStation);
-                windowsGamesPlayStationAdd.ShowDialog();
+                WindowsPlayStationAdd windowsPlayStationAdd = new WindowsPlayStationAdd(classWritingFile, pageGamesPlayStation);
+                windowsPlayStationAdd.ShowDialog();
             }
             else if (pageActivity == 2)
             {
-                WindowsGamesHorrorAdd windowsGamesHorrorAdd = new WindowsGamesHorrorAdd(classWritingFile, pageGamesHorrors);
-                windowsGamesHorrorAdd.ShowDialog();
+                WindowsHorrorAdd windowsHorrorAdd = new WindowsHorrorAdd(classWritingFile, pageGamesHorrors);
+                windowsHorrorAdd.ShowDialog();
             }
             else if (pageActivity == 3)
             {
-                WindowsGamesPlatformerAdd windowsGamesPlatformerAdd = new WindowsGamesPlatformerAdd(classWritingFile, pageGamesPlatformers);
-                windowsGamesPlatformerAdd.ShowDialog();
+                WindowsPlatformerAdd windowsPlatformerAdd = new WindowsPlatformerAdd(classWritingFile, pageGamesPlatformers);
+                windowsPlatformerAdd.ShowDialog();
             }
         }
 
@@ -73,38 +73,38 @@ namespace BFGM.Pages
         {
             if (pageActivity == 1)
             {
-                int selectedIndex = pageGamesPlayStation.ListBoxGamesPlayStation.SelectedIndex;
+                int selectedIndex = pageGamesPlayStation.ListBoxPlayStation.SelectedIndex;
 
                 if (selectedIndex != -1)
                 {
-                    string selectedName = pageGamesPlayStation.ListBoxGamesPlayStation.Items[selectedIndex].ToString();
-                    classReadingFile.ClassMainInfo.DeleteGamesPlayStation(selectedName);
-                    classWritingFile.RewritingFileAfterDeleteGamesPlayStation();
-                    pageGamesPlayStation.ListBoxGamesPlayStation.Items.RemoveAt(selectedIndex);
+                    string selectedName = pageGamesPlayStation.ListBoxPlayStation.Items[selectedIndex].ToString();
+                    classReadingFile.ClassMainInfo.DeletePlayStation(selectedName);
+                    classWritingFile.RewriteFileAfterDeletePlayStation();
+                    pageGamesPlayStation.ListBoxPlayStation.Items.RemoveAt(selectedIndex);
                 }
             }
             if (pageActivity == 2)
             {
-                int selectedIndex = pageGamesHorrors.ListBoxGamesHorrors.SelectedIndex;
+                int selectedIndex = pageGamesHorrors.ListBoxHorrors.SelectedIndex;
 
                 if (selectedIndex != -1)
                 {
-                    string selectedName = pageGamesHorrors.ListBoxGamesHorrors.Items[selectedIndex].ToString();
-                    classReadingFile.ClassMainInfo.DeleteGamesHorrors(selectedName);
-                    classWritingFile.RewritingFileAfterDeleteGamesHorrors();
-                    pageGamesHorrors.ListBoxGamesHorrors.Items.RemoveAt(selectedIndex);
+                    string selectedName = pageGamesHorrors.ListBoxHorrors.Items[selectedIndex].ToString();
+                    classReadingFile.ClassMainInfo.DeleteHorrors(selectedName);
+                    classWritingFile.RewriteFileAfterDeleteHorrors();
+                    pageGamesHorrors.ListBoxHorrors.Items.RemoveAt(selectedIndex);
                 }
             }
             if (pageActivity == 3)
             {
-                int selectedIndex = pageGamesPlatformers.ListBoxGamesPlatformers.SelectedIndex;
+                int selectedIndex = pageGamesPlatformers.ListBoxPlatformers.SelectedIndex;
 
                 if (selectedIndex != -1)
                 {
-                    string selectedName = pageGamesPlatformers.ListBoxGamesPlatformers.Items[selectedIndex].ToString();
-                    classReadingFile.ClassMainInfo.DeleteGamesPlatformers(selectedName);
-                    classWritingFile.RewritingFileAfterDeleteGamesPlatformers();
-                    pageGamesPlatformers.ListBoxGamesPlatformers.Items.RemoveAt(selectedIndex);
+                    string selectedName = pageGamesPlatformers.ListBoxPlatformers.Items[selectedIndex].ToString();
+                    classReadingFile.ClassMainInfo.DeletePlatformers(selectedName);
+                    classWritingFile.RewriteFileAfterDeletePlatformers();
+                    pageGamesPlatformers.ListBoxPlatformers.Items.RemoveAt(selectedIndex);
                 }
             }
         }

@@ -9,15 +9,16 @@ namespace BFGM
     /// </summary>
     public partial class MainWindow : Window
     {
-        ClassReadingFile classReadingFile;
-        ClassWritingFile classWritingFile;
+        ClassReadFile classReadingFile;
+        ClassWriteFile classWritingFile;
 
         public MainWindow()
         {
             InitializeComponent();
             ClassMain classMain = new ClassMain();
-            classReadingFile = new ClassReadingFile(classMain);
-            classWritingFile = new ClassWritingFile(classMain);
+            classReadingFile = new ClassReadFile(classMain);
+            classWritingFile = new ClassWriteFile(classMain);
+            classMain.CheckDirectoryAndFilesExist();
         }
 
         private void Button_Click_Home(object sender, RoutedEventArgs e)

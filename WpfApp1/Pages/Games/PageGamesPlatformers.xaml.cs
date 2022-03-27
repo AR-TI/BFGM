@@ -12,70 +12,70 @@ namespace BFGM.Pages.Games
     /// </summary>
     public partial class PageGamesPlatformers : Page
     {
-        ClassReadingFile classReadingFile;
+        ClassReadFile classReadingFile;
 
-        public PageGamesPlatformers(ClassReadingFile classReadingFile)
+        public PageGamesPlatformers(ClassReadFile classReadingFile)
         {
             InitializeComponent();
             this.classReadingFile = classReadingFile;
         }
 
         static private bool isFirstTime = false;
-        private void ListBoxGamesPlatformers_Loaded(object sender, RoutedEventArgs e)
+        private void ListBoxPlatformers_Loaded(object sender, RoutedEventArgs e)
         {
             if (!isFirstTime)
             {
-                classReadingFile.ReadingFileGamesPlatformers();
+                classReadingFile.ReadFilePlatformers();
                 isFirstTime = true;
             }
-            FillListGamesPlatformers();
+            FillListPlatformers();
         }
 
-        bool isAscending = false;
-        private void ButtonAscendingPlatformers_Click(object sender, RoutedEventArgs e)
+        bool isDescending = false;
+        private void ButtonSortPlatformers_Click(object sender, RoutedEventArgs e)
         {
-            List<ModelGamesPlatformer> listGamesPlatformers = classReadingFile.ClassMainInfo.ListGamesPlatformers;
-            if (!isAscending)
+            List<Platformer> listPlatformers = classReadingFile.ClassMainInfo.ListPlatformers;
+            if (!isDescending)
             {
-                ListBoxGamesPlatformers.Items.Clear();
-                var sorted = listGamesPlatformers.OrderBy(r => r.NameGamesPlatformer).ToList();
+                ListBoxPlatformers.Items.Clear();
+                var sorted = listPlatformers.OrderByDescending(r => r.Title).ToList();
                 for (int i = 0; i < sorted.Count; i++)
                 {
-                    ListBoxGamesPlatformers.Items.Add(sorted[i].NameGamesPlatformer);
+                    ListBoxPlatformers.Items.Add(sorted[i].Title);
                 }
-                isAscending = true;
+                isDescending = true;
             }
             else
             {
-                ListBoxGamesPlatformers.Items.Clear();
-                var sorted = listGamesPlatformers.OrderByDescending(r => r.NameGamesPlatformer).ToList();
+                ListBoxPlatformers.Items.Clear();
+                var sorted = listPlatformers.OrderBy(r => r.Title).ToList();
                 for (int i = 0; i < sorted.Count; i++)
                 {
-                    ListBoxGamesPlatformers.Items.Add(sorted[i].NameGamesPlatformer);
+                    ListBoxPlatformers.Items.Add(sorted[i].Title);
                 }
-                isAscending = false;
+                isDescending = false;
             }
         }
 
-        public void FillListGamesPlatformers()
+        public void FillListPlatformers()
         {
-            ListBoxGamesPlatformers.Items.Clear();
-            List<ModelGamesPlatformer> listGamesPlatformers = classReadingFile.ClassMainInfo.ListGamesPlatformers.OrderByDescending(x => x.NameGamesPlatformer.Length).ToList();
-            for (int i = 0; i < listGamesPlatformers.Count; i++)
+            ListBoxPlatformers.Items.Clear();
+            List<Platformer> listPlatformers = classReadingFile.ClassMainInfo.ListPlatformers.OrderBy(x => x.Title).ToList();
+            for (int i = 0; i < listPlatformers.Count; i++)
             {
-                ListBoxGamesPlatformers.Items.Add(listGamesPlatformers[i].NameGamesPlatformer);
+                ListBoxPlatformers.Items.Add(listPlatformers[i].Title);
             }
         }
 
-        private void ListBoxGamesPlatformers_KeyDown_Clipboard(object sender, KeyEventArgs e)
+        private void ListBoxPlatformers_KeyDown_Clipboard(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
             {
-                int selectedIndex = ListBoxGamesPlatformers.SelectedIndex;
+                int selectedIndex = ListBoxPlatformers.SelectedIndex;
 
                 if (selectedIndex != -1)
                 {
-                    Clipboard.SetText(ListBoxGamesPlatformers.Items[selectedIndex].ToString());
+                    Clipboard.SetText(ListBoxPlatformers.Items[selectedIndex].ToString());
                 }
             }
         }

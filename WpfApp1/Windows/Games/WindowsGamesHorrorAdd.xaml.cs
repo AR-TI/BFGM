@@ -7,20 +7,20 @@ namespace BFGM.Windows.Games
     /// <summary>
     /// Логика взаимодействия для WindowsGamesHorrorAdd.xaml
     /// </summary>
-    public partial class WindowsGamesHorrorAdd : Window
+    public partial class WindowsHorrorAdd : Window
     {
-        ClassWritingFile classWritingFile;
+        ClassWriteFile classWritingFile;
         PageGamesHorrors pageGamesHorrors;
 
-        public WindowsGamesHorrorAdd(ClassWritingFile classWritingFile, PageGamesHorrors pageGamesHorrors)
+        public WindowsHorrorAdd(ClassWriteFile classWritingFile, PageGamesHorrors pageGamesHorrors)
         {
             InitializeComponent();
             this.classWritingFile = classWritingFile;
             this.pageGamesHorrors = pageGamesHorrors;
-            TextBoxGamesHorror.Focus();
+            TextBoxHorror.Focus();
         }
 
-        private void ButtonGamesHorrorAddOK_Click(object sender, RoutedEventArgs e)
+        private void ButtonHorrorAddOK_Click(object sender, RoutedEventArgs e)
         {
             AddHorror();
         }
@@ -35,11 +35,11 @@ namespace BFGM.Windows.Games
 
         private void AddHorror()
         {
-            string nameGamesHorror = TextBoxGamesHorror.Text;
-            if (nameGamesHorror.Length != 0)
+            string title = TextBoxHorror.Text;
+            if (title.Length != 0)
             {
-                classWritingFile.WritingFileGamesHorrors(nameGamesHorror);
-                pageGamesHorrors.FillListGamesHorrors();
+                classWritingFile.WriteFileHorrors(title);
+                pageGamesHorrors.FillListHorrors();
                 Close();
             }
         }

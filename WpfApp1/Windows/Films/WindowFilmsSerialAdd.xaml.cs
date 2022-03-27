@@ -9,18 +9,18 @@ namespace BFGM.Windows.Films
     /// </summary>
     public partial class WindowFilmsSerialAdd : Window
     {
-        ClassWritingFile classWritingFile;
+        ClassWriteFile classWritingFile;
         PageFilmsSerials pageFilmsSerials;
 
-        public WindowFilmsSerialAdd(ClassWritingFile classWritingFile, PageFilmsSerials pageFilmsSerials)
+        public WindowFilmsSerialAdd(ClassWriteFile classWritingFile, PageFilmsSerials pageFilmsSerials)
         {
             InitializeComponent();
             this.classWritingFile = classWritingFile;
             this.pageFilmsSerials = pageFilmsSerials;
-            TextBoxFilmsSerial.Focus();
+            TextBoxSerial.Focus();
         }
 
-        private void ButtonFilmsSerialAddOK_Click(object sender, RoutedEventArgs e)
+        private void ButtonSerialAddOK_Click(object sender, RoutedEventArgs e)
         {
             AddSerial();
         }
@@ -35,11 +35,11 @@ namespace BFGM.Windows.Films
 
         private void AddSerial()
         {
-            string nameFilmsSerial = TextBoxFilmsSerial.Text;
-            if (nameFilmsSerial.Length != 0)
+            string title = TextBoxSerial.Text;
+            if (title.Length != 0)
             {
-                classWritingFile.WritingFileFilmsSerials(nameFilmsSerial);
-                pageFilmsSerials.FillListFilmsSerials();
+                classWritingFile.WriteFileSerials(title);
+                pageFilmsSerials.FillListSerials();
                 Close();
             }
         }

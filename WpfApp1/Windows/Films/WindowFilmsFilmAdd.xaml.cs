@@ -9,18 +9,18 @@ namespace BFGM.Windows.Films
     /// </summary>
     public partial class WindowFilmsFilmAdd : Window
     {
-        ClassWritingFile classWritingFile;
+        ClassWriteFile classWritingFile;
         PageFilmsFilms pageFilmsFilms;
 
-        public WindowFilmsFilmAdd(ClassWritingFile classWritingFile, PageFilmsFilms pageFilmsFilms)
+        public WindowFilmsFilmAdd(ClassWriteFile classWritingFile, PageFilmsFilms pageFilmsFilms)
         {
             InitializeComponent();
             this.classWritingFile = classWritingFile;
             this.pageFilmsFilms = pageFilmsFilms;
-            TextBoxFilmsFilm.Focus();
+            TextBoxFilm.Focus();
         }
 
-        private void ButtonFilmsFilmAddOK_Click(object sender, RoutedEventArgs e)
+        private void ButtonFilmAddOK_Click(object sender, RoutedEventArgs e)
         {
             AddFilm();
         }
@@ -35,11 +35,11 @@ namespace BFGM.Windows.Films
 
         private void AddFilm()
         {
-            string nameFilmsFilm = TextBoxFilmsFilm.Text;
-            if (nameFilmsFilm.Length != 0)
+            string title = TextBoxFilm.Text;
+            if (title.Length != 0)
             {
-                classWritingFile.WritingFileFilmsFilms(nameFilmsFilm);
-                pageFilmsFilms.FillListFilmsFilms();
+                classWritingFile.WriteFileFilms(title);
+                pageFilmsFilms.FillListFilms();
                 Close();
             }
         }

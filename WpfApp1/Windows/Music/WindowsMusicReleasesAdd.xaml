@@ -6,13 +6,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BFGM.Windows.Music"
         mc:Ignorable="d"
-        Title="Add Of Release" Height="262.667" Width="450" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" fw:AcrylicWindow.Enabled="True">
+        Title="Add Release" Height="262.667" Width="450" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" fw:AcrylicWindow.Enabled="True">
     <Grid fw:PointerTracker.Enabled="True" Background="#01FFFFFF" KeyDown="WindowReleaseAdd_KeyDown">
-        <TextBox x:Name="TextBoxMusicReleasesGroup" HorizontalAlignment="Right" Margin="0,45,50,0" VerticalAlignment="Top" Width="270" Height="26" AcceptsReturn="True"
+        <TextBox x:Name="TextBoxBand" HorizontalAlignment="Right" Margin="0,45,50,0" VerticalAlignment="Top" Width="270" Height="26" AcceptsReturn="True"
                  Background="Transparent" Style="{StaticResource TextBoxRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Padding="5,2,5,5"/>
-        <TextBox x:Name="TextBoxMusicReleasesAlbum" HorizontalAlignment="Right" Margin="0,92,50,0" VerticalAlignment="Top" Width="270" Height="26"
+        <TextBox x:Name="TextBoxAlbum" HorizontalAlignment="Right" Margin="0,92,50,0" VerticalAlignment="Top" Width="270" Height="26"
                  Background="Transparent" Style="{StaticResource TextBoxRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Padding="5,2,5,5"/>
-        <TextBox x:Name="TextBoxMusicReleasesDate" HorizontalAlignment="Right" Margin="0,135,50,0" VerticalAlignment="Top" Width="270" Height="26"
+        <TextBox x:Name="TextBoxDate" HorizontalAlignment="Right" Margin="0,135,50,0" VerticalAlignment="Top" Width="270" Height="26"
                  Background="Transparent" Style="{StaticResource TextBoxRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Padding="5,2,5,5"/>
 
         <Label Content="Group" HorizontalAlignment="Left" Margin="55,45,0,0" VerticalAlignment="Top" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"/>
@@ -20,6 +20,6 @@
         <Label Content="Date" HorizontalAlignment="Left" Margin="55,131,0,0" VerticalAlignment="Top" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"/>
 
         <Button x:Name="ButtonMusicReleaseAddOK" Content="OK" Margin="10,188,0,10" Width="424" HorizontalAlignment="Left"
-            Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Height="36" Click="ButtonMusicReleaseAddOK_Click"/>
+            Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Height="36" Click="ButtonReleaseAddOK_Click"/>
     </Grid>
 </Window>

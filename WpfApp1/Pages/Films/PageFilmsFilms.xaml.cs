@@ -12,70 +12,70 @@ namespace BFGM.Pages.Films
     /// </summary>
     public partial class PageFilmsFilms : Page
     {
-        ClassReadingFile classReadingFile;
+        ClassReadFile classReadingFile;
 
-        public PageFilmsFilms(ClassReadingFile classReadingFile)
+        public PageFilmsFilms(ClassReadFile classReadingFile)
         {
             InitializeComponent();
             this.classReadingFile = classReadingFile;
         }
 
         static private bool isFirstTime = false;
-        private void ListBoxFilmsFilms_Loaded(object sender, RoutedEventArgs e)
+        private void ListBoxFilms_Loaded(object sender, RoutedEventArgs e)
         {
             if (!isFirstTime)
             {
-                classReadingFile.ReadingFileFilmsFilms();
+                classReadingFile.ReadFileFilms();
                 isFirstTime = true;
             }
-            FillListFilmsFilms();
+            FillListFilms();
         }
 
-        bool isAscending = false;
-        private void ButtonAscendingFilms_Click(object sender, RoutedEventArgs e)
+        public void FillListFilms()
         {
-            List<ModelFilmsFilms> listFilmsFilms = classReadingFile.ClassMainInfo.ListFilmsFilms;
-            if (!isAscending)
+            ListBoxFilms.Items.Clear();
+            List<Film> listFilms = classReadingFile.ClassMainInfo.ListFilms.OrderBy(x => x.Title).ToList();
+            for (int i = 0; i < listFilms.Count; i++)
             {
-                ListBoxFilmsFilms.Items.Clear();
-                var sorted = listFilmsFilms.OrderBy(x => x.NameFilmsFilm).ToList();
+                ListBoxFilms.Items.Add(listFilms[i].Title);
+            }
+        }
+
+        bool isDescending = false;
+        private void ButtonSortFilms_Click(object sender, RoutedEventArgs e)
+        {
+            List<Film> listFilms = classReadingFile.ClassMainInfo.ListFilms;
+            if (!isDescending)
+            {
+                ListBoxFilms.Items.Clear();
+                List<Film> sorted = listFilms.OrderByDescending(x => x.Title).ToList();
                 for (int i = 0; i < sorted.Count; i++)
                 {
-                    ListBoxFilmsFilms.Items.Add(sorted[i].NameFilmsFilm);
+                    ListBoxFilms.Items.Add(sorted[i].Title);
                 }
-                isAscending = true;
+                isDescending = true;
             }
             else
             {
-                ListBoxFilmsFilms.Items.Clear();
-                var sorted = listFilmsFilms.OrderByDescending(x => x.NameFilmsFilm).ToList();
+                ListBoxFilms.Items.Clear();
+                List<Film> sorted = listFilms.OrderBy(x => x.Title).ToList();
                 for (int i = 0; i < sorted.Count; i++)
                 {
-                    ListBoxFilmsFilms.Items.Add(sorted[i].NameFilmsFilm);
+                    ListBoxFilms.Items.Add(sorted[i].Title);
                 }
-                isAscending = false;
+                isDescending = false;
             }
         }
 
-        public void FillListFilmsFilms()
-        {
-            ListBoxFilmsFilms.Items.Clear();
-            List<ModelFilmsFilms> listFilmsFilms = classReadingFile.ClassMainInfo.ListFilmsFilms.OrderByDescending(x => x.NameFilmsFilm.Length).ToList();
-            for (int i = 0; i < listFilmsFilms.Count; i++)
-            {
-                ListBoxFilmsFilms.Items.Add(listFilmsFilms[i].NameFilmsFilm);
-            }
-        }
-
-        private void ListBoxFilmsFilms_KeyDown_Clipboard(object sender, KeyEventArgs e)
+        private void ListBoxFilms_KeyDown_Clipboard(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
             {
-                int selectedIndex = ListBoxFilmsFilms.SelectedIndex;
+                int selectedIndex = ListBoxFilms.SelectedIndex;
 
                 if (selectedIndex != -1)
                 {
-                    Clipboard.SetText(ListBoxFilmsFilms.Items[selectedIndex].ToString());
+                    Clipboard.SetText(ListBoxFilms.Items[selectedIndex].ToString());
                 }
             }
         }

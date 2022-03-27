@@ -64,18 +64,18 @@
     </ApplicationDefinition>
     <Compile Include="Classes\ClassMain.cs" />
     <Compile Include="Classes\ClassPathFile.cs" />
-    <Compile Include="Classes\ClassReadingFile.cs" />
+    <Compile Include="Classes\ClassReadFile.cs" />
     <Compile Include="Constants\PathFiles.cs" />
-    <Compile Include="Models\Films\ModelFilmsCartoon.cs" />
-    <Compile Include="Models\Films\ModelFilmsSerial.cs" />
-    <Compile Include="Models\Games\ModelGamesHorror.cs" />
-    <Compile Include="Models\Games\ModelGamesPlatformer.cs" />
-    <Compile Include="Models\Music\ModelMusicListen.cs" />
-    <Compile Include="Models\Music\ModelMusicWaiting.cs" />
+    <Compile Include="Models\Films\Cartoon.cs" />
+    <Compile Include="Models\Films\Serial.cs" />
+    <Compile Include="Models\Games\Horror.cs" />
+    <Compile Include="Models\Games\Platformer.cs" />
+    <Compile Include="Models\Music\Listen.cs" />
+    <Compile Include="Models\Music\Wait.cs" />
     <Compile Include="Windows\Books\WindowBooksAdd.xaml.cs">
       <DependentUpon>WindowBooksAdd.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Classes\ClassWritingFile.cs" />
+    <Compile Include="Classes\ClassWriteFile.cs" />
     <Compile Include="Windows\Films\WindowFilmsCartoonAdd.xaml.cs">
       <DependentUpon>WindowFilmsCartoonAdd.xaml</DependentUpon>
     </Compile>
@@ -162,7 +162,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Music\PageMusicWaiting.xaml">
+    <Page Include="Pages\Music\PageMusicWait.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -220,10 +220,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Books\ModelBook.cs" />
-    <Compile Include="Models\Films\ModelFilmsFilm.cs" />
-    <Compile Include="Models\Games\ModelGamesPlayStation.cs" />
-    <Compile Include="Models\Music\ModelMusicReleases.cs" />
+    <Compile Include="Models\Books\Book.cs" />
+    <Compile Include="Models\Films\Film.cs" />
+    <Compile Include="Models\Games\PlayStation.cs" />
+    <Compile Include="Models\Music\Release.cs" />
     <Compile Include="Pages\Books\PageBooks.xaml.cs">
       <DependentUpon>PageBooks.xaml</DependentUpon>
     </Compile>
@@ -257,8 +257,8 @@
     <Compile Include="Pages\Music\PageMusicReleases.xaml.cs">
       <DependentUpon>PageMusicReleases.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Music\PageMusicWaiting.xaml.cs">
-      <DependentUpon>PageMusicWaiting.xaml</DependentUpon>
+    <Compile Include="Pages\Music\PageMusicWait.xaml.cs">
+      <DependentUpon>PageMusicWait.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\PageHome.xaml.cs">
       <DependentUpon>PageHome.xaml</DependentUpon>

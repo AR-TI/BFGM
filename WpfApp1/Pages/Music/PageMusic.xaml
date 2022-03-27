@@ -5,35 +5,37 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:BFGM.Pages"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="PageMusic" Width="778" Height="515"
+      mc:Ignorable="d" d:DesignWidth="778" d:DesignHeight="515"
+      Title="PageMusic"
       fw:AcrylicWindow.Enabled="True">
 
     <Grid fw:PointerTracker.Enabled="True" Background="#01FFFFFF">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="460"/>
+            <RowDefinition Height="10*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="0" Grid.Row="0">
-            <Frame x:Name="frameMusic"/>
-        </StackPanel>
+        <Grid Grid.Row="1" Margin="0,0,10,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
-            <Button Content="Releases" Margin="0,3,0,0" Width="156" Height="40" HorizontalAlignment="Left" Click="Button_Click_MusicReleases"
+            <Button Grid.Column="0" x:Name="ButtonMusicReleases" Content="Releases" MaxHeight="45" Click="ButtonReleases_Click"
                     Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"/>
-            <Button Content="Waiting" Margin="0,3,0,0" Width="156" Height="40" HorizontalAlignment="Left" Click="Button_Click_MusicWaiting"
+            <Button Grid.Column="1" x:Name="ButtonMusicWaiting" Content="Wait" MaxHeight="45" Click="ButtonWait_Click"
                     Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"/>
-            <Button Content="Listen" Margin="0,3,0,0" Width="156" Height="40" HorizontalAlignment="Left" Click="Button_Click_MusicListen"
+            <Button Grid.Column="2" x:Name="ButtonMusicListen" Content="Listen" MaxHeight="45" Click="ButtonListen_Click"
                     Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"/>
-            <Button x:Name="ButtonMusicAdd" Content="Add" Margin="0,3,0,0" Width="155" Height="40" HorizontalAlignment="Left"
-                    Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Click="ButtonMusicAdd_Click"/>
-            <Button x:Name="ButtonMusicDelete" Content="Delete" Margin="0,3,0,0" Width="155" Height="40" HorizontalAlignment="Left"
-                    Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Click="ButtonMusicDelete_Click"/>
-        </StackPanel>
+            <Button Grid.Column="3" x:Name="ButtonMusicAdd" Content="Add" MaxHeight="45" Click="ButtonMusicAdd_Click"
+                    Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"/>
+            <Button Grid.Column="4" x:Name="ButtonMusicDelete" Content="Delete" MaxHeight="45" Click="ButtonMusicDelete_Click"
+                    Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"/>
+        </Grid>
+        
+        <Frame Grid.Row="0" x:Name="frameMusic"/>
     </Grid>
 </Page>

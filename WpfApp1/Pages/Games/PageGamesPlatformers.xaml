@@ -5,16 +5,18 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:BFGM.Pages.Games"
-      mc:Ignorable="d" 
-      d:DesignHeight="460" d:DesignWidth="778"
+      mc:Ignorable="d" d:DesignWidth="778" d:DesignHeight="460"
       Title="PageGamesPlatformers">
 
     <Grid fw:PointerTracker.Enabled="True" Background="#01FFFFFF">
-        <StackPanel>
-            <ListBox x:Name="ListBoxGamesPlatformers" HorizontalAlignment="Left" Height="432" Margin="10,10,0,0" VerticalAlignment="Top" Width="758" BorderThickness="0" Loaded="ListBoxGamesPlatformers_Loaded"
-                 Background="Transparent" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" KeyDown="ListBoxGamesPlatformers_KeyDown_Clipboard"/>
-            <Button x:Name="ButtonAscendingPlatformers" Content="↑↓" Background="Transparent" Style="{StaticResource ButtonRoundRevealStyle}" BorderThickness="1" 
-                    FontFamily="Book Antiqua" FontSize="12" Foreground="WhiteSmoke" Height="17" Width="50" HorizontalAlignment="Right" Click="ButtonAscendingPlatformers_Click"/>
-        </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ListBox Grid.Row="0" Margin="10,10,10,8" x:Name="ListBoxPlatformers" BorderThickness="0" Loaded="ListBoxPlatformers_Loaded" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                 Background="Transparent" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" KeyDown="ListBoxPlatformers_KeyDown_Clipboard"/>
+        <Button Grid.Row="1" x:Name="ButtonAscendingPlatformers" Content="↑↓" Background="Transparent" Style="{StaticResource ButtonRoundRevealStyle}" BorderThickness="1" 
+                    FontFamily="Book Antiqua" FontSize="12" Foreground="WhiteSmoke" Height="17" Width="50" HorizontalAlignment="Right" Margin="0,0,8,0" Click="ButtonSortPlatformers_Click"/>
     </Grid>
 </Page>

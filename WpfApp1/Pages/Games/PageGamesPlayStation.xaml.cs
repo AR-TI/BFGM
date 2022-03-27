@@ -12,70 +12,70 @@ namespace BFGM.Pages.Games
     /// </summary>
     public partial class PageGamesPlayStation : Page
     {
-        ClassReadingFile classReadingFile;
+        ClassReadFile classReadingFile;
 
-        public PageGamesPlayStation(ClassReadingFile classReadingFile)
+        public PageGamesPlayStation(ClassReadFile classReadingFile)
         {
             InitializeComponent();
             this.classReadingFile = classReadingFile;
         }
 
         static private bool isFirstTime = false;
-        private void ListBoxGamesPlayStation_Loaded(object sender, RoutedEventArgs e)
+        private void ListBoxPlayStation_Loaded(object sender, RoutedEventArgs e)
         {
             if (!isFirstTime)
             {
-                classReadingFile.ReadingFileGamesPlayStation();
+                classReadingFile.ReadFilePlayStation();
                 isFirstTime = true;
             }
-            FillListGamesPlayStation();
+            FillListPlayStation();
         }
 
-        bool isAscending = false;
-        private void ButtonAscendingPlayStation_Click(object sender, RoutedEventArgs e)
+        bool isDescending = false;
+        private void ButtonSortPlayStation_Click(object sender, RoutedEventArgs e)
         {
-            List<ModelGamesPlayStation> listGamesPlayStation = classReadingFile.ClassMainInfo.ListGamesPlayStation;
-            if (!isAscending)
+            List<PlayStation> listPlayStation = classReadingFile.ClassMainInfo.ListPlayStation;
+            if (!isDescending)
             {
-                ListBoxGamesPlayStation.Items.Clear();
-                var sorted = listGamesPlayStation.OrderBy(r => r.NameGamesPlayStation).ToList();
+                ListBoxPlayStation.Items.Clear();
+                List<PlayStation> sorted = listPlayStation.OrderByDescending(r => r.Title).ToList();
                 for (int i = 0; i < sorted.Count; i++)
                 {
-                    ListBoxGamesPlayStation.Items.Add(sorted[i].NameGamesPlayStation);
+                    ListBoxPlayStation.Items.Add(sorted[i].Title);
                 }
-                isAscending = true;
+                isDescending = true;
             }
             else
             {
-                ListBoxGamesPlayStation.Items.Clear();
-                var sorted = listGamesPlayStation.OrderByDescending(r => r.NameGamesPlayStation).ToList();
+                ListBoxPlayStation.Items.Clear();
+                List<PlayStation> sorted = listPlayStation.OrderBy(r => r.Title).ToList();
                 for (int i = 0; i < sorted.Count; i++)
                 {
-                    ListBoxGamesPlayStation.Items.Add(sorted[i].NameGamesPlayStation);
+                    ListBoxPlayStation.Items.Add(sorted[i].Title);
                 }
-                isAscending = false;
+                isDescending = false;
             }
         }
 
-        public void FillListGamesPlayStation()
+        public void FillListPlayStation()
         {
-            ListBoxGamesPlayStation.Items.Clear();
-            List<ModelGamesPlayStation> listGamesPlayStation = classReadingFile.ClassMainInfo.ListGamesPlayStation.OrderByDescending(x => x.NameGamesPlayStation.Length).ToList();
-            for (int i = 0; i < listGamesPlayStation.Count; i++)
+            ListBoxPlayStation.Items.Clear();
+            List<PlayStation> listlPayStation = classReadingFile.ClassMainInfo.ListPlayStation.OrderBy(x => x.Title).ToList();
+            for (int i = 0; i < listlPayStation.Count; i++)
             {
-                ListBoxGamesPlayStation.Items.Add(listGamesPlayStation[i].NameGamesPlayStation);
+                ListBoxPlayStation.Items.Add(listlPayStation[i].Title);
             }
         }
 
-        private void ListBoxGamesPlayStation_KeyDown_Clipboard(object sender, KeyEventArgs e)
+        private void ListBoxPlayStation_KeyDown_Clipboard(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
             {
-                int selectedIndex = ListBoxGamesPlayStation.SelectedIndex;
+                int selectedIndex = ListBoxPlayStation.SelectedIndex;
 
                 if (selectedIndex != -1)
                 {
-                    Clipboard.SetText(ListBoxGamesPlayStation.Items[selectedIndex].ToString());
+                    Clipboard.SetText(ListBoxPlayStation.Items[selectedIndex].ToString());
                 }
             }
         }

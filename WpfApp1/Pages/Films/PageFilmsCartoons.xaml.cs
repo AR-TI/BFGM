@@ -12,70 +12,70 @@ namespace BFGM.Pages.Films
     /// </summary>
     public partial class PageFilmsCartoons : Page
     {
-        ClassReadingFile classReadingFile;
+        ClassReadFile classReadingFile;
 
-        public PageFilmsCartoons(ClassReadingFile classReadingFile)
+        public PageFilmsCartoons(ClassReadFile classReadingFile)
         {
             InitializeComponent();
             this.classReadingFile = classReadingFile;
         }
 
         static private bool isFirstTime = false;
-        private void ListBoxFilmsCartoons_Loaded(object sender, RoutedEventArgs e)
+        private void ListBoxCartoons_Loaded(object sender, RoutedEventArgs e)
         {
             if (!isFirstTime)
             {
-                classReadingFile.ReadingFileFilmsCartoons();
+                classReadingFile.ReadFileCartoons();
                 isFirstTime = true;
             }
-            FillListFilmsCartoons();
+            FillListCartoons();
         }
 
-        bool isAscending = false;
-        private void ButtonAscendingCartoons_Click(object sender, RoutedEventArgs e)
+        public void FillListCartoons()
         {
-            List<ModelFilmsCartoon> listFilmsCartoons = classReadingFile.ClassMainInfo.ListFilmsCartoons;
-            if (!isAscending)
+            ListBoxCartoons.Items.Clear();
+            List<Cartoon> listCartoons = classReadingFile.ClassMainInfo.ListCartoons.OrderBy(x => x.Title).ToList();
+            for (int i = 0; i < listCartoons.Count; i++)
             {
-                ListBoxFilmsCartoons.Items.Clear();
-                var sorted = listFilmsCartoons.OrderBy(x => x.NameFilmsCartoon).ToList();
+                ListBoxCartoons.Items.Add(listCartoons[i].Title);
+            }
+        }
+
+        bool isDescending = false;
+        private void ButtonSortCartoons_Click(object sender, RoutedEventArgs e)
+        {
+            List<Cartoon> listCartoons = classReadingFile.ClassMainInfo.ListCartoons;
+            if (!isDescending)
+            {
+                ListBoxCartoons.Items.Clear();
+                List<Cartoon> sorted = listCartoons.OrderByDescending(x => x.Title).ToList();
                 for (int i = 0; i < sorted.Count; i++)
                 {
-                    ListBoxFilmsCartoons.Items.Add(sorted[i].NameFilmsCartoon);
+                    ListBoxCartoons.Items.Add(sorted[i].Title);
                 }
-                isAscending = true;
+                isDescending = true;
             }
             else
             {
-                ListBoxFilmsCartoons.Items.Clear();
-                var sorted = listFilmsCartoons.OrderByDescending(x => x.NameFilmsCartoon).ToList();
+                ListBoxCartoons.Items.Clear();
+                List<Cartoon> sorted = listCartoons.OrderBy(x => x.Title).ToList();
                 for (int i = 0; i < sorted.Count; i++)
                 {
-                    ListBoxFilmsCartoons.Items.Add(sorted[i].NameFilmsCartoon);
+                    ListBoxCartoons.Items.Add(sorted[i].Title);
                 }
-                isAscending = false;
+                isDescending = false;
             }
         }
 
-        public void FillListFilmsCartoons()
-        {
-            ListBoxFilmsCartoons.Items.Clear();
-            List<ModelFilmsCartoon> listFilmsCartoons = classReadingFile.ClassMainInfo.ListFilmsCartoons.OrderByDescending(x => x.NameFilmsCartoon.Length).ToList();
-            for (int i = 0; i < listFilmsCartoons.Count; i++)
-            {
-                ListBoxFilmsCartoons.Items.Add(listFilmsCartoons[i].NameFilmsCartoon);
-            }
-        }
-
-        private void ListBoxFilmsCartoons_KeyDown_Clipboard(object sender, KeyEventArgs e)
+        private void ListBoxCartoons_KeyDown_Clipboard(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
             {
-                int selectedIndex = ListBoxFilmsCartoons.SelectedIndex;
+                int selectedIndex = ListBoxCartoons.SelectedIndex;
 
                 if (selectedIndex != -1)
                 {
-                    Clipboard.SetText(ListBoxFilmsCartoons.Items[selectedIndex].ToString());
+                    Clipboard.SetText(ListBoxCartoons.Items[selectedIndex].ToString());
                 }
             }
         }

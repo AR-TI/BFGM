@@ -5,35 +5,37 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:BFGM.Pages"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="PageGames" Width="778" Height="515"
+      mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+      Title="PageGames"
       fw:AcrylicWindow.Enabled="True">
 
     <Grid fw:PointerTracker.Enabled="True" Background="#01FFFFFF">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="460"/>
+            <RowDefinition Height="10*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="0" Grid.Row="0">
-            <Frame x:Name="frameGames"/>
-        </StackPanel>
+        <Grid Grid.Row="1" Margin="0,0,10,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
-            <Button Content="Play Station" Margin="0,3,0,0" Width="156" Height="40" HorizontalAlignment="Left" Click="Button_Click_GamesPlayStation"
-                    Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"/>
-            <Button Content="Horrors" Margin="0,3,0,0" Width="156" Height="40" HorizontalAlignment="Left" Click="Button_Click_GamesHorrors"
-                    Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"/>
-            <Button Content="Platformers" Margin="0,3,0,0" Width="156" Height="40" HorizontalAlignment="Left" Click="Button_Click_GamesPlatformers"
-                    Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"/>
-            <Button x:Name="ButtonGamesAdd" Content="Add" Margin="0,3,0,0" Width="155" Height="40" HorizontalAlignment="Left"
+            <Button Grid.Column="0" x:Name="ButtonGamesPlayStation" Content="Play Station" MaxHeight="45"
+                    Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Click="ButtonPlayStation_Click"/>
+            <Button Grid.Column="1" x:Name="ButtonGamesHorrors" Content="Horrors" MaxHeight="45"
+                    Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Click="ButtonHorrors_Click"/>
+            <Button Grid.Column="2" x:Name="ButtonGamesPlatformers" Content="Platformers" MaxHeight="45"
+                    Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Click="ButtonPlatformers_Click"/>
+            <Button Grid.Column="3" x:Name="ButtonGamesAdd" Content="Add" MaxHeight="45"
                     Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Click="ButtonGamesAdd_Click"/>
-            <Button x:Name="ButtonGamesDelete" Content="Delete" Margin="0,3,0,0" Width="155" Height="40" HorizontalAlignment="Left"
+            <Button Grid.Column="4" x:Name="ButtonGamesDelete" Content="Delete" MaxHeight="45"
                     Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Click="ButtonGamesDelete_Click"/>
-        </StackPanel>
+        </Grid>
+
+        <Frame Grid.Row="0" x:Name="frameGames"/>
     </Grid>
 </Page>

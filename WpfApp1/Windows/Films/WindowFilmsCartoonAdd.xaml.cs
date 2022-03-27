@@ -9,18 +9,18 @@ namespace BFGM.Windows.Films
     /// </summary>
     public partial class WindowFilmsCartoonAdd : Window
     {
-        ClassWritingFile classWritingFile;
+        ClassWriteFile classWritingFile;
         PageFilmsCartoons pageFilmsCartoons;
 
-        public WindowFilmsCartoonAdd(ClassWritingFile classWritingFile, PageFilmsCartoons pageFilmsCartoons)
+        public WindowFilmsCartoonAdd(ClassWriteFile classWritingFile, PageFilmsCartoons pageFilmsCartoons)
         {
             InitializeComponent();
             this.classWritingFile = classWritingFile;
             this.pageFilmsCartoons = pageFilmsCartoons;
-            TextBoxFilmsCartoon.Focus();
+            TextBoxCartoon.Focus();
         }
 
-        private void ButtonFilmsCartoonAddOK_Click(object sender, RoutedEventArgs e)
+        private void ButtonCartoonAddOK_Click(object sender, RoutedEventArgs e)
         {
             AddCartoon();
         }
@@ -35,11 +35,11 @@ namespace BFGM.Windows.Films
 
         private void AddCartoon()
         {
-            string nameFilmsCartoon = TextBoxFilmsCartoon.Text;
-            if (nameFilmsCartoon.Length != 0)
+            string title = TextBoxCartoon.Text;
+            if (title.Length != 0)
             {
-                classWritingFile.WritingFileFilmsCartoons(nameFilmsCartoon);
-                pageFilmsCartoons.FillListFilmsCartoons();
+                classWritingFile.WriteFileCartoons(title);
+                pageFilmsCartoons.FillListCartoons();
                 Close();
             }
         }

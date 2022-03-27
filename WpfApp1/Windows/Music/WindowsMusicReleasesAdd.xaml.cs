@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Input;
+using BFGM.Models;
 using BFGM.Pages.Music;
 
 namespace BFGM.Windows.Music
@@ -11,76 +12,80 @@ namespace BFGM.Windows.Music
     /// </summary>
     public partial class WindowsMusicReleasesAdd : Window
     {
-        ClassWritingFile classWritingFile;
+        ClassWriteFile classWritingFile;
         PageMusicReleases pageMusicReleases;
 
-        public WindowsMusicReleasesAdd(ClassWritingFile classWritingFile, PageMusicReleases pageMusicReleases)
+        public WindowsMusicReleasesAdd(ClassWriteFile classWritingFile, PageMusicReleases pageMusicReleases)
         {
             InitializeComponent();
             this.classWritingFile = classWritingFile;
             this.pageMusicReleases = pageMusicReleases;
-            TextBoxMusicReleasesGroup.Focus();
+            TextBoxBand.Focus();
         }
 
         private void AddReleases()
         {
-            string nameMusicReleasesGroup = TextBoxMusicReleasesGroup.Text;
-            string nameMusicReleasesAlbum = TextBoxMusicReleasesAlbum.Text;
-            string nameMusicReleasesDate = TextBoxMusicReleasesDate.Text;
+            string band = TextBoxBand.Text;
+            string album = TextBoxAlbum.Text;
+            string date = TextBoxDate.Text;
 
-            if (nameMusicReleasesGroup.Contains("Стиль: "))
+            if (band.Contains("\r\n"))
             {
-                Parsing(nameMusicReleasesGroup);
+                Parsing(band);
             }
-            else if (nameMusicReleasesGroup.Length != 0 && nameMusicReleasesAlbum.Length != 0 && nameMusicReleasesDate.Length != 0)
+            else if (band.Length != 0 && album.Length != 0 && date.Length != 0)
             {
-                if (!DateTime.TryParse(nameMusicReleasesDate, out DateTime dateTimeMusicReleases) || dateTimeMusicReleases.Year < DateTime.Now.Year)
+                if (!DateTime.TryParse(date, out DateTime dateTime) || dateTime.Year < DateTime.Now.Year)
                     MessageBox.Show("Wrong date!");
                 else
                 {
-                    classWritingFile.WritingFileMusicReleases(ToTitleFirstLetter(nameMusicReleasesGroup), ToTitleFirstLetter(nameMusicReleasesAlbum), dateTimeMusicReleases);
-                    pageMusicReleases.FillListBoxMusicReleases();
+                    classWritingFile.WriteFileReleases(new Release (ToTitleFirstLetter(band), ToTitleFirstLetter(album), dateTime));
+                    pageMusicReleases.CurrentSort();
                     Close();
                 }
             }
         }
 
-        private void Parsing(string strAll)
+        private void Parsing(string strFull)
         {
-            int indexFirst = strAll.IndexOf(" - ");
-            strAll = strAll.Remove(indexFirst, 3).Insert(indexFirst, "^");
-            string[] strArray = strAll.Split('^', ':');
-            string group = strArray[0];
-            string album = strArray[1].Replace("Стиль", "").Trim();
-            if (group.Contains("#single"))
+            //int indexFirst = strFull.IndexOf(" - ");
+            //string[] strArr = strFull.Remove(indexFirst, 3).Insert(indexFirst, "^").Split("\r\n");
+
+            string[] strArr = strFull.Split(new string[] { "\r\n" }, StringSplitOptions.None);
+            string[] strArrBandAlbum = strArr[1].Split(new string[] { " - " }, StringSplitOptions.None);
+            string[] dateArr = strArr[3].Split(new string[] { ": " }, StringSplitOptions.None);
+
+            string band = strArrBandAlbum[0];
+            string album = strArrBandAlbum[1];
+            string date = dateArr[1].Replace(".", "");
+
+            if (strArr[0].Contains("#single"))
             {
-                group = group.Replace("#single #details", "").Trim();
                 album = string.Concat(album, " [Single]");
             }
-            else if (group.Contains("#EP"))
+            else if (strArr[0].Contains("#EP"))
             {
-                group = group.Replace("#EP #details", "").Trim();
                 album = string.Concat(album, " [EP]");
             }
-            string date = strArray[3].Replace(".", "").Trim();
+
             if (!DateTime.TryParse(date, out DateTime dateTimeMusicReleases) || dateTimeMusicReleases.Year < DateTime.Now.Year)
                 MessageBox.Show("Wrong date!");
-            else if (group.Length != 0 && album.Length != 0)
+            else if (band.Length != 0 && album.Length != 0)
             {
-                classWritingFile.WritingFileMusicReleases(ToTitleFirstLetter(group), ToTitleFirstLetter(album), dateTimeMusicReleases);
-                pageMusicReleases.FillListBoxMusicReleases();
+                classWritingFile.WriteFileReleases(new Release (ToTitleFirstLetter(band), ToTitleFirstLetter(album), dateTimeMusicReleases));
+                pageMusicReleases.CurrentSort();
                 Close();
             }
         }
 
         private string ToTitleFirstLetter(string str)
         {
-            var textInfo = new CultureInfo("ru-RU").TextInfo;
+            TextInfo textInfo = new CultureInfo("ru-RU").TextInfo;
             return textInfo.ToTitleCase(str);
             //return str = textInfo.ToTitleCase(textInfo.ToLower(str)); //В том числе и аббревиатуры
         }
 
-        private void ButtonMusicReleaseAddOK_Click(object sender, RoutedEventArgs e)
+        private void ButtonReleaseAddOK_Click(object sender, RoutedEventArgs e)
         {
             AddReleases();
         }

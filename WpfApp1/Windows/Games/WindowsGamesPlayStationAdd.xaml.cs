@@ -7,20 +7,20 @@ namespace BFGM.Windows.Games
     /// <summary>
     /// Логика взаимодействия для WindowsGamesPlayStationAdd.xaml
     /// </summary>
-    public partial class WindowsGamesPlayStationAdd : Window
+    public partial class WindowsPlayStationAdd : Window
     {
-        ClassWritingFile classWritingFile;
+        ClassWriteFile classWritingFile;
         PageGamesPlayStation pageGamesPlayStation;
 
-        public WindowsGamesPlayStationAdd(ClassWritingFile classWritingFile, PageGamesPlayStation pageGamesPlayStation)
+        public WindowsPlayStationAdd(ClassWriteFile classWritingFile, PageGamesPlayStation pageGamesPlayStation)
         {
             InitializeComponent();
             this.classWritingFile = classWritingFile;
             this.pageGamesPlayStation = pageGamesPlayStation;
-            TextBoxGamesPlayStation.Focus();
+            TextBoxPlayStation.Focus();
         }
 
-        private void ButtonGamesPlayStationAddOK_Click(object sender, RoutedEventArgs e)
+        private void ButtonPlayStationAddOK_Click(object sender, RoutedEventArgs e)
         {
             AddPlayStation();
         }
@@ -35,11 +35,11 @@ namespace BFGM.Windows.Games
 
         private void AddPlayStation()
         {
-            string nameGamesPlayStation = TextBoxGamesPlayStation.Text;
-            if (nameGamesPlayStation.Length != 0)
+            string title = TextBoxPlayStation.Text;
+            if (title.Length != 0)
             {
-                classWritingFile.WritingFileGamesPlayStation(nameGamesPlayStation);
-                pageGamesPlayStation.FillListGamesPlayStation();
+                classWritingFile.WriteFilePlayStation(title);
+                pageGamesPlayStation.FillListPlayStation();
                 Close();
             }
         }

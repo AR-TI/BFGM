@@ -12,70 +12,70 @@ namespace BFGM.Pages.Films
     /// </summary>
     public partial class PageFilmsSerials : Page
     {
-        ClassReadingFile classReadingFile;
+        ClassReadFile classReadingFile;
 
-        public PageFilmsSerials(ClassReadingFile classReadingFile)
+        public PageFilmsSerials(ClassReadFile classReadingFile)
         {
             InitializeComponent();
             this.classReadingFile = classReadingFile;
         }
 
         static private bool isFirstTime = false;
-        private void ListBoxFilmsSerials_Loaded(object sender, RoutedEventArgs e)
+        private void ListBoxSerials_Loaded(object sender, RoutedEventArgs e)
         {
             if (!isFirstTime)
             {
-                classReadingFile.ReadingFileFilmsSerials();
+                classReadingFile.ReadFileSerials();
                 isFirstTime = true;
             }
-            FillListFilmsSerials();
+            FillListSerials();
         }
 
-        bool isAscending = false;
-        private void ButtonAscendingSeroals_Click(object sender, RoutedEventArgs e)
+        public void FillListSerials()
         {
-            List<ModelFilmsSerial> listFilmsSerials = classReadingFile.ClassMainInfo.ListFilmsSerials;
-            if (!isAscending)
+            ListBoxSerials.Items.Clear();
+            List<Serial> listSerials = classReadingFile.ClassMainInfo.ListSerials.OrderBy(x => x.Title).ToList();
+            for (int i = 0; i < listSerials.Count; i++)
             {
-                ListBoxFilmsSerials.Items.Clear();
-                var sorted = listFilmsSerials.OrderBy(r => r.NameFilmsSerial).ToList();
+                ListBoxSerials.Items.Add(listSerials[i].Title);
+            }
+        }
+
+        bool isDescending = false;
+        private void ButtonSortSeroals_Click(object sender, RoutedEventArgs e)
+        {
+            List<Serial> listSerials = classReadingFile.ClassMainInfo.ListSerials;
+            if (!isDescending)
+            {
+                ListBoxSerials.Items.Clear();
+                var sorted = listSerials.OrderByDescending(r => r.Title).ToList();
                 for (int i = 0; i < sorted.Count; i++)
                 {
-                    ListBoxFilmsSerials.Items.Add(sorted[i].NameFilmsSerial);
+                    ListBoxSerials.Items.Add(sorted[i].Title);
                 }
-                isAscending = true;
+                isDescending = true;
             }
             else
             {
-                ListBoxFilmsSerials.Items.Clear();
-                var sorted = listFilmsSerials.OrderByDescending(r => r.NameFilmsSerial).ToList();
+                ListBoxSerials.Items.Clear();
+                var sorted = listSerials.OrderBy(r => r.Title).ToList();
                 for (int i = 0; i < sorted.Count; i++)
                 {
-                    ListBoxFilmsSerials.Items.Add(sorted[i].NameFilmsSerial);
+                    ListBoxSerials.Items.Add(sorted[i].Title);
                 }
-                isAscending = false;
+                isDescending = false;
             }
         }
 
-        public void FillListFilmsSerials()
-        {
-            ListBoxFilmsSerials.Items.Clear();
-            List<ModelFilmsSerial> listFilmsSerials = classReadingFile.ClassMainInfo.ListFilmsSerials.OrderByDescending(x => x.NameFilmsSerial.Length).ToList();
-            for (int i = 0; i < listFilmsSerials.Count; i++)
-            {
-                ListBoxFilmsSerials.Items.Add(listFilmsSerials[i].NameFilmsSerial);
-            }
-        }
-
-        private void ListBoxFilmsSerials_KeyDown_Clipboard(object sender, KeyEventArgs e)
+        private void ListBoxSerials_KeyDown_Clipboard(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
             {
-                int selectedIndex = ListBoxFilmsSerials.SelectedIndex;
+                int selectedIndex = ListBoxSerials.SelectedIndex;
 
                 if (selectedIndex != -1)
                 {
-                    Clipboard.SetText(ListBoxFilmsSerials.Items[selectedIndex].ToString());
+                    Clipboard.SetText(ListBoxSerials.Items[selectedIndex].ToString());
                 }
             }
         }
