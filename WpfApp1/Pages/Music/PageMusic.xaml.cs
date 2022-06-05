@@ -1,9 +1,9 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
+﻿using BFGM.Classes;
 using BFGM.Models;
 using BFGM.Pages.Music;
 using BFGM.Windows.Music;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace BFGM.Pages
 {
@@ -12,16 +12,18 @@ namespace BFGM.Pages
     /// </summary>
     public partial class PageMusic : Page
     {
+        readonly ClassMain classMain;
+        readonly ClassReadFile classReadFile;
+        readonly ClassWriteFile classWriteFile;
+
         PageMusicReleases pageMusicReleases;
         PageMusicWait pageMusicWaiting;
         PageMusicListen pageMusicListen;
 
-        ClassWriteFile classWriteFile;
-        ClassReadFile classReadFile;
-
-        public PageMusic(ClassReadFile classReadFile, ClassWriteFile classWriteFile)
+        public PageMusic(ClassMain classMain, ClassReadFile classReadFile, ClassWriteFile classWriteFile)
         {
             InitializeComponent();
+            this.classMain = classMain;
             this.classReadFile = classReadFile;
             this.classWriteFile = classWriteFile;
         }
@@ -32,23 +34,20 @@ namespace BFGM.Pages
         private void ButtonReleases_Click(object sender, RoutedEventArgs e)
         {
             pageActivity = 1;
-            //frameMusic.Content = new Music.PageMusicReleases();
-            pageMusicReleases = new PageMusicReleases(classReadFile, classWriteFile/*new*/);
-            frameMusic.Content = pageMusicReleases;
+            pageMusicReleases = new PageMusicReleases(classMain, classReadFile, classWriteFile);
+            MusicFrame.Content = pageMusicReleases;
         }
         private void ButtonWait_Click(object sender, RoutedEventArgs e)
         {
             pageActivity = 2;
-            //frameMusic.Content = new Music.PageMusicWaiting();
-            pageMusicWaiting = new PageMusicWait(classReadFile);
-            frameMusic.Content = pageMusicWaiting;
+            pageMusicWaiting = new PageMusicWait(classMain, classReadFile);
+            MusicFrame.Content = pageMusicWaiting;
         }
         private void ButtonListen_Click(object sender, RoutedEventArgs e)
         {
             pageActivity = 3;
-            //frameMusic.Content = new Music.PageMusicListen();
-            pageMusicListen = new PageMusicListen(classReadFile);
-            frameMusic.Content = pageMusicListen;
+            pageMusicListen = new PageMusicListen(classMain, classReadFile);
+            MusicFrame.Content = pageMusicListen;
         }
         #endregion
 
@@ -56,17 +55,17 @@ namespace BFGM.Pages
         {
             if (pageActivity == 1)
             {
-                WindowsMusicReleasesAdd windowsMusicReleasesAdd = new WindowsMusicReleasesAdd(classWriteFile, pageMusicReleases);
+                WindowsMusicReleasesAdd windowsMusicReleasesAdd = new WindowsMusicReleasesAdd(classMain, classWriteFile, pageMusicReleases);
                 windowsMusicReleasesAdd.ShowDialog();
             }
             else if (pageActivity == 2)
             {
-                WindowsMusicWaitingAdd windowsMusicWaitingAdd = new WindowsMusicWaitingAdd(classWriteFile, pageMusicWaiting);
+                WindowsMusicWaitingAdd windowsMusicWaitingAdd = new WindowsMusicWaitingAdd(classMain, classWriteFile, pageMusicWaiting);
                 windowsMusicWaitingAdd.ShowDialog();
             }
             else if (pageActivity == 3)
             {
-                WindowsMusicListenAdd windowsMusicListenAdd = new WindowsMusicListenAdd(classWriteFile, pageMusicListen);
+                WindowsMusicListenAdd windowsMusicListenAdd = new WindowsMusicListenAdd(classMain, classWriteFile, pageMusicListen);
                 windowsMusicListenAdd.ShowDialog();
             }
         }
@@ -81,8 +80,8 @@ namespace BFGM.Pages
                     object data = pageMusicReleases.ListBoxReleases.Items[selectedIndex];
                     Release release = data as Release;
 
-                    classReadFile.ClassMainInfo.DeleteRelease(release);
-                    await classWriteFile.RewriteFileAfterDeleteReleases();
+                    classMain.DeleteRelease(release);
+                    await classWriteFile.WriteFileReleases();
 
                     pageMusicReleases.CurrentSort();
                 }
@@ -93,8 +92,8 @@ namespace BFGM.Pages
                 if (selectedIndex != -1)
                 {
                     string selectedName = pageMusicWaiting.ListBoxWait.Items[selectedIndex].ToString();
-                    classReadFile.ClassMainInfo.DeleteWait(selectedName);
-                    classWriteFile.RewriteFileAfterDeleteWait();
+                    classMain.DeleteWait(selectedName);
+                    await classWriteFile.WriteFileWait();
                     pageMusicWaiting.ListBoxWait.Items.RemoveAt(selectedIndex);
                 }
             }
@@ -104,8 +103,8 @@ namespace BFGM.Pages
                 if (selectedIndex != -1)
                 {
                     string selectedName = pageMusicListen.ListBoxListen.Items[selectedIndex].ToString();
-                    classReadFile.ClassMainInfo.DeleteListen(selectedName);
-                    classWriteFile.RewriteFileAfterDeleteListen();
+                    classMain.DeleteListen(selectedName);
+                    await classWriteFile.WriteFileListen();
                     pageMusicListen.ListBoxListen.Items.RemoveAt(selectedIndex);
                 }
             }

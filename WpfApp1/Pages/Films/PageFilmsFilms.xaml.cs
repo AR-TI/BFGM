@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using BFGM.Classes;
+using BFGM.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using BFGM.Models;
 
 namespace BFGM.Pages.Films
 {
@@ -12,20 +13,22 @@ namespace BFGM.Pages.Films
     /// </summary>
     public partial class PageFilmsFilms : Page
     {
-        ClassReadFile classReadingFile;
+        readonly ClassMain classMain;
+        readonly ClassReadFile classReadFile;
 
-        public PageFilmsFilms(ClassReadFile classReadingFile)
+        public PageFilmsFilms(ClassMain classMain, ClassReadFile classReadFile)
         {
             InitializeComponent();
-            this.classReadingFile = classReadingFile;
+            this.classMain = classMain;
+            this.classReadFile = classReadFile;
         }
 
         static private bool isFirstTime = false;
-        private void ListBoxFilms_Loaded(object sender, RoutedEventArgs e)
+        private async void ListBoxFilms_Loaded(object sender, RoutedEventArgs e)
         {
             if (!isFirstTime)
             {
-                classReadingFile.ReadFileFilms();
+                await classReadFile.ReadFileFilms();
                 isFirstTime = true;
             }
             FillListFilms();
@@ -34,7 +37,7 @@ namespace BFGM.Pages.Films
         public void FillListFilms()
         {
             ListBoxFilms.Items.Clear();
-            List<Film> listFilms = classReadingFile.ClassMainInfo.ListFilms.OrderBy(x => x.Title).ToList();
+            List<Film> listFilms = classMain.ListFilms.OrderBy(x => x.Title).ToList();
             for (int i = 0; i < listFilms.Count; i++)
             {
                 ListBoxFilms.Items.Add(listFilms[i].Title);
@@ -44,7 +47,7 @@ namespace BFGM.Pages.Films
         bool isDescending = false;
         private void ButtonSortFilms_Click(object sender, RoutedEventArgs e)
         {
-            List<Film> listFilms = classReadingFile.ClassMainInfo.ListFilms;
+            List<Film> listFilms = classMain.ListFilms;
             if (!isDescending)
             {
                 ListBoxFilms.Items.Clear();

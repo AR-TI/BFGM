@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using BFGM.Classes;
+using BFGM.Models;
+using BFGM.Windows;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using BFGM.Windows;
-using BFGM.Models;
-using System.Linq;
 
 namespace BFGM.Pages
 {
@@ -13,22 +14,24 @@ namespace BFGM.Pages
     /// </summary>
     public partial class PageBooks : Page
     {
-        ClassReadFile classReadingFile;
-        ClassWriteFile classWritingFile;
+        readonly ClassMain classMain;
+        readonly ClassReadFile classReadFile;
+        readonly ClassWriteFile classWriteFile;
 
-        public PageBooks(ClassReadFile classReadingFile, ClassWriteFile classWritingFile)
+        public PageBooks(ClassMain classMain, ClassReadFile classReadFile, ClassWriteFile classWriteFile)
         {
             InitializeComponent();
-            this.classReadingFile = classReadingFile;
-            this.classWritingFile = classWritingFile;
+            this.classMain = classMain;
+            this.classReadFile = classReadFile;
+            this.classWriteFile = classWriteFile;
         }
 
         static private bool isFirstTime = false;
-        private void GridBooks_Loaded(object sender, RoutedEventArgs e)
+        private async void GridBooks_Loaded(object sender, RoutedEventArgs e)
         {
             if (!isFirstTime)
             {
-                classReadingFile.ReadFileBooks();
+                await classReadFile.ReadFileBooks();
                 isFirstTime = true;
             }
             FillListBooks();
@@ -36,26 +39,26 @@ namespace BFGM.Pages
 
         private void ButtonBooksAdd_Click(object sender, RoutedEventArgs e)
         {
-            WindowBooksAdd windowBooksAdd = new WindowBooksAdd(classWritingFile);
+            WindowBooksAdd windowBooksAdd = new WindowBooksAdd(classMain, classWriteFile);
             windowBooksAdd.ShowDialog();
             FillListBooks();
         }
-        private void ButtonBooksDelete_Click(object sender, RoutedEventArgs e)
+        private async void ButtonBooksDelete_Click(object sender, RoutedEventArgs e)
         {
             int selectedIndex = ListBoxBooks.SelectedIndex;
 
             if (selectedIndex != -1)
             {
                 Book book = ListBoxBooks.Items[selectedIndex] as Book;
-                classReadingFile.ClassMainInfo.DeleteBook(book);
-                classWritingFile.RewriteFileAfterDeleteBooks();
+                classMain.DeleteBook(book);
+                await classWriteFile.WriteFileBooks();
                 FillListBooks();
             }
         }
 
         public void FillListBooks()
         {
-            List<Book> listBooks = classReadingFile.ClassMainInfo.ListBooks.OrderBy(x => x.Title).ToList();
+            List<Book> listBooks = classMain.ListBooks.OrderBy(x => x.Title).ToList();
             ListBoxBooks.ItemsSource = listBooks;
         }
 
@@ -63,7 +66,7 @@ namespace BFGM.Pages
         {
             int selectedItems = ListBoxBooks.SelectedIndex;
 
-            if (selectedItems !=-1)
+            if (selectedItems != -1)
             {
                 Book book = ListBoxBooks.Items[selectedItems] as Book;
                 Clipboard.SetText($"{book.Title} - {book.Author}");

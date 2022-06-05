@@ -1,7 +1,10 @@
 ﻿using BFGM;
+using BFGM.Classes;
 using BFGM.Models;
 using BFGM.Pages.Music;
+using BFGM.Windows.Music;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -12,13 +15,15 @@ namespace WpfApp1.Windows.Music
     /// </summary>
     public partial class WindowsMusicReleasesEdit : Window
     {
-        ClassWriteFile classWritingFile;
-        PageMusicReleases pageMusicReleases;
+        readonly ClassMain classMain;
+        readonly ClassWriteFile classWriteFile;
+        readonly PageMusicReleases pageMusicReleases;
         readonly Release releaseOld;
-        public WindowsMusicReleasesEdit(ClassWriteFile classWritingFile, PageMusicReleases pageMusicReleases, Release releaseOld)
+        public WindowsMusicReleasesEdit(ClassMain classMain, ClassWriteFile classWriteFile, PageMusicReleases pageMusicReleases, Release releaseOld)
         {
             InitializeComponent();
-            this.classWritingFile = classWritingFile;
+            this.classMain = classMain;
+            this.classWriteFile = classWriteFile;
             this.pageMusicReleases = pageMusicReleases;
             this.releaseOld = releaseOld;
 
@@ -29,35 +34,37 @@ namespace WpfApp1.Windows.Music
             TextBoxBand.Focus();
         }
 
-        private async void EditRelease()
+        private async Task EditRelease()
         {
             string newBand = TextBoxBand.Text;
             string newAlbum = TextBoxAlbum.Text;
             string newDate = TextBoxDate.Text;
             if (newBand.Length != 0 && newAlbum.Length != 0 && newDate.Length != 0)
             {
-                if (!DateTime.TryParse(newDate, out DateTime newDateTime) || newDateTime.Year < DateTime.Now.Year)
+                if (!WindowsMusicReleasesAdd.IsRightDate(newDate, out DateTime newDateTime))
+                {
                     MessageBox.Show("Wrong date!");
+                }
                 else
                 {
-                    classWritingFile.ClassMainInfo.EditRelease(releaseOld, new Release(newBand, newAlbum, newDateTime));
-                    await classWritingFile.RewriteFileAfterDeleteReleases();
+                    classMain.EditRelease(releaseOld, new Release(newBand, newAlbum, newDateTime));
+                    await classWriteFile.WriteFileReleases();
                     pageMusicReleases.CurrentSort();
                     Close();
                 }
             }
         }
 
-        private void ButtonReleaseEditOK_Click(object sender, RoutedEventArgs e)
+        private async void ButtonReleaseEditOK_Click(object sender, RoutedEventArgs e)
         {
-            EditRelease();
+            await EditRelease();
         }
 
-        private void WindowReleaseAdd_KeyDown(object sender, KeyEventArgs e)
+        private async void WindowReleaseAdd_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                EditRelease();
+                await EditRelease();
             }
         }
     }

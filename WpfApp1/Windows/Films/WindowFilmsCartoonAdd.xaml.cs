@@ -1,6 +1,9 @@
-﻿using System.Windows;
-using System.Windows.Input;
+﻿using BFGM.Classes;
+using BFGM.Models;
 using BFGM.Pages.Films;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace BFGM.Windows.Films
 {
@@ -9,36 +12,39 @@ namespace BFGM.Windows.Films
     /// </summary>
     public partial class WindowFilmsCartoonAdd : Window
     {
-        ClassWriteFile classWritingFile;
-        PageFilmsCartoons pageFilmsCartoons;
+        readonly ClassMain classMain;
+        readonly ClassWriteFile classWriteFile;
+        readonly PageFilmsCartoons pageFilmsCartoons;
 
-        public WindowFilmsCartoonAdd(ClassWriteFile classWritingFile, PageFilmsCartoons pageFilmsCartoons)
+        public WindowFilmsCartoonAdd(ClassMain classMain, ClassWriteFile classWriteFile, PageFilmsCartoons pageFilmsCartoons)
         {
             InitializeComponent();
-            this.classWritingFile = classWritingFile;
+            this.classMain = classMain;
+            this.classWriteFile = classWriteFile;
             this.pageFilmsCartoons = pageFilmsCartoons;
             TextBoxCartoon.Focus();
         }
 
-        private void ButtonCartoonAddOK_Click(object sender, RoutedEventArgs e)
+        private async void ButtonCartoonAddOK_Click(object sender, RoutedEventArgs e)
         {
-            AddCartoon();
+            await AddCartoon();
         }
 
-        private void WindowCartoonAdd_KeyDown(object sender, KeyEventArgs e)
+        private async void WindowCartoonAdd_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                AddCartoon();
+                await AddCartoon();
             }
         }
 
-        private void AddCartoon()
+        private async Task AddCartoon()
         {
             string title = TextBoxCartoon.Text;
             if (title.Length != 0)
             {
-                classWritingFile.WriteFileCartoons(title);
+                classMain.ListCartoons.Add(new Cartoon(title));
+                await classWriteFile.WriteFileCartoons();
                 pageFilmsCartoons.FillListCartoons();
                 Close();
             }

@@ -1,9 +1,11 @@
-﻿using System;
-using System.Globalization;
-using System.Windows;
-using System.Windows.Input;
+﻿using BFGM.Classes;
 using BFGM.Models;
 using BFGM.Pages.Music;
+using System;
+using System.Globalization;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace BFGM.Windows.Music
 {
@@ -12,18 +14,20 @@ namespace BFGM.Windows.Music
     /// </summary>
     public partial class WindowsMusicReleasesAdd : Window
     {
-        ClassWriteFile classWritingFile;
-        PageMusicReleases pageMusicReleases;
+        readonly ClassMain classMain;
+        readonly ClassWriteFile classWriteFile;
+        readonly PageMusicReleases pageMusicReleases;
 
-        public WindowsMusicReleasesAdd(ClassWriteFile classWritingFile, PageMusicReleases pageMusicReleases)
+        public WindowsMusicReleasesAdd(ClassMain classMain, ClassWriteFile classWriteFile, PageMusicReleases pageMusicReleases)
         {
             InitializeComponent();
-            this.classWritingFile = classWritingFile;
+            this.classMain = classMain;
+            this.classWriteFile = classWriteFile;
             this.pageMusicReleases = pageMusicReleases;
             TextBoxBand.Focus();
         }
 
-        private void AddReleases()
+        private async Task AddReleases()
         {
             string band = TextBoxBand.Text;
             string album = TextBoxAlbum.Text;
@@ -31,33 +35,33 @@ namespace BFGM.Windows.Music
 
             if (band.Contains("\r\n"))
             {
-                Parsing(band);
+                await Parsing(band);
             }
             else if (band.Length != 0 && album.Length != 0 && date.Length != 0)
             {
-                if (!DateTime.TryParse(date, out DateTime dateTime) || dateTime.Year < DateTime.Now.Year)
+                if (!IsRightDate(date, out DateTime dateTime))
+                {
                     MessageBox.Show("Wrong date!");
+                }
                 else
                 {
-                    classWritingFile.WriteFileReleases(new Release (ToTitleFirstLetter(band), ToTitleFirstLetter(album), dateTime));
+                    classMain.ListReleases.Add(new Release(ToTitleFirstLetter(band), ToTitleFirstLetter(album), dateTime));
+                    await classWriteFile.WriteFileReleases();
                     pageMusicReleases.CurrentSort();
                     Close();
                 }
             }
         }
 
-        private void Parsing(string strFull)
+        private async Task Parsing(string strFull)
         {
-            //int indexFirst = strFull.IndexOf(" - ");
-            //string[] strArr = strFull.Remove(indexFirst, 3).Insert(indexFirst, "^").Split("\r\n");
-
             string[] strArr = strFull.Split(new string[] { "\r\n" }, StringSplitOptions.None);
             string[] strArrBandAlbum = strArr[1].Split(new string[] { " - " }, StringSplitOptions.None);
             string[] dateArr = strArr[3].Split(new string[] { ": " }, StringSplitOptions.None);
 
             string band = strArrBandAlbum[0];
             string album = strArrBandAlbum[1];
-            string date = dateArr[1].Replace(".", "");
+            string date = dateArr[1].Replace(".", string.Empty);
 
             if (strArr[0].Contains("#single"))
             {
@@ -68,33 +72,41 @@ namespace BFGM.Windows.Music
                 album = string.Concat(album, " [EP]");
             }
 
-            if (!DateTime.TryParse(date, out DateTime dateTimeMusicReleases) || dateTimeMusicReleases.Year < DateTime.Now.Year)
+            if (!IsRightDate(date, out DateTime dateTime))
+            {
                 MessageBox.Show("Wrong date!");
+            }
             else if (band.Length != 0 && album.Length != 0)
             {
-                classWritingFile.WriteFileReleases(new Release (ToTitleFirstLetter(band), ToTitleFirstLetter(album), dateTimeMusicReleases));
+                classMain.ListReleases.Add(new Release(ToTitleFirstLetter(band), ToTitleFirstLetter(album), dateTime));
+                await classWriteFile.WriteFileReleases();
                 pageMusicReleases.CurrentSort();
                 Close();
             }
         }
 
-        private string ToTitleFirstLetter(string str)
+        public static bool IsRightDate(string date, out DateTime dateTime)
+        {
+            return DateTime.TryParse(date, out dateTime) && dateTime.Year >= DateTime.Now.Year;
+        }
+
+        private static string ToTitleFirstLetter(string str)
         {
             TextInfo textInfo = new CultureInfo("ru-RU").TextInfo;
             return textInfo.ToTitleCase(str);
             //return str = textInfo.ToTitleCase(textInfo.ToLower(str)); //В том числе и аббревиатуры
         }
 
-        private void ButtonReleaseAddOK_Click(object sender, RoutedEventArgs e)
+        private async void ButtonReleaseAddOK_Click(object sender, RoutedEventArgs e)
         {
-            AddReleases();
+            await AddReleases();
         }
 
-        private void WindowReleaseAdd_KeyDown(object sender, KeyEventArgs e)
+        private async void WindowReleaseAdd_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                AddReleases();
+                await AddReleases();
             }
         }
     }

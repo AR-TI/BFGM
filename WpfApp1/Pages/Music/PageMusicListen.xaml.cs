@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using BFGM.Classes;
+using BFGM.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using BFGM.Models;
 
 namespace BFGM.Pages.Music
 {
@@ -12,20 +13,22 @@ namespace BFGM.Pages.Music
     /// </summary>
     public partial class PageMusicListen : Page
     {
-        ClassReadFile classReadingFile;
+        readonly ClassMain classMain;
+        readonly ClassReadFile classReadFile;
 
-        public PageMusicListen(ClassReadFile classReadingFile)
+        public PageMusicListen(ClassMain classMain, ClassReadFile classReadFile)
         {
             InitializeComponent();
-            this.classReadingFile = classReadingFile;
+            this.classMain = classMain;
+            this.classReadFile = classReadFile;
         }
 
         static private bool isFirstTime = false;
-        private void ListBoxListen_Loaded(object sender, RoutedEventArgs e)
+        private async void ListBoxListen_Loaded(object sender, RoutedEventArgs e)
         {
             if (!isFirstTime)
             {
-                classReadingFile.ReadFileListen();
+                await classReadFile.ReadFileListen();
                 isFirstTime = true;
             }
             FillListListen();
@@ -34,7 +37,7 @@ namespace BFGM.Pages.Music
         bool isDescending = false;
         private void ButtonSortListen_Click(object sender, RoutedEventArgs e)
         {
-            List<Listen> listListen = classReadingFile.ClassMainInfo.ListListen;
+            List<Listen> listListen = classMain.ListListen;
             if (!isDescending)
             {
                 ListBoxListen.Items.Clear();
@@ -60,7 +63,7 @@ namespace BFGM.Pages.Music
         public void FillListListen()
         {
             ListBoxListen.Items.Clear();
-            List<Listen> listMusicListen = classReadingFile.ClassMainInfo.ListListen.OrderBy(x => x.Band).ToList();
+            List<Listen> listMusicListen = classMain.ListListen.OrderBy(x => x.Band).ToList();
             for (int i = 0; i < listMusicListen.Count; i++)
             {
                 ListBoxListen.Items.Add(listMusicListen[i].Band);

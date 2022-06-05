@@ -1,6 +1,9 @@
-﻿using System.Windows;
-using System.Windows.Input;
+﻿using BFGM.Classes;
+using BFGM.Models;
 using BFGM.Pages.Films;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace BFGM.Windows.Films
 {
@@ -9,36 +12,39 @@ namespace BFGM.Windows.Films
     /// </summary>
     public partial class WindowFilmsSerialAdd : Window
     {
-        ClassWriteFile classWritingFile;
-        PageFilmsSerials pageFilmsSerials;
+        readonly ClassMain classMain;
+        readonly ClassWriteFile classWriteFile;
+        readonly PageFilmsSerials pageFilmsSerials;
 
-        public WindowFilmsSerialAdd(ClassWriteFile classWritingFile, PageFilmsSerials pageFilmsSerials)
+        public WindowFilmsSerialAdd(ClassMain classMain, ClassWriteFile classWriteFile, PageFilmsSerials pageFilmsSerials)
         {
             InitializeComponent();
-            this.classWritingFile = classWritingFile;
+            this.classMain = classMain;
+            this.classWriteFile = classWriteFile;
             this.pageFilmsSerials = pageFilmsSerials;
             TextBoxSerial.Focus();
         }
 
-        private void ButtonSerialAddOK_Click(object sender, RoutedEventArgs e)
+        private async void ButtonSerialAddOK_Click(object sender, RoutedEventArgs e)
         {
-            AddSerial();
+            await AddSerial();
         }
 
-        private void WindowSerialAdd_KeyDown(object sender, KeyEventArgs e)
+        private async void WindowSerialAdd_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                AddSerial();
+                await AddSerial();
             }
         }
 
-        private void AddSerial()
+        private async Task AddSerial()
         {
             string title = TextBoxSerial.Text;
             if (title.Length != 0)
             {
-                classWritingFile.WriteFileSerials(title);
+                classMain.ListSerials.Add(new Serial(title));
+                await classWriteFile.WriteFileSerials();
                 pageFilmsSerials.FillListSerials();
                 Close();
             }

@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using BFGM.Classes;
+using BFGM.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using BFGM.Models;
 
 namespace BFGM.Pages.Games
 {
@@ -12,20 +13,22 @@ namespace BFGM.Pages.Games
     /// </summary>
     public partial class PageGamesHorrors : Page
     {
-        ClassReadFile classReadingFile;
+        readonly ClassMain classMain;
+        readonly ClassReadFile classReadFile;
 
-        public PageGamesHorrors(ClassReadFile classReadingFile)
+        public PageGamesHorrors(ClassMain classMain, ClassReadFile classReadFile)
         {
             InitializeComponent();
-            this.classReadingFile = classReadingFile;
+            this.classMain = classMain;
+            this.classReadFile = classReadFile;
         }
 
         static private bool isFirstTime = false;
-        private void ListBoxHorrors_Loaded(object sender, RoutedEventArgs e)
+        private async void ListBoxHorrors_Loaded(object sender, RoutedEventArgs e)
         {
             if (!isFirstTime)
             {
-                classReadingFile.ReadFileHorrors();
+                await classReadFile.ReadFileHorrors();
                 isFirstTime = true;
             }
             FillListHorrors();
@@ -34,7 +37,7 @@ namespace BFGM.Pages.Games
         bool isDescending = false;
         private void ButtonSortHorrors_Click(object sender, RoutedEventArgs e)
         {
-            List<Horror> listHorrors = classReadingFile.ClassMainInfo.ListHorrors;
+            List<Horror> listHorrors = classMain.ListHorrors;
             if (!isDescending)
             {
                 ListBoxHorrors.Items.Clear();
@@ -60,7 +63,7 @@ namespace BFGM.Pages.Games
         public void FillListHorrors()
         {
             ListBoxHorrors.Items.Clear();
-            List<Horror> listHorrors = classReadingFile.ClassMainInfo.ListHorrors.OrderBy(x => x.Title).ToList();
+            List<Horror> listHorrors = classMain.ListHorrors.OrderBy(x => x.Title).ToList();
             for (int i = 0; i < listHorrors.Count; i++)
             {
                 ListBoxHorrors.Items.Add(listHorrors[i].Title);

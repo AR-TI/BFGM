@@ -1,6 +1,9 @@
-﻿using System.Windows;
-using System.Windows.Input;
+﻿using BFGM.Classes;
+using BFGM.Models;
 using BFGM.Pages.Games;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace BFGM.Windows.Games
 {
@@ -9,36 +12,39 @@ namespace BFGM.Windows.Games
     /// </summary>
     public partial class WindowsPlatformerAdd : Window
     {
-        ClassWriteFile classWritingFile;
-        PageGamesPlatformers pageGamesPlatformers;
+        readonly ClassMain classMain;
+        readonly ClassWriteFile classWriteFile;
+        readonly PageGamesPlatformers pageGamesPlatformers;
 
-        public WindowsPlatformerAdd(ClassWriteFile classWritingFile, PageGamesPlatformers pageGamesPlatformers)
+        public WindowsPlatformerAdd(ClassMain classMain, ClassWriteFile classWriteFile, PageGamesPlatformers pageGamesPlatformers)
         {
             InitializeComponent();
-            this.classWritingFile = classWritingFile;
+            this.classMain = classMain;
+            this.classWriteFile = classWriteFile;
             this.pageGamesPlatformers = pageGamesPlatformers;
             TextBoxPlatformer.Focus();
         }
 
-        private void ButtonPlatformerAddOK_Click(object sender, RoutedEventArgs e)
+        private async void ButtonPlatformerAddOK_Click(object sender, RoutedEventArgs e)
         {
-            AddPlatformer();
+            await AddPlatformer();
         }
 
-        private void WindowPlatformerAdd_KeyDown(object sender, KeyEventArgs e)
+        private async void WindowPlatformerAdd_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                AddPlatformer();
+                await AddPlatformer();
             }
         }
 
-        private void AddPlatformer()
+        private async Task AddPlatformer()
         {
             string title = TextBoxPlatformer.Text;
             if (title.Length != 0)
             {
-                classWritingFile.WriteFilePlatformers(title);
+                classMain.ListPlatformers.Add(new Platformer(title));
+                await classWriteFile.WriteFilePlatformers();
                 pageGamesPlatformers.FillListPlatformers();
                 Close();
             }

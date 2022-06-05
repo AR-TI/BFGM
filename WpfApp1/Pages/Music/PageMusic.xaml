@@ -36,6 +36,6 @@
                     Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"/>
         </Grid>
         
-        <Frame Grid.Row="0" x:Name="frameMusic"/>
+        <Frame Grid.Row="0" x:Name="MusicFrame"/>
     </Grid>
 </Page>

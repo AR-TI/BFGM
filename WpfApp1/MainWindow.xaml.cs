@@ -1,6 +1,6 @@
-﻿using System.Windows;
-using BFGM.Classes;
+﻿using BFGM.Classes;
 using BFGM.Pages;
+using System.Windows;
 
 namespace BFGM
 {
@@ -9,41 +9,42 @@ namespace BFGM
     /// </summary>
     public partial class MainWindow : Window
     {
-        ClassReadFile classReadingFile;
-        ClassWriteFile classWritingFile;
+        readonly ClassMain classMain;
+        readonly ClassReadFile classReadingFile;
+        readonly ClassWriteFile classWritingFile;
 
         public MainWindow()
         {
             InitializeComponent();
-            ClassMain classMain = new ClassMain();
+            classMain = new ClassMain();
+            classMain.CheckDirectoryAndFilesExist();
             classReadingFile = new ClassReadFile(classMain);
             classWritingFile = new ClassWriteFile(classMain);
-            classMain.CheckDirectoryAndFilesExist();
         }
 
         private void Button_Click_Home(object sender, RoutedEventArgs e)
         {
-            frameMain.Content = new PageHome();
+            MainFrame.Content = new PageHome();
         }
 
         private void Button_Click_Books(object sender, RoutedEventArgs e)
         {
-            frameMain.Content = new PageBooks(classReadingFile, classWritingFile);
+            MainFrame.Content = new PageBooks(classMain, classReadingFile, classWritingFile);
         }
 
         private void Button_Click_Films(object sender, RoutedEventArgs e)
         {
-            frameMain.Content = new PageFilms(classReadingFile, classWritingFile);
+            MainFrame.Content = new PageFilms(classMain, classReadingFile, classWritingFile);
         }
 
         private void Button_Click_Games(object sender, RoutedEventArgs e)
         {
-            frameMain.Content = new PageGames(classReadingFile, classWritingFile);
+            MainFrame.Content = new PageGames(classMain, classReadingFile, classWritingFile);
         }
 
         private void Button_Click_Music(object sender, RoutedEventArgs e)
         {
-            frameMain.Content = new PageMusic(classReadingFile, classWritingFile);
+            MainFrame.Content = new PageMusic(classMain, classReadingFile, classWritingFile);
         }
     }
 }

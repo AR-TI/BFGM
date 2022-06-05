@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using BFGM.Classes;
+using BFGM.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using BFGM.Models;
 
 namespace BFGM.Pages.Games
 {
@@ -12,20 +13,22 @@ namespace BFGM.Pages.Games
     /// </summary>
     public partial class PageGamesPlatformers : Page
     {
-        ClassReadFile classReadingFile;
+        readonly ClassMain classMain;
+        readonly ClassReadFile classReadFile;
 
-        public PageGamesPlatformers(ClassReadFile classReadingFile)
+        public PageGamesPlatformers(ClassMain classMain, ClassReadFile classReadFile)
         {
             InitializeComponent();
-            this.classReadingFile = classReadingFile;
+            this.classMain = classMain;
+            this.classReadFile = classReadFile;
         }
 
         static private bool isFirstTime = false;
-        private void ListBoxPlatformers_Loaded(object sender, RoutedEventArgs e)
+        private async void ListBoxPlatformers_Loaded(object sender, RoutedEventArgs e)
         {
             if (!isFirstTime)
             {
-                classReadingFile.ReadFilePlatformers();
+                await classReadFile.ReadFilePlatformers();
                 isFirstTime = true;
             }
             FillListPlatformers();
@@ -34,7 +37,7 @@ namespace BFGM.Pages.Games
         bool isDescending = false;
         private void ButtonSortPlatformers_Click(object sender, RoutedEventArgs e)
         {
-            List<Platformer> listPlatformers = classReadingFile.ClassMainInfo.ListPlatformers;
+            List<Platformer> listPlatformers = classMain.ListPlatformers;
             if (!isDescending)
             {
                 ListBoxPlatformers.Items.Clear();
@@ -60,7 +63,7 @@ namespace BFGM.Pages.Games
         public void FillListPlatformers()
         {
             ListBoxPlatformers.Items.Clear();
-            List<Platformer> listPlatformers = classReadingFile.ClassMainInfo.ListPlatformers.OrderBy(x => x.Title).ToList();
+            List<Platformer> listPlatformers = classMain.ListPlatformers.OrderBy(x => x.Title).ToList();
             for (int i = 0; i < listPlatformers.Count; i++)
             {
                 ListBoxPlatformers.Items.Add(listPlatformers[i].Title);

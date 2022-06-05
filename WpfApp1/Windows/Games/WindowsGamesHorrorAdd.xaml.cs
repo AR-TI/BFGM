@@ -1,6 +1,9 @@
-﻿using System.Windows;
-using System.Windows.Input;
+﻿using BFGM.Classes;
+using BFGM.Models;
 using BFGM.Pages.Games;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace BFGM.Windows.Games
 {
@@ -9,36 +12,39 @@ namespace BFGM.Windows.Games
     /// </summary>
     public partial class WindowsHorrorAdd : Window
     {
-        ClassWriteFile classWritingFile;
-        PageGamesHorrors pageGamesHorrors;
+        readonly ClassMain classMain;
+        readonly ClassWriteFile classWriteFile;
+        readonly PageGamesHorrors pageGamesHorrors;
 
-        public WindowsHorrorAdd(ClassWriteFile classWritingFile, PageGamesHorrors pageGamesHorrors)
+        public WindowsHorrorAdd(ClassMain classMain, ClassWriteFile classWriteFile, PageGamesHorrors pageGamesHorrors)
         {
             InitializeComponent();
-            this.classWritingFile = classWritingFile;
+            this.classMain = classMain;
+            this.classWriteFile = classWriteFile;
             this.pageGamesHorrors = pageGamesHorrors;
             TextBoxHorror.Focus();
         }
 
-        private void ButtonHorrorAddOK_Click(object sender, RoutedEventArgs e)
+        private async void ButtonHorrorAddOK_Click(object sender, RoutedEventArgs e)
         {
-            AddHorror();
+            await AddHorror();
         }
 
-        private void WindowHorrorAdd_KeyDown(object sender, KeyEventArgs e)
+        private async void WindowHorrorAdd_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                AddHorror();
+                await AddHorror();
             }
         }
 
-        private void AddHorror()
+        private async Task AddHorror()
         {
             string title = TextBoxHorror.Text;
             if (title.Length != 0)
             {
-                classWritingFile.WriteFileHorrors(title);
+                classMain.ListHorrors.Add(new Horror(title));
+                await classWriteFile.WriteFileHorrors();
                 pageGamesHorrors.FillListHorrors();
                 Close();
             }

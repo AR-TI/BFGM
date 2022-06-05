@@ -1,7 +1,6 @@
-﻿using System;
+﻿using BFGM.Models;
 using System.Collections.Generic;
 using System.IO;
-using BFGM.Models;
 using WpfApp1.Constants;
 
 namespace BFGM.Classes
@@ -9,107 +8,105 @@ namespace BFGM.Classes
     public class ClassMain
     {
         #region Lists
-        public List<Book> ListBooks { get; } = new List<Book>();
+        public List<Book> ListBooks { get; set; } = new List<Book>();
 
-        public List<Film> ListFilms { get; } = new List<Film>();
-        public List<Serial> ListSerials { get; } = new List<Serial>();
-        public List<Cartoon> ListCartoons { get; } = new List<Cartoon>();
+        public List<Film> ListFilms { get; set; } = new List<Film>();
+        public List<Serial> ListSerials { get; set; } = new List<Serial>();
+        public List<Cartoon> ListCartoons { get; set; } = new List<Cartoon>();
 
-        public List<PlayStation> ListPlayStation { get; } = new List<PlayStation>();
-        public List<Horror> ListHorrors { get; } = new List<Horror>();
-        public List<Platformer> ListPlatformers { get; } = new List<Platformer>();
+        public List<PlayStation> ListPlayStation { get; set; } = new List<PlayStation>();
+        public List<Horror> ListHorrors { get; set; } = new List<Horror>();
+        public List<Platformer> ListPlatformers { get; set; } = new List<Platformer>();
 
-        public List<Release> ListReleases { get; } = new List<Release>();
-        public List<Wait> ListWait { get; } = new List<Wait>();
-        public List<Listen> ListListen { get; } = new List<Listen>();
+        public List<Release> ListReleases { get; set; } = new List<Release>();
+        public List<Wait> ListWait { get; set; } = new List<Wait>();
+        public List<Listen> ListListen { get; set; } = new List<Listen>();
         #endregion
 
-        #region GiveToList()
-        public void GiveToListBooks(string nameBooksBook, string nameBooksAuthor)
+        #region Add()
+        public void Add<T, K>(T list, K model) where T : List<K>
         {
-            ListBooks.Add(new Book(nameBooksBook, nameBooksAuthor));
+            list.Add(model);
         }
 
-        public void GiveToListFilms(string nameFilmsFilm)
+        public void AddBook(Book book)
         {
-            ListFilms.Add(new Film(nameFilmsFilm));
-        }
-        public void GiveToListSerials(string nameFilmsSerials)
-        {
-            ListSerials.Add(new Serial(nameFilmsSerials));
-        }
-        public void GiveToListCartoons(string nameFilmsCartoons)
-        {
-            ListCartoons.Add(new Cartoon(nameFilmsCartoons));
+            ListBooks.Add(book);
         }
 
-        public void GiveToListPlayStation(string nameGamesPlayStation)
+        public void AddFilm(Film film)
         {
-            ListPlayStation.Add(new PlayStation(nameGamesPlayStation));
+            ListFilms.Add(film);
         }
-        public void GiveToListHorrors(string nameGamesHorror)
+        public void AddSerial(Serial serial)
         {
-            ListHorrors.Add(new Horror(nameGamesHorror));
+            ListSerials.Add(serial);
         }
-        public void GiveToListPlatformers(string nameGamesPlatformer)
+        public void AddCartoon(Cartoon cartoon)
         {
-            ListPlatformers.Add(new Platformer(nameGamesPlatformer));
+            ListCartoons.Add(cartoon);
         }
 
-        public void GiveToListReleases(Release release)
+        public void AddPlayStation(PlayStation playStation)
+        {
+            ListPlayStation.Add(playStation);
+        }
+        public void AddHorror(Horror horror)
+        {
+            ListHorrors.Add(horror);
+        }
+        public void AddPlatformer(Platformer platformer)
+        {
+            ListPlatformers.Add(platformer);
+        }
+
+        public void AddRelease(Release release)
         {
             ListReleases.Add(release);
         }
-        public void GiveToListWait(string nameMusicWaiting)
+        public void AddWait(Wait wait)
         {
-            ListWait.Add(new Wait(nameMusicWaiting));
+            ListWait.Add(wait);
         }
-        public void GiveToListListen(string nameMusicListen)
+        public void AddListen(Listen listen)
         {
-            ListListen.Add(new Listen(nameMusicListen));
+            ListListen.Add(listen);
         }
         #endregion
 
         #region Delete()
         public void DeleteBook(Book book)
         {
-            for (int i = 0; i < ListBooks.Count; i++)
-            {
-                if (ListBooks[i].Title == book.Title && ListBooks[i].Author == book.Author)
-                {
-                    ListBooks.RemoveAt(i);
-                    break;
-                }
-            }
+            ListBooks.Remove(book);
         }
 
-        public void DeleteFilm(string selectedName)
+        public void DeleteFilm(string name)
         {
             for (int i = 0; i < ListFilms.Count; i++)
             {
-                if (ListFilms[i].Title == selectedName)
+                if (ListFilms[i].Title == name)
                 {
                     ListFilms.RemoveAt(i);
                     break;
                 }
             }
         }
-        public void DeleteSerial(string selectedName)
+        public void DeleteSerial(string name)
         {
             for (int i = 0; i < ListSerials.Count; i++)
             {
-                if (ListSerials[i].Title == selectedName)
+                if (ListSerials[i].Title == name)
                 {
                     ListSerials.RemoveAt(i);
                     break;
                 }
             }
         }
-        public void DeleteCartoon(string selectedName)
+        public void DeleteCartoon(string name)
         {
             for (int i = 0; i < ListCartoons.Count; i++)
             {
-                if (ListCartoons[i].Title == selectedName)
+                if (ListCartoons[i].Title == name)
                 {
                     ListCartoons.RemoveAt(i);
                     break;
@@ -117,33 +114,33 @@ namespace BFGM.Classes
             }
         }
 
-        public void DeletePlayStation(string selectedName)
+        public void DeletePlayStation(string name)
         {
             for (int i = 0; i < ListPlayStation.Count; i++)
             {
-                if (ListPlayStation[i].Title == selectedName)
+                if (ListPlayStation[i].Title == name)
                 {
                     ListPlayStation.RemoveAt(i);
                     break;
                 }
             }
         }
-        public void DeleteHorrors(string selectedName)
+        public void DeleteHorrors(string name)
         {
             for (int i = 0; i < ListHorrors.Count; i++)
             {
-                if (ListHorrors[i].Title == selectedName)
+                if (ListHorrors[i].Title == name)
                 {
                     ListHorrors.RemoveAt(i);
                     break;
                 }
             }
         }
-        public void DeletePlatformers(string selectedName)
+        public void DeletePlatformers(string name)
         {
             for (int i = 0; i < ListPlatformers.Count; i++)
             {
-                if (ListPlatformers[i].Title == selectedName)
+                if (ListPlatformers[i].Title == name)
                 {
                     ListPlatformers.RemoveAt(i);
                     break;
@@ -153,31 +150,24 @@ namespace BFGM.Classes
 
         public void DeleteRelease(Release release)
         {
-            for (int i = 0; i < ListReleases.Count; i++)
-            {
-                if (ListReleases[i].Band == release.Band && ListReleases[i].Album == release.Album && ListReleases[i].Date == release.Date)
-                {
-                    ListReleases.RemoveAt(i);
-                    break;
-                }
-            }
+            ListReleases.Remove(release);
         }
-        public void DeleteWait(string selectedName)
+        public void DeleteWait(string name)
         {
             for (int i = 0; i < ListWait.Count; i++)
             {
-                if (ListWait[i].Band == selectedName)
+                if (ListWait[i].Band == name)
                 {
                     ListWait.RemoveAt(i);
                     break;
                 }
             }
         }
-        public void DeleteListen(string selectedName)
+        public void DeleteListen(string name)
         {
             for (int i = 0; i < ListListen.Count; i++)
             {
-                if (ListListen[i].Band == selectedName)
+                if (ListListen[i].Band == name)
                 {
                     ListListen.RemoveAt(i);
                     break;
@@ -189,15 +179,9 @@ namespace BFGM.Classes
         #region Edit()
         public void EditRelease(Release oldRelease, Release newRelease)
         {
-            for (int i = 0; i < ListReleases.Count; i++)
-            {
-                if (ListReleases[i].Band == oldRelease.Band && ListReleases[i].Album == oldRelease.Album && ListReleases[i].Date == oldRelease.Date)
-                {
-                    ListReleases.RemoveAt(i);
-                    ListReleases.Insert(i, newRelease);
-                    break;
-                }
-            }
+            int index = ListReleases.IndexOf(oldRelease);
+            ListReleases.Remove(oldRelease);
+            ListReleases.Insert(index, newRelease);
         }
         #endregion
 

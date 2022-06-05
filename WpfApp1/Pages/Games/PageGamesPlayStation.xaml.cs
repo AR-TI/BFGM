@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using BFGM.Classes;
+using BFGM.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using BFGM.Models;
 
 namespace BFGM.Pages.Games
 {
@@ -12,20 +13,22 @@ namespace BFGM.Pages.Games
     /// </summary>
     public partial class PageGamesPlayStation : Page
     {
-        ClassReadFile classReadingFile;
+        readonly ClassMain classMain;
+        readonly ClassReadFile classReadFile;
 
-        public PageGamesPlayStation(ClassReadFile classReadingFile)
+        public PageGamesPlayStation(ClassMain classMain, ClassReadFile classReadFile)
         {
             InitializeComponent();
-            this.classReadingFile = classReadingFile;
+            this.classMain = classMain;
+            this.classReadFile = classReadFile;
         }
 
         static private bool isFirstTime = false;
-        private void ListBoxPlayStation_Loaded(object sender, RoutedEventArgs e)
+        private async void ListBoxPlayStation_Loaded(object sender, RoutedEventArgs e)
         {
             if (!isFirstTime)
             {
-                classReadingFile.ReadFilePlayStation();
+                await classReadFile.ReadFilePlayStation();
                 isFirstTime = true;
             }
             FillListPlayStation();
@@ -34,7 +37,7 @@ namespace BFGM.Pages.Games
         bool isDescending = false;
         private void ButtonSortPlayStation_Click(object sender, RoutedEventArgs e)
         {
-            List<PlayStation> listPlayStation = classReadingFile.ClassMainInfo.ListPlayStation;
+            List<PlayStation> listPlayStation = classMain.ListPlayStation;
             if (!isDescending)
             {
                 ListBoxPlayStation.Items.Clear();
@@ -60,7 +63,7 @@ namespace BFGM.Pages.Games
         public void FillListPlayStation()
         {
             ListBoxPlayStation.Items.Clear();
-            List<PlayStation> listlPayStation = classReadingFile.ClassMainInfo.ListPlayStation.OrderBy(x => x.Title).ToList();
+            List<PlayStation> listlPayStation = classMain.ListPlayStation.OrderBy(x => x.Title).ToList();
             for (int i = 0; i < listlPayStation.Count; i++)
             {
                 ListBoxPlayStation.Items.Add(listlPayStation[i].Title);

@@ -36,6 +36,6 @@
                     Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" Click="ButtonGamesDelete_Click"/>
         </Grid>
 
-        <Frame Grid.Row="0" x:Name="frameGames"/>
+        <Frame Grid.Row="0" x:Name="GamesFrame"/>
     </Grid>
 </Page>

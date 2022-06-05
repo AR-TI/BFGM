@@ -28,6 +28,6 @@
                 Background="Transparent" Style="{StaticResource ButtonRevealStyle}" Click="Button_Click_Music" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"/>
         </StackPanel>
 
-        <Frame Grid.Column="1" Grid.Row="0" x:Name="frameMain" NavigationUIVisibility="Hidden"/>
+        <Frame Grid.Column="1" Grid.Row="0" x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

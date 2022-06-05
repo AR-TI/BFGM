@@ -1,6 +1,9 @@
-﻿using System.Windows;
-using System.Windows.Input;
+﻿using BFGM.Classes;
+using BFGM.Models;
 using BFGM.Pages.Music;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace BFGM.Windows.Music
 {
@@ -9,36 +12,39 @@ namespace BFGM.Windows.Music
     /// </summary>
     public partial class WindowsMusicListenAdd : Window
     {
-        ClassWriteFile classWritingFile;
-        PageMusicListen pageMusicListen;
+        readonly ClassMain classMain;
+        readonly ClassWriteFile classWriteFile;
+        readonly PageMusicListen pageMusicListen;
 
-        public WindowsMusicListenAdd(ClassWriteFile classWritingFile, PageMusicListen pageMusicListen)
+        public WindowsMusicListenAdd(ClassMain classMain, ClassWriteFile classWriteFile, PageMusicListen pageMusicListen)
         {
             InitializeComponent();
-            this.classWritingFile = classWritingFile;
+            this.classMain = classMain;
+            this.classWriteFile = classWriteFile;
             this.pageMusicListen = pageMusicListen;
             TextBoxListen.Focus();
         }
 
-        private void ButtonListenAddOK_Click(object sender, RoutedEventArgs e)
+        private async void ButtonListenAddOK_Click(object sender, RoutedEventArgs e)
         {
-            AddListen();
+            await AddListen();
         }
 
-        private void WindowListenAdd_KeyDown(object sender, KeyEventArgs e)
+        private async void WindowListenAdd_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                AddListen();
+                await AddListen();
             }
         }
 
-        private void AddListen()
+        private async Task AddListen()
         {
             string band = TextBoxListen.Text;
             if (band.Length != 0)
             {
-                classWritingFile.WriteFileListen(band);
+                classMain.ListListen.Add(new Listen(band));
+                await classWriteFile.WriteFileListen();
                 pageMusicListen.FillListListen();
                 Close();
             }

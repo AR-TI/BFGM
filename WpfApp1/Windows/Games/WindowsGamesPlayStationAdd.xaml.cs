@@ -1,6 +1,9 @@
-﻿using System.Windows;
-using System.Windows.Input;
+﻿using BFGM.Classes;
+using BFGM.Models;
 using BFGM.Pages.Games;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace BFGM.Windows.Games
 {
@@ -9,36 +12,39 @@ namespace BFGM.Windows.Games
     /// </summary>
     public partial class WindowsPlayStationAdd : Window
     {
-        ClassWriteFile classWritingFile;
-        PageGamesPlayStation pageGamesPlayStation;
+        readonly ClassMain classMain;
+        readonly ClassWriteFile classWriteFile;
+        readonly PageGamesPlayStation pageGamesPlayStation;
 
-        public WindowsPlayStationAdd(ClassWriteFile classWritingFile, PageGamesPlayStation pageGamesPlayStation)
+        public WindowsPlayStationAdd(ClassMain classMain, ClassWriteFile classWriteFile, PageGamesPlayStation pageGamesPlayStation)
         {
             InitializeComponent();
-            this.classWritingFile = classWritingFile;
+            this.classMain = classMain;
+            this.classWriteFile = classWriteFile;
             this.pageGamesPlayStation = pageGamesPlayStation;
             TextBoxPlayStation.Focus();
         }
 
-        private void ButtonPlayStationAddOK_Click(object sender, RoutedEventArgs e)
+        private async void ButtonPlayStationAddOK_Click(object sender, RoutedEventArgs e)
         {
-            AddPlayStation();
+            await AddPlayStation();
         }
 
-        private void WindowPlayStationAdd_KeyDown(object sender, KeyEventArgs e)
+        private async void WindowPlayStationAdd_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                AddPlayStation();
+                await AddPlayStation();
             }
         }
 
-        private void AddPlayStation()
+        private async Task AddPlayStation()
         {
             string title = TextBoxPlayStation.Text;
             if (title.Length != 0)
             {
-                classWritingFile.WriteFilePlayStation(title);
+                classMain.ListPlayStation.Add(new PlayStation(title));
+                await classWriteFile.WriteFilePlayStation();
                 pageGamesPlayStation.FillListPlayStation();
                 Close();
             }

@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using BFGM.Classes;
+using BFGM.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using BFGM.Models;
 
 namespace BFGM.Pages.Films
 {
@@ -12,20 +13,22 @@ namespace BFGM.Pages.Films
     /// </summary>
     public partial class PageFilmsSerials : Page
     {
-        ClassReadFile classReadingFile;
+        readonly ClassMain classMain;
+        readonly ClassReadFile classReadFile;
 
-        public PageFilmsSerials(ClassReadFile classReadingFile)
+        public PageFilmsSerials(ClassMain classMain, ClassReadFile classReadFile)
         {
             InitializeComponent();
-            this.classReadingFile = classReadingFile;
+            this.classMain = classMain;
+            this.classReadFile = classReadFile;
         }
 
         static private bool isFirstTime = false;
-        private void ListBoxSerials_Loaded(object sender, RoutedEventArgs e)
+        private async void ListBoxSerials_Loaded(object sender, RoutedEventArgs e)
         {
             if (!isFirstTime)
             {
-                classReadingFile.ReadFileSerials();
+                await classReadFile.ReadFileSerials();
                 isFirstTime = true;
             }
             FillListSerials();
@@ -34,7 +37,7 @@ namespace BFGM.Pages.Films
         public void FillListSerials()
         {
             ListBoxSerials.Items.Clear();
-            List<Serial> listSerials = classReadingFile.ClassMainInfo.ListSerials.OrderBy(x => x.Title).ToList();
+            List<Serial> listSerials = classMain.ListSerials.OrderBy(x => x.Title).ToList();
             for (int i = 0; i < listSerials.Count; i++)
             {
                 ListBoxSerials.Items.Add(listSerials[i].Title);
@@ -44,7 +47,7 @@ namespace BFGM.Pages.Films
         bool isDescending = false;
         private void ButtonSortSeroals_Click(object sender, RoutedEventArgs e)
         {
-            List<Serial> listSerials = classReadingFile.ClassMainInfo.ListSerials;
+            List<Serial> listSerials = classMain.ListSerials;
             if (!isDescending)
             {
                 ListBoxSerials.Items.Clear();

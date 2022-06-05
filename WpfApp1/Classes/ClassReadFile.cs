@@ -1,134 +1,63 @@
 ﻿using BFGM.Classes;
 using BFGM.Models;
-using System;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using WpfApp1.Constants;
 
 namespace BFGM
 {
-    public class ClassReadFile : ClassPathFile
+    public class ClassReadFile
     {
-        public ClassReadFile(ClassMain classMain) : base(classMain)
+        readonly ClassMain classMain;
+        public ClassReadFile(ClassMain classMain)
         {
+            this.classMain = classMain;
         }
 
-        public void ReadFileBooks()
+        public async Task ReadFileBooks()
         {
-            using (StreamReader sr = new StreamReader(PathFiles.BooksPath))
-            {
-                while (sr.Peek() > -1)
-                {
-                    string title = sr.ReadLine();
-                    string author = sr.ReadLine();
-                    classMain.GiveToListBooks(title, author);
-                }
-            }
+            await Task.Run(() => classMain.ListBooks = JsonConvert.DeserializeObject<List<Book>>(File.ReadAllText(PathFiles.BooksPath)));
         }
 
-        public void ReadFileFilms()
+        public async Task ReadFileFilms()
         {
-            using (StreamReader sr = new StreamReader(PathFiles.FilmsPath))
-            {
-                while (sr.Peek() > -1)
-                {
-                    string title = sr.ReadLine();
-                    classMain.GiveToListFilms(title);
-                }
-            }
+            await Task.Run(() => classMain.ListFilms = JsonConvert.DeserializeObject<List<Film>>(File.ReadAllText(PathFiles.FilmsPath)));
         }
-        public void ReadFileSerials()
+        public async Task ReadFileSerials()
         {
-            using (StreamReader sr = new StreamReader(PathFiles.SerialsPath))
-            {
-                while (sr.Peek() > -1)
-                {
-                    string title = sr.ReadLine();
-                    classMain.GiveToListSerials(title);
-                }
-            }
+            await Task.Run(() => classMain.ListSerials = JsonConvert.DeserializeObject<List<Serial>>(File.ReadAllText(PathFiles.SerialsPath)));
         }
-        public void ReadFileCartoons()
+        public async Task ReadFileCartoons()
         {
-            using (StreamReader sr = new StreamReader(PathFiles.CartoonsPath))
-            {
-                while (sr.Peek() > -1)
-                {
-                    string title = sr.ReadLine();
-                    classMain.GiveToListCartoons(title);
-                }
-            }
+            await Task.Run(() => classMain.ListCartoons = JsonConvert.DeserializeObject<List<Cartoon>>(File.ReadAllText(PathFiles.CartoonsPath)));
         }
 
-        public void ReadFilePlayStation()
+        public async Task ReadFilePlayStation()
         {
-            using (StreamReader sr = new StreamReader(PathFiles.PlayStationPath))
-            {
-                while (sr.Peek() > -1)
-                {
-                    string title = sr.ReadLine();
-                    classMain.GiveToListPlayStation(title);
-                }
-            }
+            await Task.Run(() => classMain.ListPlayStation = JsonConvert.DeserializeObject<List<PlayStation>>(File.ReadAllText(PathFiles.PlayStationPath)));
         }
-        public void ReadFileHorrors()
+        public async Task ReadFileHorrors()
         {
-            using (StreamReader sr = new StreamReader(PathFiles.HorrorsPath))
-            {
-                while (sr.Peek() > -1)
-                {
-                    string title = sr.ReadLine();
-                    classMain.GiveToListHorrors(title);
-                }
-            }
+            await Task.Run(() => classMain.ListHorrors = JsonConvert.DeserializeObject<List<Horror>>(File.ReadAllText(PathFiles.HorrorsPath)));
         }
-        public void ReadFilePlatformers()
+        public async Task ReadFilePlatformers()
         {
-            using (StreamReader sr = new StreamReader(PathFiles.PlatformersPath))
-            {
-                while (sr.Peek() > -1)
-                {
-                    string title = sr.ReadLine();
-                    classMain.GiveToListPlatformers(title);
-                }
-            }
+            await Task.Run(() => classMain.ListPlatformers = JsonConvert.DeserializeObject<List<Platformer>>(File.ReadAllText(PathFiles.PlatformersPath)));
         }
 
-        public async Task ReadFileReleases()
+        public async Task ReadFileRelease()
         {
-            using (StreamReader sr = new StreamReader(PathFiles.ReleasesPath))
-            {
-                string band, album, date;
-                while (sr.Peek() > -1)
-                {
-                    band = await sr.ReadLineAsync();
-                    album = await sr.ReadLineAsync();
-                    date = await sr.ReadLineAsync();
-                    classMain.GiveToListReleases(new Release(band, album, DateTime.Parse(date)));
-                }
-            }
+            await Task.Run(() => classMain.ListReleases = JsonConvert.DeserializeObject<List<Release>>(File.ReadAllText(PathFiles.ReleasesPath)));
         }
-        public void ReadFileWait()
+        public async Task ReadFileWait()
         {
-            using (StreamReader sr = new StreamReader(PathFiles.WaitPath))
-            {
-                while (sr.Peek() > -1)
-                {
-                    string band = sr.ReadLine();
-                    classMain.GiveToListWait(band);
-                }
-            }
+            await Task.Run(() => classMain.ListWait = JsonConvert.DeserializeObject<List<Wait>>(File.ReadAllText(PathFiles.WaitPath)));
         }
-        public void ReadFileListen()
+        public async Task ReadFileListen()
         {
-            using (StreamReader sr = new StreamReader(PathFiles.ListenPath))
-            {
-                while (sr.Peek() > -1)
-                {
-                    string band = sr.ReadLine();
-                    classMain.GiveToListListen(band);
-                }
-            }
+            await Task.Run(() => classMain.ListListen = JsonConvert.DeserializeObject<List<Listen>>(File.ReadAllText(PathFiles.ListenPath)));
         }
     }
 }

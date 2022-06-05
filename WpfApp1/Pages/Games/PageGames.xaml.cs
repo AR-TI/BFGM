@@ -1,7 +1,8 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using BFGM.Classes;
 using BFGM.Pages.Games;
 using BFGM.Windows.Games;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace BFGM.Pages
 {
@@ -10,43 +11,42 @@ namespace BFGM.Pages
     /// </summary>
     public partial class PageGames : Page
     {
-        byte pageActivity;
+        readonly ClassMain classMain;
+        readonly ClassReadFile classReadFile;
+        readonly ClassWriteFile classWriteFile;
 
         PageGamesPlayStation pageGamesPlayStation;
         PageGamesHorrors pageGamesHorrors;
         PageGamesPlatformers pageGamesPlatformers;
 
-        ClassWriteFile classWritingFile;
-        ClassReadFile classReadingFile;
+        byte pageActivity;
 
-        public PageGames(ClassReadFile classReadingFile, ClassWriteFile classWritingFile)
+        public PageGames(ClassMain classMain, ClassReadFile classReadFile, ClassWriteFile classWriteFile)
         {
             InitializeComponent();
-            this.classReadingFile = classReadingFile;
-            this.classWritingFile = classWritingFile;
+            this.classMain = classMain;
+            this.classReadFile = classReadFile;
+            this.classWriteFile = classWriteFile;
         }
 
         #region Pages Games
         private void ButtonPlayStation_Click(object sender, RoutedEventArgs e)
         {
             pageActivity = 1;
-            //frameGames.Content = new PageGamesPlayStation();
-            pageGamesPlayStation = new PageGamesPlayStation(classReadingFile);
-            frameGames.Content = pageGamesPlayStation;
+            pageGamesPlayStation = new PageGamesPlayStation(classMain, classReadFile);
+            GamesFrame.Content = pageGamesPlayStation;
         }
         private void ButtonHorrors_Click(object sender, RoutedEventArgs e)
         {
             pageActivity = 2;
-            //frameGames.Content = new PageGamesHorrors();
-            pageGamesHorrors = new PageGamesHorrors(classReadingFile);
-            frameGames.Content = pageGamesHorrors;
+            pageGamesHorrors = new PageGamesHorrors(classMain, classReadFile);
+            GamesFrame.Content = pageGamesHorrors;
         }
         private void ButtonPlatformers_Click(object sender, RoutedEventArgs e)
         {
             pageActivity = 3;
-            //frameGames.Content = new PageGamesPlatformers();
-            pageGamesPlatformers = new PageGamesPlatformers(classReadingFile);
-            frameGames.Content = pageGamesPlatformers;
+            pageGamesPlatformers = new PageGamesPlatformers(classMain, classReadFile);
+            GamesFrame.Content = pageGamesPlatformers;
         }
         #endregion
 
@@ -54,22 +54,22 @@ namespace BFGM.Pages
         {
             if (pageActivity == 1)
             {
-                WindowsPlayStationAdd windowsPlayStationAdd = new WindowsPlayStationAdd(classWritingFile, pageGamesPlayStation);
+                WindowsPlayStationAdd windowsPlayStationAdd = new WindowsPlayStationAdd(classMain, classWriteFile, pageGamesPlayStation);
                 windowsPlayStationAdd.ShowDialog();
             }
             else if (pageActivity == 2)
             {
-                WindowsHorrorAdd windowsHorrorAdd = new WindowsHorrorAdd(classWritingFile, pageGamesHorrors);
+                WindowsHorrorAdd windowsHorrorAdd = new WindowsHorrorAdd(classMain, classWriteFile, pageGamesHorrors);
                 windowsHorrorAdd.ShowDialog();
             }
             else if (pageActivity == 3)
             {
-                WindowsPlatformerAdd windowsPlatformerAdd = new WindowsPlatformerAdd(classWritingFile, pageGamesPlatformers);
+                WindowsPlatformerAdd windowsPlatformerAdd = new WindowsPlatformerAdd(classMain, classWriteFile, pageGamesPlatformers);
                 windowsPlatformerAdd.ShowDialog();
             }
         }
 
-        private void ButtonGamesDelete_Click(object sender, RoutedEventArgs e)
+        private async void ButtonGamesDelete_Click(object sender, RoutedEventArgs e)
         {
             if (pageActivity == 1)
             {
@@ -78,8 +78,8 @@ namespace BFGM.Pages
                 if (selectedIndex != -1)
                 {
                     string selectedName = pageGamesPlayStation.ListBoxPlayStation.Items[selectedIndex].ToString();
-                    classReadingFile.ClassMainInfo.DeletePlayStation(selectedName);
-                    classWritingFile.RewriteFileAfterDeletePlayStation();
+                    classMain.DeletePlayStation(selectedName);
+                    await classWriteFile.WriteFilePlayStation();
                     pageGamesPlayStation.ListBoxPlayStation.Items.RemoveAt(selectedIndex);
                 }
             }
@@ -90,8 +90,8 @@ namespace BFGM.Pages
                 if (selectedIndex != -1)
                 {
                     string selectedName = pageGamesHorrors.ListBoxHorrors.Items[selectedIndex].ToString();
-                    classReadingFile.ClassMainInfo.DeleteHorrors(selectedName);
-                    classWritingFile.RewriteFileAfterDeleteHorrors();
+                    classMain.DeleteHorrors(selectedName);
+                    await classWriteFile.WriteFileHorrors();
                     pageGamesHorrors.ListBoxHorrors.Items.RemoveAt(selectedIndex);
                 }
             }
@@ -102,8 +102,8 @@ namespace BFGM.Pages
                 if (selectedIndex != -1)
                 {
                     string selectedName = pageGamesPlatformers.ListBoxPlatformers.Items[selectedIndex].ToString();
-                    classReadingFile.ClassMainInfo.DeletePlatformers(selectedName);
-                    classWritingFile.RewriteFileAfterDeletePlatformers();
+                    classMain.DeletePlatformers(selectedName);
+                    await classWriteFile.WriteFilePlatformers();
                     pageGamesPlatformers.ListBoxPlatformers.Items.RemoveAt(selectedIndex);
                 }
             }

@@ -1,6 +1,9 @@
-﻿using System.Windows;
-using System.Windows.Input;
+﻿using BFGM.Classes;
+using BFGM.Models;
 using BFGM.Pages.Films;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace BFGM.Windows.Films
 {
@@ -9,36 +12,39 @@ namespace BFGM.Windows.Films
     /// </summary>
     public partial class WindowFilmsFilmAdd : Window
     {
-        ClassWriteFile classWritingFile;
-        PageFilmsFilms pageFilmsFilms;
+        readonly ClassMain classMain;
+        readonly ClassWriteFile classWriteFile;
+        readonly PageFilmsFilms pageFilmsFilms;
 
-        public WindowFilmsFilmAdd(ClassWriteFile classWritingFile, PageFilmsFilms pageFilmsFilms)
+        public WindowFilmsFilmAdd(ClassMain classMain, ClassWriteFile classWriteFile, PageFilmsFilms pageFilmsFilms)
         {
             InitializeComponent();
-            this.classWritingFile = classWritingFile;
+            this.classMain = classMain;
+            this.classWriteFile = classWriteFile;
             this.pageFilmsFilms = pageFilmsFilms;
             TextBoxFilm.Focus();
         }
 
-        private void ButtonFilmAddOK_Click(object sender, RoutedEventArgs e)
+        private async void ButtonFilmAddOK_Click(object sender, RoutedEventArgs e)
         {
-            AddFilm();
+            await AddFilm();
         }
 
-        private void WindowsFilmAdd_KeyDown(object sender, KeyEventArgs e)
+        private async void WindowsFilmAdd_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                AddFilm();
+                await AddFilm();
             }
         }
 
-        private void AddFilm()
+        private async Task AddFilm()
         {
             string title = TextBoxFilm.Text;
             if (title.Length != 0)
             {
-                classWritingFile.WriteFileFilms(title);
+                classMain.ListFilms.Add(new Film(title));
+                await classWriteFile.WriteFileFilms();
                 pageFilmsFilms.FillListFilms();
                 Close();
             }

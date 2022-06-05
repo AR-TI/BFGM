@@ -1,4 +1,6 @@
-﻿using BFGM.Models;
+﻿using BFGM.Classes;
+using BFGM.Models;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -9,36 +11,39 @@ namespace BFGM.Windows
     /// </summary>
     public partial class WindowBooksAdd : Window
     {
-        ClassWriteFile classWritingFile;
+        readonly ClassMain classMain;
+        readonly ClassWriteFile classWriteFile;
 
-        public WindowBooksAdd(ClassWriteFile classWritingFile)
+        public WindowBooksAdd(ClassMain classMain, ClassWriteFile classWriteFile)
         {
             InitializeComponent();
-            this.classWritingFile = classWritingFile;
+            this.classMain = classMain;
+            this.classWriteFile = classWriteFile;
             TextBoxTitle.Focus();
         }
 
-        private void AddBook()
+        private async Task AddBook()
         {
             string title = TextBoxTitle.Text;
             string author = TextBoxAuthor.Text;
             if (title.Length != 0 && author.Length != 0)
             {
-                classWritingFile.WriteFileBooks(new Book(title, author));
+                classMain.ListBooks.Add(new Book(title, author));
+                await classWriteFile.WriteFileBooks();
                 Close();
             }
         }
 
-        private void ButtonBookAddOK_Click(object sender, RoutedEventArgs e)
+        private async void ButtonBookAddOK_Click(object sender, RoutedEventArgs e)
         {
-            AddBook();
+            await AddBook();
         }
 
-        private void WindowBookAdd_KeyDown(object sender, KeyEventArgs e)
+        private async void WindowBookAdd_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                AddBook();
+                await AddBook();
             }
         }
     }

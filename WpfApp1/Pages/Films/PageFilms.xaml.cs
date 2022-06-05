@@ -1,7 +1,8 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using BFGM.Classes;
 using BFGM.Pages.Films;
 using BFGM.Windows.Films;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace BFGM.Pages
 {
@@ -10,18 +11,20 @@ namespace BFGM.Pages
     /// </summary>
     public partial class PageFilms : Page
     {
+        readonly ClassMain classMain;
+        readonly ClassReadFile classReadFile;
+        readonly ClassWriteFile classWriteFile;
+
         PageFilmsFilms pageFilmsFilms;
         PageFilmsSerials pageFilmsSerials;
         PageFilmsCartoons pageFilmsCartoons;
 
-        ClassWriteFile classWritingFile;
-        ClassReadFile classReadingFile;
-
-        public PageFilms(ClassReadFile classReadingFile, ClassWriteFile classWritingFile)
+        public PageFilms(ClassMain classMain, ClassReadFile classReadFile, ClassWriteFile classWriteFile)
         {
             InitializeComponent();
-            this.classReadingFile = classReadingFile;
-            this.classWritingFile = classWritingFile;
+            this.classMain = classMain;
+            this.classReadFile = classReadFile;
+            this.classWriteFile = classWriteFile;
         }
 
         #region Pages Films
@@ -29,25 +32,22 @@ namespace BFGM.Pages
         private void ButtonFilms_Click(object sender, RoutedEventArgs e)
         {
             pageActivity = 1;
-            //frameFilms.Content = new PageFilmsFilms();
-            pageFilmsFilms = new PageFilmsFilms(classReadingFile);
-            frameFilms.Content = pageFilmsFilms;
+            pageFilmsFilms = new PageFilmsFilms(classMain, classReadFile);
+            FilmsFrame.Content = pageFilmsFilms;
         }
 
         private void ButtonSerials_Click(object sender, RoutedEventArgs e)
         {
             pageActivity = 2;
-            //frameFilms.Content = new PageFilmsSerials();
-            pageFilmsSerials = new PageFilmsSerials(classReadingFile);
-            frameFilms.Content = pageFilmsSerials;
+            pageFilmsSerials = new PageFilmsSerials(classMain, classReadFile);
+            FilmsFrame.Content = pageFilmsSerials;
         }
 
         private void ButtonCartoons_Click(object sender, RoutedEventArgs e)
         {
             pageActivity = 3;
-            //frameFilms.Content = new PageFilmsCartoons();
-            pageFilmsCartoons = new PageFilmsCartoons(classReadingFile);
-            frameFilms.Content = pageFilmsCartoons;
+            pageFilmsCartoons = new PageFilmsCartoons(classMain, classReadFile);
+            FilmsFrame.Content = pageFilmsCartoons;
         }
         #endregion
 
@@ -55,22 +55,22 @@ namespace BFGM.Pages
         {
             if (pageActivity == 1)
             {
-                WindowFilmsFilmAdd windowsFilmAdd = new WindowFilmsFilmAdd(classWritingFile, pageFilmsFilms);
+                WindowFilmsFilmAdd windowsFilmAdd = new WindowFilmsFilmAdd(classMain, classWriteFile, pageFilmsFilms);
                 windowsFilmAdd.ShowDialog();
             }
             else if (pageActivity == 2)
             {
-                WindowFilmsSerialAdd windowsSeriaAdd = new WindowFilmsSerialAdd(classWritingFile, pageFilmsSerials);
+                WindowFilmsSerialAdd windowsSeriaAdd = new WindowFilmsSerialAdd(classMain, classWriteFile, pageFilmsSerials);
                 windowsSeriaAdd.ShowDialog();
             }
             else if (pageActivity == 3)
             {
-                WindowFilmsCartoonAdd windowCartoonAdd = new WindowFilmsCartoonAdd(classWritingFile, pageFilmsCartoons);
+                WindowFilmsCartoonAdd windowCartoonAdd = new WindowFilmsCartoonAdd(classMain, classWriteFile, pageFilmsCartoons);
                 windowCartoonAdd.ShowDialog();
             }
         }
 
-        private void ButtonFilmsDelete_Click(object sender, RoutedEventArgs e)
+        private async void ButtonFilmsDelete_Click(object sender, RoutedEventArgs e)
         {
             if (pageActivity == 1)
             {
@@ -79,8 +79,8 @@ namespace BFGM.Pages
                 if (selectedIndex != -1)
                 {
                     string selectedName = pageFilmsFilms.ListBoxFilms.Items[selectedIndex].ToString();
-                    classReadingFile.ClassMainInfo.DeleteFilm(selectedName);
-                    classWritingFile.RewriteFileAfterDeleteFilms();
+                    classMain.DeleteFilm(selectedName);
+                    await classWriteFile.WriteFileFilms();
                     pageFilmsFilms.ListBoxFilms.Items.RemoveAt(selectedIndex);
                 }
             }
@@ -91,8 +91,8 @@ namespace BFGM.Pages
                 if (selectedIndex != -1)
                 {
                     string selectedName = pageFilmsSerials.ListBoxSerials.Items[selectedIndex].ToString();
-                    classReadingFile.ClassMainInfo.DeleteSerial(selectedName);
-                    classWritingFile.RewriteFileAfterDeleteSerials();
+                    classMain.DeleteSerial(selectedName);
+                    await classWriteFile.WriteFileSerials();
                     pageFilmsSerials.ListBoxSerials.Items.RemoveAt(selectedIndex);
                 }
             }
@@ -103,8 +103,8 @@ namespace BFGM.Pages
                 if (selectedIndex != -1)
                 {
                     string selectedName = pageFilmsCartoons.ListBoxCartoons.Items[selectedIndex].ToString();
-                    classReadingFile.ClassMainInfo.DeleteCartoon(selectedName);
-                    classWritingFile.RewriteFileAfterDeleteCartoons();
+                    classMain.DeleteCartoon(selectedName);
+                    await classWriteFile.WriteFileCartoons();
                     pageFilmsCartoons.ListBoxCartoons.Items.RemoveAt(selectedIndex);
                 }
             }

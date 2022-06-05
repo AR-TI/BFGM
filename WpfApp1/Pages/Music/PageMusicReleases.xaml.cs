@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using BFGM.Classes;
+using BFGM.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using BFGM.Models;
 using WpfApp1.Windows.Music;
 
 namespace BFGM.Pages.Music
@@ -13,16 +14,19 @@ namespace BFGM.Pages.Music
     /// </summary>
     public partial class PageMusicReleases : Page
     {
-        ClassWriteFile classWritingFile; //mew
-        ClassReadFile classReadingFile;
+        readonly ClassMain classMain;
+        readonly ClassReadFile classReadFile;
+        readonly ClassWriteFile classWriteFile;
+
         List<Release> listReleases;
         byte SinglesAlbumsShow = 0;
 
-        public PageMusicReleases(ClassReadFile classReadingFile, ClassWriteFile classWritingFile/*new*/)
+        public PageMusicReleases(ClassMain classMain, ClassReadFile classReadFile, ClassWriteFile classWriteFile)
         {
             InitializeComponent();
-            this.classWritingFile = classWritingFile;  //new
-            this.classReadingFile = classReadingFile;
+            this.classMain = classMain;
+            this.classReadFile = classReadFile;
+            this.classWriteFile = classWriteFile;
         }
 
         static private bool isFirstTime = false;
@@ -30,7 +34,8 @@ namespace BFGM.Pages.Music
         {
             if (!isFirstTime)
             {
-                await classReadingFile.ReadFileReleases();
+                //await classReadFile.ReadFileReleases();
+                await classReadFile.ReadFileRelease();
                 isFirstTime = true;
             }
             FillListBoxMusicReleases();
@@ -38,7 +43,7 @@ namespace BFGM.Pages.Music
 
         public void FillListBoxMusicReleases()
         {
-            listReleases = classReadingFile.ClassMainInfo.ListReleases.OrderBy(x => x.Date).ToList();
+            listReleases = classMain.ListReleases.OrderBy(x => x.Date).ThenBy(x => x.Band).ToList();
             ListBoxReleases.ItemsSource = listReleases;
         }
 
@@ -75,7 +80,7 @@ namespace BFGM.Pages.Music
             {
                 FillListBoxMusicReleases();
                 SinglesAlbumsShow = 0;
-                ButtonSinglesAlbums.Content = "Singels";
+                ButtonSinglesAlbums.Content = "Singles";
             }
         }
         public void CurrentSort()
@@ -95,7 +100,7 @@ namespace BFGM.Pages.Music
             if (selectedIndex != -1)
             {
                 Release releaseOld = ListBoxReleases.Items[selectedIndex] as Release;
-                WindowsMusicReleasesEdit windowsMusicReleasesEdit = new WindowsMusicReleasesEdit(classWritingFile, this, releaseOld);
+                WindowsMusicReleasesEdit windowsMusicReleasesEdit = new WindowsMusicReleasesEdit(classMain, classWriteFile, this, releaseOld);
                 windowsMusicReleasesEdit.ShowDialog();
             }
         }
@@ -110,14 +115,23 @@ namespace BFGM.Pages.Music
                 {
                     object data = ListBoxReleases.Items[selectedIndex];
                     Release release = data as Release;
-                    string fullName = $"{release.Band} - {release.Album}";
+                    string fullName = $"{release.Band} {release.Album}";
                     if (fullName.Contains(" [Single]"))
+                    {
                         fullName = fullName.Replace(" [Single]", "");
+                    }
                     else if (fullName.Contains(" [EP]"))
+                    {
                         fullName = fullName.Replace(" [EP]", "");
+                    }
                     Clipboard.SetText(fullName);
                 }
             }
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            ListBoxReleases.ItemsSource = listReleases.OrderBy(x => x.Band).ThenBy(x => x.Date).ToList();
         }
     }
 }

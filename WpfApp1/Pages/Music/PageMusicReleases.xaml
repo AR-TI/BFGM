@@ -14,8 +14,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ListBox Grid.Row="0" Margin="10,10,10,8" x:Name="ListBoxReleases" BorderThickness="0" HorizontalContentAlignment="Stretch"
-                 Background="Transparent" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" KeyDown="ListBoxMusicReleases_KeyDown_Clipboard">
+        <ListBox Grid.Row="0" Margin="10,10,10,8" x:Name="ListBoxReleases" BorderThickness="0" HorizontalContentAlignment="Stretch" Background="Transparent" FontFamily="Book Antiqua"
+                 FontSize="16" Foreground="WhiteSmoke" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" KeyDown="ListBoxMusicReleases_KeyDown_Clipboard">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -36,6 +36,9 @@
             <ListBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Edit" Click="MenuItem_ClickEdit"></MenuItem>
+                    <MenuItem Header="Sort">
+                        <MenuItem Header="By Band Name" Click="MenuItem_Click"/>
+                    </MenuItem>
                 </ContextMenu>
             </ListBox.ContextMenu>
         </ListBox>
