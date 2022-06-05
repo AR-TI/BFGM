@@ -1,4 +1,5 @@
 ﻿using BFGM.Classes;
+using BFGM.Constants;
 using BFGM.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,59 +15,42 @@ namespace BFGM.Pages.Games
     public partial class PageGamesHorrors : Page
     {
         readonly ClassMain classMain;
-        readonly ClassReadFile classReadFile;
 
-        public PageGamesHorrors(ClassMain classMain, ClassReadFile classReadFile)
+        public PageGamesHorrors(ClassMain classMain)
         {
             InitializeComponent();
             this.classMain = classMain;
-            this.classReadFile = classReadFile;
         }
 
-        static private bool isFirstTime = false;
+        public void FillListHorrors()
+        {
+            ListBoxHorrors.ItemsSource = classMain.ListHorrors.OrderBy(x => x.Title).ToList();
+        }
+
+        private bool isFirstTime = false;
         private async void ListBoxHorrors_Loaded(object sender, RoutedEventArgs e)
         {
             if (!isFirstTime)
             {
-                await classReadFile.ReadFileHorrors();
+                classMain.ListHorrors = await classMain.Read<Horror>(PathFiles.HorrorsPath);
                 isFirstTime = true;
             }
+
             FillListHorrors();
         }
 
         bool isDescending = false;
         private void ButtonSortHorrors_Click(object sender, RoutedEventArgs e)
         {
-            List<Horror> listHorrors = classMain.ListHorrors;
             if (!isDescending)
             {
-                ListBoxHorrors.Items.Clear();
-                var sorted = listHorrors.OrderByDescending(r => r.Title).ToList();
-                for (int i = 0; i < sorted.Count; i++)
-                {
-                    ListBoxHorrors.Items.Add(sorted[i].Title);
-                }
+                ListBoxHorrors.ItemsSource = classMain.ListHorrors.OrderByDescending(x => x.Title).ToList();
                 isDescending = true;
             }
             else
             {
-                ListBoxHorrors.Items.Clear();
-                var sorted = listHorrors.OrderBy(r => r.Title).ToList();
-                for (int i = 0; i < sorted.Count; i++)
-                {
-                    ListBoxHorrors.Items.Add(sorted[i].Title);
-                }
+                ListBoxHorrors.ItemsSource = classMain.ListHorrors.OrderBy(x => x.Title).ToList();
                 isDescending = false;
-            }
-        }
-
-        public void FillListHorrors()
-        {
-            ListBoxHorrors.Items.Clear();
-            List<Horror> listHorrors = classMain.ListHorrors.OrderBy(x => x.Title).ToList();
-            for (int i = 0; i < listHorrors.Count; i++)
-            {
-                ListBoxHorrors.Items.Add(listHorrors[i].Title);
             }
         }
 
@@ -75,10 +59,11 @@ namespace BFGM.Pages.Games
             if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
             {
                 int selectedIndex = ListBoxHorrors.SelectedIndex;
-
                 if (selectedIndex != -1)
                 {
-                    Clipboard.SetText(ListBoxHorrors.Items[selectedIndex].ToString());
+                    object data = ListBoxHorrors.Items[selectedIndex];
+                    Horror horror = data as Horror;
+                    Clipboard.SetText(horror.Title);
                 }
             }
         }

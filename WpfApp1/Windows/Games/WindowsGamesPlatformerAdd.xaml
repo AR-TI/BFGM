@@ -1,4 +1,4 @@
-﻿<Window x:Name="WindowPlatformerAdd" x:Class="BFGM.Windows.Games.WindowsPlatformerAdd"
+﻿<Window x:Class="BFGM.Windows.Games.WindowsGamesPlatformerAdd"
         xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"

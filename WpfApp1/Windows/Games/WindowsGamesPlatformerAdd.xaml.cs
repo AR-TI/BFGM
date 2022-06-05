@@ -1,4 +1,5 @@
 ﻿using BFGM.Classes;
+using BFGM.Constants;
 using BFGM.Models;
 using BFGM.Pages.Games;
 using System.Threading.Tasks;
@@ -10,19 +11,29 @@ namespace BFGM.Windows.Games
     /// <summary>
     /// Логика взаимодействия для WindowsGamesPlatformerAdd.xaml
     /// </summary>
-    public partial class WindowsPlatformerAdd : Window
+    public partial class WindowsGamesPlatformerAdd : Window
     {
         readonly ClassMain classMain;
-        readonly ClassWriteFile classWriteFile;
         readonly PageGamesPlatformers pageGamesPlatformers;
 
-        public WindowsPlatformerAdd(ClassMain classMain, ClassWriteFile classWriteFile, PageGamesPlatformers pageGamesPlatformers)
+        public WindowsGamesPlatformerAdd(ClassMain classMain, PageGamesPlatformers pageGamesPlatformers)
         {
             InitializeComponent();
             this.classMain = classMain;
-            this.classWriteFile = classWriteFile;
             this.pageGamesPlatformers = pageGamesPlatformers;
             TextBoxPlatformer.Focus();
+        }
+
+        private async Task AddPlatformer()
+        {
+            string title = Functions.ToTitleCaseAllWords(TextBoxPlatformer.Text);
+            if (title.Length != 0)
+            {
+                await classMain.Add(classMain.ListPlatformers, new Platformer(title));
+                await classMain.Write(classMain.ListPlatformers, PathFiles.PlatformersPath);
+                pageGamesPlatformers.FillListPlatformers();
+                Close();
+            }
         }
 
         private async void ButtonPlatformerAddOK_Click(object sender, RoutedEventArgs e)
@@ -35,18 +46,6 @@ namespace BFGM.Windows.Games
             if (e.Key == Key.Enter)
             {
                 await AddPlatformer();
-            }
-        }
-
-        private async Task AddPlatformer()
-        {
-            string title = TextBoxPlatformer.Text;
-            if (title.Length != 0)
-            {
-                classMain.ListPlatformers.Add(new Platformer(title));
-                await classWriteFile.WriteFilePlatformers();
-                pageGamesPlatformers.FillListPlatformers();
-                Close();
             }
         }
     }

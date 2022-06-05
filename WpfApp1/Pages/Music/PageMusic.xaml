@@ -5,7 +5,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:BFGM.Pages"
-      mc:Ignorable="d" d:DesignWidth="778" d:DesignHeight="515"
+      mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
       Title="PageMusic"
       fw:AcrylicWindow.Enabled="True">
 
@@ -26,7 +26,7 @@
 
             <Button Grid.Column="0" x:Name="ButtonMusicReleases" Content="Releases" MaxHeight="45" Click="ButtonReleases_Click"
                     Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"/>
-            <Button Grid.Column="1" x:Name="ButtonMusicWaiting" Content="Wait" MaxHeight="45" Click="ButtonWait_Click"
+            <Button Grid.Column="1" x:Name="ButtonMusicWait" Content="Wait" MaxHeight="45" Click="ButtonWait_Click"
                     Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"/>
             <Button Grid.Column="2" x:Name="ButtonMusicListen" Content="Listen" MaxHeight="45" Click="ButtonListen_Click"
                     Background="Transparent" Style="{StaticResource ButtonRevealStyle}" BorderThickness="1" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"/>

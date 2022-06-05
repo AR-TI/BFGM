@@ -1,4 +1,5 @@
 ﻿using BFGM.Classes;
+using BFGM.Constants;
 using BFGM.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,58 +15,41 @@ namespace BFGM.Pages.Films
     public partial class PageFilmsFilms : Page
     {
         readonly ClassMain classMain;
-        readonly ClassReadFile classReadFile;
 
-        public PageFilmsFilms(ClassMain classMain, ClassReadFile classReadFile)
+        public PageFilmsFilms(ClassMain classMain)
         {
             InitializeComponent();
             this.classMain = classMain;
-            this.classReadFile = classReadFile;
-        }
-
-        static private bool isFirstTime = false;
-        private async void ListBoxFilms_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (!isFirstTime)
-            {
-                await classReadFile.ReadFileFilms();
-                isFirstTime = true;
-            }
-            FillListFilms();
         }
 
         public void FillListFilms()
         {
-            ListBoxFilms.Items.Clear();
-            List<Film> listFilms = classMain.ListFilms.OrderBy(x => x.Title).ToList();
-            for (int i = 0; i < listFilms.Count; i++)
+            ListBoxFilms.ItemsSource = classMain.ListFilms.OrderBy(x => x.Title).ToList();
+        }
+
+        private bool isFirstTime = false;
+        private async void ListBoxFilms_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!isFirstTime)
             {
-                ListBoxFilms.Items.Add(listFilms[i].Title);
+                classMain.ListFilms = await classMain.Read<Film>(PathFiles.FilmsPath);
+                isFirstTime = true;
             }
+
+            FillListFilms();
         }
 
         bool isDescending = false;
         private void ButtonSortFilms_Click(object sender, RoutedEventArgs e)
         {
-            List<Film> listFilms = classMain.ListFilms;
             if (!isDescending)
             {
-                ListBoxFilms.Items.Clear();
-                List<Film> sorted = listFilms.OrderByDescending(x => x.Title).ToList();
-                for (int i = 0; i < sorted.Count; i++)
-                {
-                    ListBoxFilms.Items.Add(sorted[i].Title);
-                }
+                ListBoxFilms.ItemsSource = classMain.ListFilms.OrderByDescending(x => x.Title).ToList();
                 isDescending = true;
             }
             else
             {
-                ListBoxFilms.Items.Clear();
-                List<Film> sorted = listFilms.OrderBy(x => x.Title).ToList();
-                for (int i = 0; i < sorted.Count; i++)
-                {
-                    ListBoxFilms.Items.Add(sorted[i].Title);
-                }
+                ListBoxFilms.ItemsSource = classMain.ListFilms.OrderBy(x => x.Title).ToList();
                 isDescending = false;
             }
         }
@@ -75,10 +59,11 @@ namespace BFGM.Pages.Films
             if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
             {
                 int selectedIndex = ListBoxFilms.SelectedIndex;
-
                 if (selectedIndex != -1)
                 {
-                    Clipboard.SetText(ListBoxFilms.Items[selectedIndex].ToString());
+                    object data = ListBoxFilms.Items[selectedIndex];
+                    Film film = data as Film;
+                    Clipboard.SetText(film.Title);
                 }
             }
         }

@@ -1,4 +1,5 @@
 ﻿using BFGM.Classes;
+using BFGM.Constants;
 using BFGM.Models;
 using BFGM.Windows;
 using System.Collections.Generic;
@@ -15,57 +16,52 @@ namespace BFGM.Pages
     public partial class PageBooks : Page
     {
         readonly ClassMain classMain;
-        readonly ClassReadFile classReadFile;
-        readonly ClassWriteFile classWriteFile;
 
-        public PageBooks(ClassMain classMain, ClassReadFile classReadFile, ClassWriteFile classWriteFile)
+        public PageBooks(ClassMain classMain)
         {
             InitializeComponent();
             this.classMain = classMain;
-            this.classReadFile = classReadFile;
-            this.classWriteFile = classWriteFile;
         }
 
-        static private bool isFirstTime = false;
-        private async void GridBooks_Loaded(object sender, RoutedEventArgs e)
+        public void FillListBooks()
+        {
+            ListBoxBooks.ItemsSource = classMain.ListBooks.OrderBy(x => x.Title).ToList();
+        }
+
+        private bool isFirstTime = false;
+        private async void ListBoxBooks_Loaded(object sender, RoutedEventArgs e)
         {
             if (!isFirstTime)
             {
-                await classReadFile.ReadFileBooks();
+                classMain.ListBooks = await classMain.Read<Book>(PathFiles.BooksPath);
                 isFirstTime = true;
             }
+
             FillListBooks();
         }
 
         private void ButtonBooksAdd_Click(object sender, RoutedEventArgs e)
         {
-            WindowBooksAdd windowBooksAdd = new WindowBooksAdd(classMain, classWriteFile);
+            WindowBooksAdd windowBooksAdd = new WindowBooksAdd(classMain);
             windowBooksAdd.ShowDialog();
             FillListBooks();
         }
         private async void ButtonBooksDelete_Click(object sender, RoutedEventArgs e)
         {
             int selectedIndex = ListBoxBooks.SelectedIndex;
-
             if (selectedIndex != -1)
             {
-                Book book = ListBoxBooks.Items[selectedIndex] as Book;
-                classMain.DeleteBook(book);
-                await classWriteFile.WriteFileBooks();
+                object data = ListBoxBooks.Items[selectedIndex];
+                Book book = data as Book;
+                await classMain.Remove(classMain.ListBooks, book);
+                await classMain.Write(classMain.ListBooks, PathFiles.BooksPath);
                 FillListBooks();
             }
-        }
-
-        public void FillListBooks()
-        {
-            List<Book> listBooks = classMain.ListBooks.OrderBy(x => x.Title).ToList();
-            ListBoxBooks.ItemsSource = listBooks;
         }
 
         private void ListBoxBooks_KeyDown_Clipboard(object sender, KeyEventArgs e)
         {
             int selectedItems = ListBoxBooks.SelectedIndex;
-
             if (selectedItems != -1)
             {
                 Book book = ListBoxBooks.Items[selectedItems] as Book;

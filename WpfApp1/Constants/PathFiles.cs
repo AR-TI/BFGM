@@ -1,4 +1,4 @@
-﻿namespace WpfApp1.Constants
+﻿namespace BFGM.Constants
 {
     public static class PathFiles
     {
@@ -10,7 +10,7 @@
         public const string HorrorsPath = "Data\\Games_Horrors.json";
         public const string PlatformersPath = "Data\\Games_Platformers.json";
         public const string ReleasesPath = "Data\\Music_Releases.json";
-        public const string WaitPath = "Data\\Music_Waiting.json";
+        public const string WaitPath = "Data\\Music_Wait.json";
         public const string ListenPath = "Data\\Music_Listen.json";
     }
 }

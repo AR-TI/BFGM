@@ -1,4 +1,5 @@
 ﻿using BFGM.Classes;
+using BFGM.Constants;
 using BFGM.Models;
 using BFGM.Pages.Films;
 using System.Threading.Tasks;
@@ -13,16 +14,26 @@ namespace BFGM.Windows.Films
     public partial class WindowFilmsFilmAdd : Window
     {
         readonly ClassMain classMain;
-        readonly ClassWriteFile classWriteFile;
         readonly PageFilmsFilms pageFilmsFilms;
 
-        public WindowFilmsFilmAdd(ClassMain classMain, ClassWriteFile classWriteFile, PageFilmsFilms pageFilmsFilms)
+        public WindowFilmsFilmAdd(ClassMain classMain, PageFilmsFilms pageFilmsFilms)
         {
             InitializeComponent();
             this.classMain = classMain;
-            this.classWriteFile = classWriteFile;
             this.pageFilmsFilms = pageFilmsFilms;
             TextBoxFilm.Focus();
+        }
+
+        private async Task AddFilm()
+        {
+            string title = Functions.ToTitleCaseFirstWord(TextBoxFilm.Text);
+            if (title.Length != 0)
+            {
+                await classMain.Add(classMain.ListFilms, new Film(title));
+                await classMain.Write(classMain.ListFilms, PathFiles.FilmsPath);
+                pageFilmsFilms.FillListFilms();
+                Close();
+            }
         }
 
         private async void ButtonFilmAddOK_Click(object sender, RoutedEventArgs e)
@@ -35,18 +46,6 @@ namespace BFGM.Windows.Films
             if (e.Key == Key.Enter)
             {
                 await AddFilm();
-            }
-        }
-
-        private async Task AddFilm()
-        {
-            string title = TextBoxFilm.Text;
-            if (title.Length != 0)
-            {
-                classMain.ListFilms.Add(new Film(title));
-                await classWriteFile.WriteFileFilms();
-                pageFilmsFilms.FillListFilms();
-                Close();
             }
         }
     }

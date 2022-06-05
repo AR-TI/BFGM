@@ -1,4 +1,6 @@
 ﻿using BFGM.Classes;
+using BFGM.Constants;
+using BFGM.Models;
 using BFGM.Pages.Games;
 using BFGM.Windows.Games;
 using System.Windows;
@@ -12,8 +14,6 @@ namespace BFGM.Pages
     public partial class PageGames : Page
     {
         readonly ClassMain classMain;
-        readonly ClassReadFile classReadFile;
-        readonly ClassWriteFile classWriteFile;
 
         PageGamesPlayStation pageGamesPlayStation;
         PageGamesHorrors pageGamesHorrors;
@@ -21,31 +21,29 @@ namespace BFGM.Pages
 
         byte pageActivity;
 
-        public PageGames(ClassMain classMain, ClassReadFile classReadFile, ClassWriteFile classWriteFile)
+        public PageGames(ClassMain classMain)
         {
             InitializeComponent();
             this.classMain = classMain;
-            this.classReadFile = classReadFile;
-            this.classWriteFile = classWriteFile;
         }
 
         #region Pages Games
         private void ButtonPlayStation_Click(object sender, RoutedEventArgs e)
         {
             pageActivity = 1;
-            pageGamesPlayStation = new PageGamesPlayStation(classMain, classReadFile);
+            pageGamesPlayStation = new PageGamesPlayStation(classMain);
             GamesFrame.Content = pageGamesPlayStation;
         }
         private void ButtonHorrors_Click(object sender, RoutedEventArgs e)
         {
             pageActivity = 2;
-            pageGamesHorrors = new PageGamesHorrors(classMain, classReadFile);
+            pageGamesHorrors = new PageGamesHorrors(classMain);
             GamesFrame.Content = pageGamesHorrors;
         }
         private void ButtonPlatformers_Click(object sender, RoutedEventArgs e)
         {
             pageActivity = 3;
-            pageGamesPlatformers = new PageGamesPlatformers(classMain, classReadFile);
+            pageGamesPlatformers = new PageGamesPlatformers(classMain);
             GamesFrame.Content = pageGamesPlatformers;
         }
         #endregion
@@ -54,17 +52,17 @@ namespace BFGM.Pages
         {
             if (pageActivity == 1)
             {
-                WindowsPlayStationAdd windowsPlayStationAdd = new WindowsPlayStationAdd(classMain, classWriteFile, pageGamesPlayStation);
+                WindowsGamesPlayStationAdd windowsPlayStationAdd = new WindowsGamesPlayStationAdd(classMain, pageGamesPlayStation);
                 windowsPlayStationAdd.ShowDialog();
             }
             else if (pageActivity == 2)
             {
-                WindowsHorrorAdd windowsHorrorAdd = new WindowsHorrorAdd(classMain, classWriteFile, pageGamesHorrors);
+                WindowsGamesHorrorAdd windowsHorrorAdd = new WindowsGamesHorrorAdd(classMain, pageGamesHorrors);
                 windowsHorrorAdd.ShowDialog();
             }
             else if (pageActivity == 3)
             {
-                WindowsPlatformerAdd windowsPlatformerAdd = new WindowsPlatformerAdd(classMain, classWriteFile, pageGamesPlatformers);
+                WindowsGamesPlatformerAdd windowsPlatformerAdd = new WindowsGamesPlatformerAdd(classMain, pageGamesPlatformers);
                 windowsPlatformerAdd.ShowDialog();
             }
         }
@@ -74,37 +72,37 @@ namespace BFGM.Pages
             if (pageActivity == 1)
             {
                 int selectedIndex = pageGamesPlayStation.ListBoxPlayStation.SelectedIndex;
-
                 if (selectedIndex != -1)
                 {
-                    string selectedName = pageGamesPlayStation.ListBoxPlayStation.Items[selectedIndex].ToString();
-                    classMain.DeletePlayStation(selectedName);
-                    await classWriteFile.WriteFilePlayStation();
-                    pageGamesPlayStation.ListBoxPlayStation.Items.RemoveAt(selectedIndex);
+                    object data = pageGamesPlayStation.ListBoxPlayStation.Items[selectedIndex];
+                    PlayStation playStation = data as PlayStation;
+                    await classMain.Remove(classMain.ListPlayStation, playStation);
+                    await classMain.Write(classMain.ListPlayStation, PathFiles.PlayStationPath);
+                    pageGamesPlayStation.FillListPlayStation();
                 }
             }
             if (pageActivity == 2)
             {
                 int selectedIndex = pageGamesHorrors.ListBoxHorrors.SelectedIndex;
-
                 if (selectedIndex != -1)
                 {
-                    string selectedName = pageGamesHorrors.ListBoxHorrors.Items[selectedIndex].ToString();
-                    classMain.DeleteHorrors(selectedName);
-                    await classWriteFile.WriteFileHorrors();
-                    pageGamesHorrors.ListBoxHorrors.Items.RemoveAt(selectedIndex);
+                    object data = pageGamesHorrors.ListBoxHorrors.Items[selectedIndex];
+                    Horror horror = data as Horror;
+                    await classMain.Remove(classMain.ListHorrors, horror);
+                    await classMain.Write(classMain.ListHorrors, PathFiles.HorrorsPath);
+                    pageGamesHorrors.FillListHorrors();
                 }
             }
             if (pageActivity == 3)
             {
                 int selectedIndex = pageGamesPlatformers.ListBoxPlatformers.SelectedIndex;
-
                 if (selectedIndex != -1)
                 {
-                    string selectedName = pageGamesPlatformers.ListBoxPlatformers.Items[selectedIndex].ToString();
-                    classMain.DeletePlatformers(selectedName);
-                    await classWriteFile.WriteFilePlatformers();
-                    pageGamesPlatformers.ListBoxPlatformers.Items.RemoveAt(selectedIndex);
+                    object data = pageGamesPlatformers.ListBoxPlatformers.Items[selectedIndex];
+                    Platformer platformer = data as Platformer;
+                    await classMain.Remove(classMain.ListPlatformers, platformer);
+                    await classMain.Write(classMain.ListPlatformers, PathFiles.PlatformersPath);
+                    pageGamesPlatformers.FillListPlatformers();
                 }
             }
         }

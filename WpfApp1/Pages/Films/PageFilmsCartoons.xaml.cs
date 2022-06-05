@@ -1,4 +1,5 @@
 ﻿using BFGM.Classes;
+using BFGM.Constants;
 using BFGM.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,58 +15,41 @@ namespace BFGM.Pages.Films
     public partial class PageFilmsCartoons : Page
     {
         readonly ClassMain classMain;
-        readonly ClassReadFile classReadFile;
 
-        public PageFilmsCartoons(ClassMain classMain, ClassReadFile classReadFile)
+        public PageFilmsCartoons(ClassMain classMain)
         {
             InitializeComponent();
             this.classMain = classMain;
-            this.classReadFile = classReadFile;
-        }
-
-        static private bool isFirstTime = false;
-        private async void ListBoxCartoons_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (!isFirstTime)
-            {
-                await classReadFile.ReadFileCartoons();
-                isFirstTime = true;
-            }
-            FillListCartoons();
         }
 
         public void FillListCartoons()
         {
-            ListBoxCartoons.Items.Clear();
-            List<Cartoon> listCartoons = classMain.ListCartoons.OrderBy(x => x.Title).ToList();
-            for (int i = 0; i < listCartoons.Count; i++)
+            ListBoxCartoons.ItemsSource = classMain.ListCartoons.OrderBy(x => x.Title).ToList();
+        }
+
+        private bool isFirstTime = false;
+        private async void ListBoxCartoons_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!isFirstTime)
             {
-                ListBoxCartoons.Items.Add(listCartoons[i].Title);
+                classMain.ListCartoons = await classMain.Read<Cartoon>(PathFiles.CartoonsPath);
+                isFirstTime = true;
             }
+
+            FillListCartoons();
         }
 
         bool isDescending = false;
         private void ButtonSortCartoons_Click(object sender, RoutedEventArgs e)
         {
-            List<Cartoon> listCartoons = classMain.ListCartoons;
             if (!isDescending)
             {
-                ListBoxCartoons.Items.Clear();
-                List<Cartoon> sorted = listCartoons.OrderByDescending(x => x.Title).ToList();
-                for (int i = 0; i < sorted.Count; i++)
-                {
-                    ListBoxCartoons.Items.Add(sorted[i].Title);
-                }
+                ListBoxCartoons.ItemsSource = classMain.ListCartoons.OrderByDescending(x => x.Title).ToList();
                 isDescending = true;
             }
             else
             {
-                ListBoxCartoons.Items.Clear();
-                List<Cartoon> sorted = listCartoons.OrderBy(x => x.Title).ToList();
-                for (int i = 0; i < sorted.Count; i++)
-                {
-                    ListBoxCartoons.Items.Add(sorted[i].Title);
-                }
+                ListBoxCartoons.ItemsSource = classMain.ListCartoons.OrderBy(x => x.Title).ToList();
                 isDescending = false;
             }
         }
@@ -75,10 +59,11 @@ namespace BFGM.Pages.Films
             if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
             {
                 int selectedIndex = ListBoxCartoons.SelectedIndex;
-
                 if (selectedIndex != -1)
                 {
-                    Clipboard.SetText(ListBoxCartoons.Items[selectedIndex].ToString());
+                    object data = ListBoxCartoons.Items[selectedIndex];
+                    Cartoon cartoon = data as Cartoon;
+                    Clipboard.SetText(cartoon.Title);
                 }
             }
         }

@@ -5,7 +5,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:BFGM.Pages.Music"
-      mc:Ignorable="d" d:DesignWidth="778" d:DesignHeight="460"
+      mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
       Title="PageMusicReleases">
 
     <Grid x:Name="GridMusicReleases" Loaded="GridMusicReleases_Loaded" fw:PointerTracker.Enabled="True" Background="#01FFFFFF">

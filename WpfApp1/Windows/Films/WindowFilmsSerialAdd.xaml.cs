@@ -1,4 +1,5 @@
 ﻿using BFGM.Classes;
+using BFGM.Constants;
 using BFGM.Models;
 using BFGM.Pages.Films;
 using System.Threading.Tasks;
@@ -13,16 +14,26 @@ namespace BFGM.Windows.Films
     public partial class WindowFilmsSerialAdd : Window
     {
         readonly ClassMain classMain;
-        readonly ClassWriteFile classWriteFile;
         readonly PageFilmsSerials pageFilmsSerials;
 
-        public WindowFilmsSerialAdd(ClassMain classMain, ClassWriteFile classWriteFile, PageFilmsSerials pageFilmsSerials)
+        public WindowFilmsSerialAdd(ClassMain classMain, PageFilmsSerials pageFilmsSerials)
         {
             InitializeComponent();
             this.classMain = classMain;
-            this.classWriteFile = classWriteFile;
             this.pageFilmsSerials = pageFilmsSerials;
             TextBoxSerial.Focus();
+        }
+
+        private async Task AddSerial()
+        {
+            string title = Functions.ToTitleCaseFirstWord(TextBoxSerial.Text);
+            if (title.Length != 0)
+            {
+                await classMain.Add(classMain.ListSerials, new Serial(title));
+                await classMain.Write(classMain.ListSerials, PathFiles.SerialsPath);
+                pageFilmsSerials.FillListSerials();
+                Close();
+            }
         }
 
         private async void ButtonSerialAddOK_Click(object sender, RoutedEventArgs e)
@@ -35,18 +46,6 @@ namespace BFGM.Windows.Films
             if (e.Key == Key.Enter)
             {
                 await AddSerial();
-            }
-        }
-
-        private async Task AddSerial()
-        {
-            string title = TextBoxSerial.Text;
-            if (title.Length != 0)
-            {
-                classMain.ListSerials.Add(new Serial(title));
-                await classWriteFile.WriteFileSerials();
-                pageFilmsSerials.FillListSerials();
-                Close();
             }
         }
     }

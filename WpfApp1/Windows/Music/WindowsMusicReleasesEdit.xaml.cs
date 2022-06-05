@@ -1,14 +1,13 @@
-﻿using BFGM;
-using BFGM.Classes;
+﻿using BFGM.Classes;
+using BFGM.Constants;
 using BFGM.Models;
 using BFGM.Pages.Music;
-using BFGM.Windows.Music;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace WpfApp1.Windows.Music
+namespace BFGM.Windows.Music
 {
     /// <summary>
     /// Логика взаимодействия для WindowsMusicReleasesEdit.xaml
@@ -16,14 +15,13 @@ namespace WpfApp1.Windows.Music
     public partial class WindowsMusicReleasesEdit : Window
     {
         readonly ClassMain classMain;
-        readonly ClassWriteFile classWriteFile;
         readonly PageMusicReleases pageMusicReleases;
         readonly Release releaseOld;
-        public WindowsMusicReleasesEdit(ClassMain classMain, ClassWriteFile classWriteFile, PageMusicReleases pageMusicReleases, Release releaseOld)
+
+        public WindowsMusicReleasesEdit(ClassMain classMain, PageMusicReleases pageMusicReleases, Release releaseOld)
         {
             InitializeComponent();
             this.classMain = classMain;
-            this.classWriteFile = classWriteFile;
             this.pageMusicReleases = pageMusicReleases;
             this.releaseOld = releaseOld;
 
@@ -36,19 +34,19 @@ namespace WpfApp1.Windows.Music
 
         private async Task EditRelease()
         {
-            string newBand = TextBoxBand.Text;
-            string newAlbum = TextBoxAlbum.Text;
+            string newBand = Functions.ToTitleCaseAllWords(TextBoxBand.Text);
+            string newAlbum = Functions.ToTitleCaseAllWords(TextBoxAlbum.Text);
             string newDate = TextBoxDate.Text;
             if (newBand.Length != 0 && newAlbum.Length != 0 && newDate.Length != 0)
             {
-                if (!WindowsMusicReleasesAdd.IsRightDate(newDate, out DateTime newDateTime))
+                if (!Functions.IsRightDate(newDate, out DateTime newDateTime))
                 {
                     MessageBox.Show("Wrong date!");
                 }
                 else
                 {
-                    classMain.EditRelease(releaseOld, new Release(newBand, newAlbum, newDateTime));
-                    await classWriteFile.WriteFileReleases();
+                    await classMain.Edit(classMain.ListReleases, releaseOld, new Release(newBand, newAlbum, newDateTime));
+                    await classMain.Write(classMain.ListReleases, PathFiles.ReleasesPath);
                     pageMusicReleases.CurrentSort();
                     Close();
                 }

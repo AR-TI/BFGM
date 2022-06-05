@@ -66,7 +66,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Classes\ClassMain.cs" />
-    <Compile Include="Classes\ClassReadFile.cs" />
+    <Compile Include="Classes\Functions.cs" />
     <Compile Include="Constants\PathFiles.cs" />
     <Compile Include="Models\Films\Cartoon.cs" />
     <Compile Include="Models\Films\Serial.cs" />
@@ -77,7 +77,6 @@
     <Compile Include="Windows\Books\WindowBooksAdd.xaml.cs">
       <DependentUpon>WindowBooksAdd.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Classes\ClassWriteFile.cs" />
     <Compile Include="Windows\Films\WindowFilmsCartoonAdd.xaml.cs">
       <DependentUpon>WindowFilmsCartoonAdd.xaml</DependentUpon>
     </Compile>
@@ -105,8 +104,8 @@
     <Compile Include="Windows\Music\WindowsMusicReleasesEdit.xaml.cs">
       <DependentUpon>WindowsMusicReleasesEdit.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Music\WindowsMusicWaitingAdd.xaml.cs">
-      <DependentUpon>WindowsMusicWaitingAdd.xaml</DependentUpon>
+    <Compile Include="Windows\Music\WindowsMusicWaitAdd.xaml.cs">
+      <DependentUpon>WindowsMusicWaitAdd.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -216,7 +215,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\Music\WindowsMusicWaitingAdd.xaml">
+    <Page Include="Windows\Music\WindowsMusicWaitAdd.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -286,6 +285,16 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="Data\Books_Books.json" />
+    <None Include="Data\Films_Cartoons.json" />
+    <None Include="Data\Films_Films.json" />
+    <None Include="Data\Films_Serials.json" />
+    <None Include="Data\Games_Horrors.json" />
+    <None Include="Data\Games_Platformers.json" />
+    <None Include="Data\Games_PlayStation.json" />
+    <None Include="Data\Music_Listen.json" />
+    <None Include="Data\Music_Releases.json" />
+    <None Include="Data\Music_Wait.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -299,17 +308,5 @@
     <Resource Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <None Include="Data\Books_Books.txt" />
-    <None Include="Data\Films_Cartoons.txt" />
-    <None Include="Data\Films_Films.txt" />
-    <None Include="Data\Films_Serials.txt" />
-    <None Include="Data\Games_Horrors.txt" />
-    <None Include="Data\Games_Platformers.txt" />
-    <None Include="Data\Games_PlayStation.txt" />
-    <None Include="Data\Music_Listen.txt" />
-    <None Include="Data\Music_Releases.txt" />
-    <None Include="Data\Music_Waiting.txt" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

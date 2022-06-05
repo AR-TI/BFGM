@@ -1,4 +1,5 @@
 ﻿using BFGM.Classes;
+using BFGM.Constants;
 using BFGM.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,58 +15,41 @@ namespace BFGM.Pages.Films
     public partial class PageFilmsSerials : Page
     {
         readonly ClassMain classMain;
-        readonly ClassReadFile classReadFile;
 
-        public PageFilmsSerials(ClassMain classMain, ClassReadFile classReadFile)
+        public PageFilmsSerials(ClassMain classMain)
         {
             InitializeComponent();
             this.classMain = classMain;
-            this.classReadFile = classReadFile;
-        }
-
-        static private bool isFirstTime = false;
-        private async void ListBoxSerials_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (!isFirstTime)
-            {
-                await classReadFile.ReadFileSerials();
-                isFirstTime = true;
-            }
-            FillListSerials();
         }
 
         public void FillListSerials()
         {
-            ListBoxSerials.Items.Clear();
-            List<Serial> listSerials = classMain.ListSerials.OrderBy(x => x.Title).ToList();
-            for (int i = 0; i < listSerials.Count; i++)
+            ListBoxSerials.ItemsSource = classMain.ListSerials.OrderBy(x => x.Title).ToList();
+        }
+
+        private bool isFirstTime = false;
+        private async void ListBoxSerials_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!isFirstTime)
             {
-                ListBoxSerials.Items.Add(listSerials[i].Title);
+                classMain.ListSerials = await classMain.Read<Serial>(PathFiles.SerialsPath);
+                isFirstTime = true;
             }
+
+            FillListSerials();
         }
 
         bool isDescending = false;
         private void ButtonSortSeroals_Click(object sender, RoutedEventArgs e)
         {
-            List<Serial> listSerials = classMain.ListSerials;
             if (!isDescending)
             {
-                ListBoxSerials.Items.Clear();
-                var sorted = listSerials.OrderByDescending(r => r.Title).ToList();
-                for (int i = 0; i < sorted.Count; i++)
-                {
-                    ListBoxSerials.Items.Add(sorted[i].Title);
-                }
+                ListBoxSerials.ItemsSource = classMain.ListSerials.OrderByDescending(x => x.Title).ToList();
                 isDescending = true;
             }
             else
             {
-                ListBoxSerials.Items.Clear();
-                var sorted = listSerials.OrderBy(r => r.Title).ToList();
-                for (int i = 0; i < sorted.Count; i++)
-                {
-                    ListBoxSerials.Items.Add(sorted[i].Title);
-                }
+                ListBoxSerials.ItemsSource = classMain.ListSerials.OrderBy(x => x.Title).ToList();
                 isDescending = false;
             }
         }
@@ -75,10 +59,11 @@ namespace BFGM.Pages.Films
             if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
             {
                 int selectedIndex = ListBoxSerials.SelectedIndex;
-
                 if (selectedIndex != -1)
                 {
-                    Clipboard.SetText(ListBoxSerials.Items[selectedIndex].ToString());
+                    object data = ListBoxSerials.Items[selectedIndex];
+                    Serial serial = data as Serial;
+                    Clipboard.SetText(serial.Title);
                 }
             }
         }

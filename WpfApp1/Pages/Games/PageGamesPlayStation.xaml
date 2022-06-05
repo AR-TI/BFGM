@@ -5,7 +5,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:BFGM.Pages.Games"
-      mc:Ignorable="d" d:DesignWidth="778" d:DesignHeight="460"      
+      mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"      
       Title="PageGamesPlayStation">
 
     <Grid fw:PointerTracker.Enabled="True" Background="#01FFFFFF">
@@ -14,8 +14,21 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ListBox Grid.Row="0" Margin="10,10,10,8" x:Name="ListBoxPlayStation" BorderThickness="0" Loaded="ListBoxPlayStation_Loaded" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                 Background="Transparent" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" KeyDown="ListBoxPlayStation_KeyDown_Clipboard"/>
+        <ListBox Grid.Row="0" Margin="10,10,10,8" x:Name="ListBoxPlayStation" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                 BorderThickness="0" Background="Transparent" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"
+                 Loaded="ListBoxPlayStation_Loaded" KeyDown="ListBoxPlayStation_KeyDown_Clipboard">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="{Binding Title}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
         <Button Grid.Row="1" x:Name="ButtonAscendingPlayStation" Content="↑↓" Background="Transparent" Style="{StaticResource ButtonRoundRevealStyle}" BorderThickness="1" 
                     FontFamily="Book Antiqua" FontSize="12" Foreground="WhiteSmoke" Height="17" Width="50" HorizontalAlignment="Right" Margin="0,0,8,0" Click="ButtonSortPlayStation_Click"/>
     </Grid>

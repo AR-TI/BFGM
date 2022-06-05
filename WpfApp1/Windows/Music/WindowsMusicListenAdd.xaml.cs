@@ -1,4 +1,5 @@
 ﻿using BFGM.Classes;
+using BFGM.Constants;
 using BFGM.Models;
 using BFGM.Pages.Music;
 using System.Threading.Tasks;
@@ -13,16 +14,26 @@ namespace BFGM.Windows.Music
     public partial class WindowsMusicListenAdd : Window
     {
         readonly ClassMain classMain;
-        readonly ClassWriteFile classWriteFile;
         readonly PageMusicListen pageMusicListen;
 
-        public WindowsMusicListenAdd(ClassMain classMain, ClassWriteFile classWriteFile, PageMusicListen pageMusicListen)
+        public WindowsMusicListenAdd(ClassMain classMain, PageMusicListen pageMusicListen)
         {
             InitializeComponent();
             this.classMain = classMain;
-            this.classWriteFile = classWriteFile;
             this.pageMusicListen = pageMusicListen;
             TextBoxListen.Focus();
+        }
+
+        private async Task AddListen()
+        {
+            string band = Functions.ToTitleCaseAllWords(TextBoxListen.Text);
+            if (band.Length != 0)
+            {
+                await classMain.Add(classMain.ListListen, new Listen(band));
+                await classMain.Write(classMain.ListListen, PathFiles.ListenPath);
+                pageMusicListen.FillListListen();
+                Close();
+            }
         }
 
         private async void ButtonListenAddOK_Click(object sender, RoutedEventArgs e)
@@ -35,18 +46,6 @@ namespace BFGM.Windows.Music
             if (e.Key == Key.Enter)
             {
                 await AddListen();
-            }
-        }
-
-        private async Task AddListen()
-        {
-            string band = TextBoxListen.Text;
-            if (band.Length != 0)
-            {
-                classMain.ListListen.Add(new Listen(band));
-                await classWriteFile.WriteFileListen();
-                pageMusicListen.FillListListen();
-                Close();
             }
         }
     }

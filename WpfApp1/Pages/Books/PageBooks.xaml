@@ -8,14 +8,15 @@
       mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
       Title="PageBooks">
 
-    <Grid x:Name="GridBooks" Loaded="GridBooks_Loaded" fw:PointerTracker.Enabled="True" Background="#01FFFFFF">
+    <Grid x:Name="GridBooks" fw:PointerTracker.Enabled="True" Background="#01FFFFFF">
         <Grid.RowDefinitions>
             <RowDefinition Height="10*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <ListBox Grid.Row="0" Margin="10,10,10,8" Name="ListBoxBooks" HorizontalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                 BorderThickness="0" Background="Transparent" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" KeyDown="ListBoxBooks_KeyDown_Clipboard">
+                 BorderThickness="0" Background="Transparent" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"
+                 Loaded="ListBoxBooks_Loaded" KeyDown="ListBoxBooks_KeyDown_Clipboard">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>

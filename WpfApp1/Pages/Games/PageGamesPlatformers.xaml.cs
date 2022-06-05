@@ -1,4 +1,5 @@
 ﻿using BFGM.Classes;
+using BFGM.Constants;
 using BFGM.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,59 +15,42 @@ namespace BFGM.Pages.Games
     public partial class PageGamesPlatformers : Page
     {
         readonly ClassMain classMain;
-        readonly ClassReadFile classReadFile;
 
-        public PageGamesPlatformers(ClassMain classMain, ClassReadFile classReadFile)
+        public PageGamesPlatformers(ClassMain classMain)
         {
             InitializeComponent();
             this.classMain = classMain;
-            this.classReadFile = classReadFile;
         }
 
-        static private bool isFirstTime = false;
+        public void FillListPlatformers()
+        {
+            ListBoxPlatformers.ItemsSource = classMain.ListPlatformers.OrderBy(x => x.Title).ToList();
+        }
+
+        private bool isFirstTime = false;
         private async void ListBoxPlatformers_Loaded(object sender, RoutedEventArgs e)
         {
             if (!isFirstTime)
             {
-                await classReadFile.ReadFilePlatformers();
+                classMain.ListPlatformers = await classMain.Read<Platformer>(PathFiles.PlatformersPath);
                 isFirstTime = true;
             }
+
             FillListPlatformers();
         }
 
         bool isDescending = false;
         private void ButtonSortPlatformers_Click(object sender, RoutedEventArgs e)
         {
-            List<Platformer> listPlatformers = classMain.ListPlatformers;
             if (!isDescending)
             {
-                ListBoxPlatformers.Items.Clear();
-                var sorted = listPlatformers.OrderByDescending(r => r.Title).ToList();
-                for (int i = 0; i < sorted.Count; i++)
-                {
-                    ListBoxPlatformers.Items.Add(sorted[i].Title);
-                }
+                ListBoxPlatformers.ItemsSource = classMain.ListPlatformers.OrderByDescending(x => x.Title).ToList();
                 isDescending = true;
             }
             else
             {
-                ListBoxPlatformers.Items.Clear();
-                var sorted = listPlatformers.OrderBy(r => r.Title).ToList();
-                for (int i = 0; i < sorted.Count; i++)
-                {
-                    ListBoxPlatformers.Items.Add(sorted[i].Title);
-                }
+                ListBoxPlatformers.ItemsSource = classMain.ListPlatformers.OrderBy(x => x.Title).ToList();
                 isDescending = false;
-            }
-        }
-
-        public void FillListPlatformers()
-        {
-            ListBoxPlatformers.Items.Clear();
-            List<Platformer> listPlatformers = classMain.ListPlatformers.OrderBy(x => x.Title).ToList();
-            for (int i = 0; i < listPlatformers.Count; i++)
-            {
-                ListBoxPlatformers.Items.Add(listPlatformers[i].Title);
             }
         }
 
@@ -75,10 +59,11 @@ namespace BFGM.Pages.Games
             if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
             {
                 int selectedIndex = ListBoxPlatformers.SelectedIndex;
-
                 if (selectedIndex != -1)
                 {
-                    Clipboard.SetText(ListBoxPlatformers.Items[selectedIndex].ToString());
+                    object data = ListBoxPlatformers.Items[selectedIndex];
+                    Platformer platformer = data as Platformer;
+                    Clipboard.SetText(platformer.Title);
                 }
             }
         }

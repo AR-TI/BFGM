@@ -5,7 +5,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:BFGM.Pages.Music"
-      mc:Ignorable="d" d:DesignWidth="778" d:DesignHeight="460"
+      mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
       Title="PageMusicWait">
 
     <Grid fw:PointerTracker.Enabled="True" Background="#01FFFFFF">
@@ -14,9 +14,22 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ListBox Grid.Row="0" Margin="10,10,10,8" x:Name="ListBoxWait" BorderThickness="0" Loaded="ListBoxWait_Loaded" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                 Background="Transparent" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke" KeyDown="ListBoxMusicWaiting_KeyDown_Clipboard"/>
-        <Button Grid.Row="1" x:Name="ButtonAscendingWaiting" Content="↑↓" Background="Transparent" Style="{StaticResource ButtonRoundRevealStyle}" BorderThickness="1" 
-                    FontFamily="Book Antiqua" FontSize="12" Foreground="WhiteSmoke" Height="17" Width="50" HorizontalAlignment="Right" Margin="0,0,8,0" Click="ButtonSortWaiting_Click"/>
+        <ListBox Grid.Row="0" Margin="10,10,10,8" x:Name="ListBoxWait" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                 BorderThickness="0" Background="Transparent" FontFamily="Book Antiqua" FontSize="16" Foreground="WhiteSmoke"
+                 Loaded="ListBoxWait_Loaded" KeyDown="ListBoxMusicWait_KeyDown_Clipboard">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="{Binding Band}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Grid.Row="1" x:Name="ButtonAscendingWait" Content="↑↓" Background="Transparent" Style="{StaticResource ButtonRoundRevealStyle}" BorderThickness="1" 
+                FontFamily="Book Antiqua" FontSize="12" Foreground="WhiteSmoke" Height="17" Width="50" HorizontalAlignment="Right" Margin="0,0,8,0" Click="ButtonSortWait_Click"/>
     </Grid>
 </Page>

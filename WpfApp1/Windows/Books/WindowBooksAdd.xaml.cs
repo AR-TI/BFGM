@@ -1,4 +1,5 @@
 ﻿using BFGM.Classes;
+using BFGM.Constants;
 using BFGM.Models;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,24 +13,22 @@ namespace BFGM.Windows
     public partial class WindowBooksAdd : Window
     {
         readonly ClassMain classMain;
-        readonly ClassWriteFile classWriteFile;
 
-        public WindowBooksAdd(ClassMain classMain, ClassWriteFile classWriteFile)
+        public WindowBooksAdd(ClassMain classMain)
         {
             InitializeComponent();
             this.classMain = classMain;
-            this.classWriteFile = classWriteFile;
             TextBoxTitle.Focus();
         }
 
         private async Task AddBook()
         {
-            string title = TextBoxTitle.Text;
-            string author = TextBoxAuthor.Text;
+            string title = Functions.ToTitleCaseFirstWord(TextBoxTitle.Text);
+            string author = Functions.ToTitleCaseAllWords(TextBoxAuthor.Text);
             if (title.Length != 0 && author.Length != 0)
             {
-                classMain.ListBooks.Add(new Book(title, author));
-                await classWriteFile.WriteFileBooks();
+                await classMain.Add(classMain.ListBooks, new Book(title, author));
+                await classMain.Write(classMain.ListBooks, PathFiles.BooksPath);
                 Close();
             }
         }

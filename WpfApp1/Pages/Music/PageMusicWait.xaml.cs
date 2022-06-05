@@ -1,4 +1,5 @@
 ﻿using BFGM.Classes;
+using BFGM.Constants;
 using BFGM.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,76 +10,60 @@ using System.Windows.Input;
 namespace BFGM.Pages.Music
 {
     /// <summary>
-    /// Логика взаимодействия для PageMusicWaiting.xaml
+    /// Логика взаимодействия для PageMusicWait.xaml
     /// </summary>
     public partial class PageMusicWait : Page
     {
         readonly ClassMain classMain;
-        readonly ClassReadFile classReadFile;
 
-        public PageMusicWait(ClassMain classMain, ClassReadFile classReadFile)
+        public PageMusicWait(ClassMain classMain)
         {
             InitializeComponent();
             this.classMain = classMain;
-            this.classReadFile = classReadFile;
-        }
-
-        static private bool isFirstTime = false;
-        private async void ListBoxWait_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (!isFirstTime)
-            {
-                await classReadFile.ReadFileWait();
-                isFirstTime = true;
-            }
-            FillListWait();
-        }
-
-        bool isDescending = false;
-        private void ButtonSortWaiting_Click(object sender, RoutedEventArgs e)
-        {
-            List<Wait> listMusicWaiting = classMain.ListWait;
-            if (!isDescending)
-            {
-                ListBoxWait.Items.Clear();
-                List<Wait> sorted = listMusicWaiting.OrderByDescending(r => r.Band).ToList();
-                for (int i = 0; i < sorted.Count; i++)
-                {
-                    ListBoxWait.Items.Add(sorted[i].Band);
-                }
-                isDescending = true;
-            }
-            else
-            {
-                ListBoxWait.Items.Clear();
-                List<Wait> sorted = listMusicWaiting.OrderBy(r => r.Band).ToList();
-                for (int i = 0; i < sorted.Count; i++)
-                {
-                    ListBoxWait.Items.Add(sorted[i].Band);
-                }
-                isDescending = false;
-            }
         }
 
         public void FillListWait()
         {
-            ListBoxWait.Items.Clear();
-            List<Wait> listWait = classMain.ListWait.OrderBy(x => x.Band).ToList();
-            for (int i = 0; i < listWait.Count; i++)
+            ListBoxWait.ItemsSource = classMain.ListWait.OrderBy(x => x.Band).ToList();
+        }
+
+        private bool isFirstTime = false;
+        private async void ListBoxWait_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!isFirstTime)
             {
-                ListBoxWait.Items.Add(listWait[i].Band);
+                classMain.ListWait = await classMain.Read<Wait>(PathFiles.WaitPath);
+                isFirstTime = true;
+            }
+
+            FillListWait();
+        }
+
+        bool isDescending = false;
+        private void ButtonSortWait_Click(object sender, RoutedEventArgs e)
+        {
+            if (!isDescending)
+            {
+                ListBoxWait.ItemsSource = classMain.ListWait.OrderByDescending(x => x.Band).ToList();
+                isDescending = true;
+            }
+            else
+            {
+                ListBoxWait.ItemsSource = classMain.ListWait.OrderBy(x => x.Band).ToList();
+                isDescending = false;
             }
         }
 
-        private void ListBoxMusicWaiting_KeyDown_Clipboard(object sender, KeyEventArgs e)
+        private void ListBoxMusicWait_KeyDown_Clipboard(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
             {
                 int selectedIndex = ListBoxWait.SelectedIndex;
-
                 if (selectedIndex != -1)
                 {
-                    Clipboard.SetText(ListBoxWait.Items[selectedIndex].ToString());
+                    object data = ListBoxWait.Items[selectedIndex];
+                    Wait wait = data as Wait;
+                    Clipboard.SetText(wait.Band);
                 }
             }
         }

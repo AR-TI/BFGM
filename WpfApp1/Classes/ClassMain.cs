@@ -1,7 +1,9 @@
-﻿using BFGM.Models;
+﻿using BFGM.Constants;
+using BFGM.Models;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
-using WpfApp1.Constants;
+using System.Threading.Tasks;
 
 namespace BFGM.Classes
 {
@@ -23,192 +25,57 @@ namespace BFGM.Classes
         public List<Listen> ListListen { get; set; } = new List<Listen>();
         #endregion
 
-        #region Add()
-        public void Add<T, K>(T list, K model) where T : List<K>
+        public async Task<List<T>> Read<T>(string path)
         {
-            list.Add(model);
+            await Task.Delay(0);
+            return Task.Run(() => JsonConvert.DeserializeObject<List<T>>(File.ReadAllText(path))).Result;
         }
-
-        public void AddBook(Book book)
+        public async Task Write<T>(List<T> list, string path)
         {
-            ListBooks.Add(book);
+            await Task.Run(() => File.WriteAllText(path, JsonConvert.SerializeObject(list, Formatting.Indented)));
         }
-
-        public void AddFilm(Film film)
+        public async Task Add<T>(List<T> list, T title)
         {
-            ListFilms.Add(film);
+            await Task.Run(() => list.Add(title));
         }
-        public void AddSerial(Serial serial)
+        public async Task Remove<T>(List<T> list, T title)
         {
-            ListSerials.Add(serial);
+            await Task.Run(() => list.Remove(title));
         }
-        public void AddCartoon(Cartoon cartoon)
+        public async Task Edit<T>(List<T> list, T oldData, T newData)
         {
-            ListCartoons.Add(cartoon);
-        }
-
-        public void AddPlayStation(PlayStation playStation)
-        {
-            ListPlayStation.Add(playStation);
-        }
-        public void AddHorror(Horror horror)
-        {
-            ListHorrors.Add(horror);
-        }
-        public void AddPlatformer(Platformer platformer)
-        {
-            ListPlatformers.Add(platformer);
-        }
-
-        public void AddRelease(Release release)
-        {
-            ListReleases.Add(release);
-        }
-        public void AddWait(Wait wait)
-        {
-            ListWait.Add(wait);
-        }
-        public void AddListen(Listen listen)
-        {
-            ListListen.Add(listen);
-        }
-        #endregion
-
-        #region Delete()
-        public void DeleteBook(Book book)
-        {
-            ListBooks.Remove(book);
-        }
-
-        public void DeleteFilm(string name)
-        {
-            for (int i = 0; i < ListFilms.Count; i++)
+            await Task.Run(() =>
             {
-                if (ListFilms[i].Title == name)
-                {
-                    ListFilms.RemoveAt(i);
-                    break;
-                }
-            }
+                int index = list.IndexOf(oldData);
+                list.Remove(oldData);
+                list.Insert(index, newData);
+            });
         }
-        public void DeleteSerial(string name)
-        {
-            for (int i = 0; i < ListSerials.Count; i++)
-            {
-                if (ListSerials[i].Title == name)
-                {
-                    ListSerials.RemoveAt(i);
-                    break;
-                }
-            }
-        }
-        public void DeleteCartoon(string name)
-        {
-            for (int i = 0; i < ListCartoons.Count; i++)
-            {
-                if (ListCartoons[i].Title == name)
-                {
-                    ListCartoons.RemoveAt(i);
-                    break;
-                }
-            }
-        }
-
-        public void DeletePlayStation(string name)
-        {
-            for (int i = 0; i < ListPlayStation.Count; i++)
-            {
-                if (ListPlayStation[i].Title == name)
-                {
-                    ListPlayStation.RemoveAt(i);
-                    break;
-                }
-            }
-        }
-        public void DeleteHorrors(string name)
-        {
-            for (int i = 0; i < ListHorrors.Count; i++)
-            {
-                if (ListHorrors[i].Title == name)
-                {
-                    ListHorrors.RemoveAt(i);
-                    break;
-                }
-            }
-        }
-        public void DeletePlatformers(string name)
-        {
-            for (int i = 0; i < ListPlatformers.Count; i++)
-            {
-                if (ListPlatformers[i].Title == name)
-                {
-                    ListPlatformers.RemoveAt(i);
-                    break;
-                }
-            }
-        }
-
-        public void DeleteRelease(Release release)
-        {
-            ListReleases.Remove(release);
-        }
-        public void DeleteWait(string name)
-        {
-            for (int i = 0; i < ListWait.Count; i++)
-            {
-                if (ListWait[i].Band == name)
-                {
-                    ListWait.RemoveAt(i);
-                    break;
-                }
-            }
-        }
-        public void DeleteListen(string name)
-        {
-            for (int i = 0; i < ListListen.Count; i++)
-            {
-                if (ListListen[i].Band == name)
-                {
-                    ListListen.RemoveAt(i);
-                    break;
-                }
-            }
-        }
-        #endregion
-
-        #region Edit()
-        public void EditRelease(Release oldRelease, Release newRelease)
-        {
-            int index = ListReleases.IndexOf(oldRelease);
-            ListReleases.Remove(oldRelease);
-            ListReleases.Insert(index, newRelease);
-        }
-        #endregion
 
         public void CheckDirectoryAndFilesExist()
         {
             if (!Directory.Exists(@"Data\"))
                 Directory.CreateDirectory(@"Data\");
             if (!File.Exists(PathFiles.BooksPath))
-                File.Create(PathFiles.BooksPath);
+                File.WriteAllText(PathFiles.BooksPath, JsonConvert.SerializeObject(ListBooks, Formatting.Indented));
             if (!File.Exists(PathFiles.FilmsPath))
-                File.Create(PathFiles.FilmsPath);
+                File.WriteAllText(PathFiles.FilmsPath, JsonConvert.SerializeObject(ListFilms, Formatting.Indented));
             if (!File.Exists(PathFiles.SerialsPath))
-                File.Create(PathFiles.SerialsPath);
+                File.WriteAllText(PathFiles.SerialsPath, JsonConvert.SerializeObject(ListSerials, Formatting.Indented));
             if (!File.Exists(PathFiles.CartoonsPath))
-                File.Create(PathFiles.CartoonsPath);
+                File.WriteAllText(PathFiles.CartoonsPath, JsonConvert.SerializeObject(ListCartoons, Formatting.Indented));
             if (!File.Exists(PathFiles.PlayStationPath))
-                File.Create(PathFiles.PlayStationPath);
+                File.WriteAllText(PathFiles.PlayStationPath, JsonConvert.SerializeObject(ListPlayStation, Formatting.Indented));
             if (!File.Exists(PathFiles.HorrorsPath))
-                File.Create(PathFiles.HorrorsPath);
+                File.WriteAllText(PathFiles.HorrorsPath, JsonConvert.SerializeObject(ListHorrors, Formatting.Indented));
             if (!File.Exists(PathFiles.PlatformersPath))
-                File.Create(PathFiles.PlatformersPath);
+                File.WriteAllText(PathFiles.PlatformersPath, JsonConvert.SerializeObject(ListPlatformers, Formatting.Indented));
             if (!File.Exists(PathFiles.ReleasesPath))
-                File.Create(PathFiles.ReleasesPath);
+                File.WriteAllText(PathFiles.ReleasesPath, JsonConvert.SerializeObject(ListReleases, Formatting.Indented));
             if (!File.Exists(PathFiles.ListenPath))
-                File.Create(PathFiles.ListenPath);
+                File.WriteAllText(PathFiles.ListenPath, JsonConvert.SerializeObject(ListListen, Formatting.Indented));
             if (!File.Exists(PathFiles.WaitPath))
-                File.Create(PathFiles.WaitPath);
+                File.WriteAllText(PathFiles.WaitPath, JsonConvert.SerializeObject(ListWait, Formatting.Indented));
         }
     }
 }

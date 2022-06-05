@@ -1,4 +1,5 @@
 ﻿using BFGM.Classes;
+using BFGM.Constants;
 using BFGM.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,59 +15,42 @@ namespace BFGM.Pages.Music
     public partial class PageMusicListen : Page
     {
         readonly ClassMain classMain;
-        readonly ClassReadFile classReadFile;
 
-        public PageMusicListen(ClassMain classMain, ClassReadFile classReadFile)
+        public PageMusicListen(ClassMain classMain)
         {
             InitializeComponent();
             this.classMain = classMain;
-            this.classReadFile = classReadFile;
         }
 
-        static private bool isFirstTime = false;
+        public void FillListListen()
+        {
+            ListBoxListen.ItemsSource = classMain.ListListen.OrderBy(x => x.Band).ToList();
+        }
+
+        private bool isFirstTime = false;
         private async void ListBoxListen_Loaded(object sender, RoutedEventArgs e)
         {
             if (!isFirstTime)
             {
-                await classReadFile.ReadFileListen();
+                classMain.ListListen = await classMain.Read<Listen>(PathFiles.ListenPath);
                 isFirstTime = true;
             }
+
             FillListListen();
         }
 
         bool isDescending = false;
         private void ButtonSortListen_Click(object sender, RoutedEventArgs e)
         {
-            List<Listen> listListen = classMain.ListListen;
             if (!isDescending)
             {
-                ListBoxListen.Items.Clear();
-                List<Listen> sorted = listListen.OrderByDescending(r => r.Band).ToList();
-                for (int i = 0; i < sorted.Count; i++)
-                {
-                    ListBoxListen.Items.Add(sorted[i].Band);
-                }
+                ListBoxListen.ItemsSource = classMain.ListListen.OrderByDescending(x => x.Band).ToList();
                 isDescending = true;
             }
             else
             {
-                ListBoxListen.Items.Clear();
-                List<Listen> sorted = listListen.OrderBy(r => r.Band).ToList();
-                for (int i = 0; i < sorted.Count; i++)
-                {
-                    ListBoxListen.Items.Add(sorted[i].Band);
-                }
+                ListBoxListen.ItemsSource = classMain.ListListen.OrderBy(x => x.Band).ToList();
                 isDescending = false;
-            }
-        }
-
-        public void FillListListen()
-        {
-            ListBoxListen.Items.Clear();
-            List<Listen> listMusicListen = classMain.ListListen.OrderBy(x => x.Band).ToList();
-            for (int i = 0; i < listMusicListen.Count; i++)
-            {
-                ListBoxListen.Items.Add(listMusicListen[i].Band);
             }
         }
 
@@ -75,10 +59,11 @@ namespace BFGM.Pages.Music
             if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
             {
                 int selectedIndex = ListBoxListen.SelectedIndex;
-
                 if (selectedIndex != -1)
                 {
-                    Clipboard.SetText(ListBoxListen.Items[selectedIndex].ToString());
+                    object data = ListBoxListen.Items[selectedIndex];
+                    Listen listen = data as Listen;
+                    Clipboard.SetText(listen.Band);
                 }
             }
         }

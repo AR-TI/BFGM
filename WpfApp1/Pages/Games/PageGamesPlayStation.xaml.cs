@@ -1,4 +1,5 @@
 ﻿using BFGM.Classes;
+using BFGM.Constants;
 using BFGM.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,59 +15,42 @@ namespace BFGM.Pages.Games
     public partial class PageGamesPlayStation : Page
     {
         readonly ClassMain classMain;
-        readonly ClassReadFile classReadFile;
 
-        public PageGamesPlayStation(ClassMain classMain, ClassReadFile classReadFile)
+        public PageGamesPlayStation(ClassMain classMain)
         {
             InitializeComponent();
             this.classMain = classMain;
-            this.classReadFile = classReadFile;
         }
 
-        static private bool isFirstTime = false;
+        public void FillListPlayStation()
+        {
+            ListBoxPlayStation.ItemsSource = classMain.ListPlayStation.OrderBy(x => x.Title).ToList();
+        }
+
+        private bool isFirstTime = false;
         private async void ListBoxPlayStation_Loaded(object sender, RoutedEventArgs e)
         {
             if (!isFirstTime)
             {
-                await classReadFile.ReadFilePlayStation();
+                classMain.ListPlayStation = await classMain.Read<PlayStation>(PathFiles.PlayStationPath);
                 isFirstTime = true;
             }
+
             FillListPlayStation();
         }
 
         bool isDescending = false;
         private void ButtonSortPlayStation_Click(object sender, RoutedEventArgs e)
         {
-            List<PlayStation> listPlayStation = classMain.ListPlayStation;
             if (!isDescending)
             {
-                ListBoxPlayStation.Items.Clear();
-                List<PlayStation> sorted = listPlayStation.OrderByDescending(r => r.Title).ToList();
-                for (int i = 0; i < sorted.Count; i++)
-                {
-                    ListBoxPlayStation.Items.Add(sorted[i].Title);
-                }
+                ListBoxPlayStation.ItemsSource = classMain.ListPlayStation.OrderByDescending(x => x.Title).ToList();
                 isDescending = true;
             }
             else
             {
-                ListBoxPlayStation.Items.Clear();
-                List<PlayStation> sorted = listPlayStation.OrderBy(r => r.Title).ToList();
-                for (int i = 0; i < sorted.Count; i++)
-                {
-                    ListBoxPlayStation.Items.Add(sorted[i].Title);
-                }
+                ListBoxPlayStation.ItemsSource = classMain.ListPlayStation.OrderBy(x => x.Title).ToList();
                 isDescending = false;
-            }
-        }
-
-        public void FillListPlayStation()
-        {
-            ListBoxPlayStation.Items.Clear();
-            List<PlayStation> listlPayStation = classMain.ListPlayStation.OrderBy(x => x.Title).ToList();
-            for (int i = 0; i < listlPayStation.Count; i++)
-            {
-                ListBoxPlayStation.Items.Add(listlPayStation[i].Title);
             }
         }
 
@@ -75,10 +59,11 @@ namespace BFGM.Pages.Games
             if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
             {
                 int selectedIndex = ListBoxPlayStation.SelectedIndex;
-
                 if (selectedIndex != -1)
                 {
-                    Clipboard.SetText(ListBoxPlayStation.Items[selectedIndex].ToString());
+                    object data = ListBoxPlayStation.Items[selectedIndex];
+                    PlayStation playStation = data as PlayStation;
+                    Clipboard.SetText(playStation.Title);
                 }
             }
         }

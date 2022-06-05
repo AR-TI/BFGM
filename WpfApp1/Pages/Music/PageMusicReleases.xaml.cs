@@ -1,11 +1,12 @@
 ﻿using BFGM.Classes;
+using BFGM.Constants;
 using BFGM.Models;
+using BFGM.Windows.Music;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using WpfApp1.Windows.Music;
 
 namespace BFGM.Pages.Music
 {
@@ -15,64 +16,42 @@ namespace BFGM.Pages.Music
     public partial class PageMusicReleases : Page
     {
         readonly ClassMain classMain;
-        readonly ClassReadFile classReadFile;
-        readonly ClassWriteFile classWriteFile;
 
-        List<Release> listReleases;
-        byte SinglesAlbumsShow = 0;
-
-        public PageMusicReleases(ClassMain classMain, ClassReadFile classReadFile, ClassWriteFile classWriteFile)
+        public PageMusicReleases(ClassMain classMain)
         {
             InitializeComponent();
             this.classMain = classMain;
-            this.classReadFile = classReadFile;
-            this.classWriteFile = classWriteFile;
         }
 
-        static private bool isFirstTime = false;
+        private bool isFirstTime = false;
         private async void GridMusicReleases_Loaded(object sender, RoutedEventArgs e)
         {
             if (!isFirstTime)
             {
-                //await classReadFile.ReadFileReleases();
-                await classReadFile.ReadFileRelease();
+                classMain.ListReleases = await classMain.Read<Release>(PathFiles.ReleasesPath);
                 isFirstTime = true;
             }
+
             FillListBoxMusicReleases();
         }
 
         public void FillListBoxMusicReleases()
         {
-            listReleases = classMain.ListReleases.OrderBy(x => x.Date).ThenBy(x => x.Band).ToList();
-            ListBoxReleases.ItemsSource = listReleases;
+            ListBoxReleases.ItemsSource = classMain.ListReleases.OrderBy(x => x.Date).ThenBy(x => x.Band).ToList();
         }
 
+        byte SinglesAlbumsShow = 0;
         public void SortBySinglesAlbums()
         {
-            List<Release> listSinglesOrAlbums = new List<Release>();
             if (SinglesAlbumsShow == 0)
             {
-                for (int i = 0; i < listReleases.Count; i++)
-                {
-                    if (listReleases[i].Album.Contains("[Single]"))
-                    {
-                        listSinglesOrAlbums.Add(listReleases[i]);
-                    }
-                }
-                ListBoxReleases.ItemsSource = listSinglesOrAlbums;
+                ListBoxReleases.ItemsSource = classMain.ListReleases.Where(x => x.Album.Contains("[Single]")).OrderBy(x => x.Date).ThenBy(x => x.Band).ToList();
                 SinglesAlbumsShow = 1;
                 ButtonSinglesAlbums.Content = "Albums";
             }
             else if (SinglesAlbumsShow == 1)
             {
-                for (int i = 0; i < listReleases.Count; i++)
-                {
-                    if (!listReleases[i].Album.Contains("[Single]"))
-                    {
-                        listSinglesOrAlbums.Add(listReleases[i]);
-                    }
-                }
-                ListBoxReleases.ItemsSource = listSinglesOrAlbums;
+                ListBoxReleases.ItemsSource = classMain.ListReleases.Where(x => !x.Album.Contains("[Single]")).OrderBy(x => x.Date).ThenBy(x => x.Band).ToList();
                 SinglesAlbumsShow = 2;
                 ButtonSinglesAlbums.Content = "All";
             }
@@ -100,7 +79,7 @@ namespace BFGM.Pages.Music
             if (selectedIndex != -1)
             {
                 Release releaseOld = ListBoxReleases.Items[selectedIndex] as Release;
-                WindowsMusicReleasesEdit windowsMusicReleasesEdit = new WindowsMusicReleasesEdit(classMain, classWriteFile, this, releaseOld);
+                WindowsMusicReleasesEdit windowsMusicReleasesEdit = new WindowsMusicReleasesEdit(classMain, this, releaseOld);
                 windowsMusicReleasesEdit.ShowDialog();
             }
         }
@@ -110,7 +89,6 @@ namespace BFGM.Pages.Music
             if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
             {
                 int selectedIndex = ListBoxReleases.SelectedIndex;
-
                 if (selectedIndex != -1)
                 {
                     object data = ListBoxReleases.Items[selectedIndex];
@@ -124,6 +102,7 @@ namespace BFGM.Pages.Music
                     {
                         fullName = fullName.Replace(" [EP]", "");
                     }
+
                     Clipboard.SetText(fullName);
                 }
             }
@@ -131,7 +110,7 @@ namespace BFGM.Pages.Music
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            ListBoxReleases.ItemsSource = listReleases.OrderBy(x => x.Band).ThenBy(x => x.Date).ToList();
+            ListBoxReleases.ItemsSource = classMain.ListReleases.OrderBy(x => x.Band).ThenBy(x => x.Date).ToList();
         }
     }
 }
